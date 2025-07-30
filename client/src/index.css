@@ -3,25 +3,35 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(20, 14.3%, 4.1%);
-  --muted: hsl(60, 4.8%, 95.9%);
-  --muted-foreground: hsl(25, 5.3%, 44.7%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(20, 14.3%, 4.1%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(20, 14.3%, 4.1%);
-  --border: hsl(20, 5.9%, 90%);
-  --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(60, 4.8%, 95.9%);
-  --secondary-foreground: hsl(24, 9.8%, 10%);
-  --accent: hsl(60, 4.8%, 95.9%);
-  --accent-foreground: hsl(24, 9.8%, 10%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
+  /* YEMEN FLIX Colors - AKWAM inspired */
+  --yf-bg-primary: #161619;
+  --yf-bg-secondary: #1e1e22;
+  --yf-accent: #f3951e;
+  --yf-accent-hover: #e8851a;
+  --yf-text-primary: #ffffff;
+  --yf-text-secondary: #b3b3b3;
+  --yf-border: #2a2a2e;
+
+  /* Shadcn compatible variables */
+  --background: hsl(225, 6%, 8%);
+  --foreground: hsl(0, 0%, 100%);
+  --muted: hsl(227, 6%, 12%);
+  --muted-foreground: hsl(0, 0%, 70%);
+  --popover: hsl(225, 6%, 8%);
+  --popover-foreground: hsl(0, 0%, 100%);
+  --card: hsl(227, 6%, 12%);
+  --card-foreground: hsl(0, 0%, 100%);
+  --border: hsl(228, 6%, 16%);
+  --input: hsl(228, 6%, 16%);
+  --primary: hsl(24, 87%, 53%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(227, 6%, 12%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --accent: hsl(24, 87%, 53%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(24, 87%, 53%);
   --radius: 0.5rem;
   
   /* Custom colors matching the design */
@@ -47,27 +57,11 @@
   --slate-900: hsl(222, 84%, 5%);
 }
 
-.dark {
-  --background: hsl(240, 10%, 3.9%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
-  --radius: 0.5rem;
+/* Default is dark mode for YEMEN FLIX */
+body {
+  background: linear-gradient(135deg, var(--yf-bg-primary) 0%, var(--yf-bg-secondary) 100%);
+  color: var(--yf-text-primary);
+  min-height: 100vh;
 }
 
 @layer base {
@@ -147,20 +141,120 @@
   50% { transform: translateY(-10px); }
 }
 
-/* RTL Scrollbar */
+/* Custom Scrollbar for YEMEN FLIX */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(210, 40%, 94%);
+  background: var(--yf-bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(214, 20%, 69%);
+  background: var(--yf-accent);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(215, 16%, 58%);
+  background: var(--yf-accent-hover);
+}
+
+/* YEMEN FLIX Custom Components */
+.yf-movie-card {
+  background: var(--yf-bg-secondary);
+  border: 1px solid var(--yf-border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.yf-movie-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--yf-accent);
+  box-shadow: 0 15px 35px rgba(243, 149, 30, 0.2);
+}
+
+.yf-rating {
+  background: linear-gradient(135deg, var(--yf-accent) 0%, var(--yf-accent-hover) 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+}
+
+.yf-genre-tag {
+  background: var(--yf-border);
+  color: var(--yf-text-secondary);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  margin: 2px;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.yf-genre-tag:hover {
+  background: var(--yf-accent);
+  color: white;
+}
+
+.yf-btn-primary {
+  background: linear-gradient(135deg, var(--yf-accent) 0%, var(--yf-accent-hover) 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.yf-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(243, 149, 30, 0.3);
+}
+
+.yf-nav-item {
+  color: var(--yf-text-secondary);
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.yf-nav-item:hover,
+.yf-nav-item.active {
+  background: var(--yf-bg-secondary);
+  color: var(--yf-accent);
+  border: 1px solid var(--yf-border);
+}
+
+.yf-search-input {
+  background: var(--yf-bg-secondary);
+  border: 1px solid var(--yf-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--yf-text-primary);
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.yf-search-input:focus {
+  outline: none;
+  border-color: var(--yf-accent);
+  box-shadow: 0 0 0 3px rgba(243, 149, 30, 0.1);
+}
+
+.yf-search-input::placeholder {
+  color: var(--yf-text-secondary);
 }
