@@ -228,7 +228,10 @@
   /* YEMEN_FLIX Body Style Override */
   body {
     font-family: yemen-flix, Arial, Helvetica, sans-serif, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    background-color: #161619;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url('/src/assets/images/default.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     direction: rtl;
     text-align: right;
     color: #161619;
@@ -283,6 +286,92 @@
     right: 0;
     bottom: 0;
     pointer-events: none;
+  }
+
+  /* Font Icons for Yemen Flix */
+  .icon-video-camera:before { content: "🎬"; }
+  .icon-monitor:before { content: "📺"; }
+  .icon-tv:before { content: "📽️"; }
+  .icon-mix:before { content: "🎭"; }
+  .icon-search:before { content: "🔍"; }
+  .icon-home:before { content: "🏠"; }
+  .icon-facebook:before { content: "📘"; }
+  .icon-app-store:before { content: "📱"; }
+  .icon-youtube:before { content: "📺"; }
+  .icon-email:before { content: "📧"; }
+  .icon-user:before { content: "👤"; }
+  .icon-plus2:before { content: "➕"; }
+  .icon-arrow-back:before { content: "🔙"; }
+
+  /* Main Menu Styles */
+  .main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .main-menu.show {
+    display: flex;
+  }
+
+  .main-menu .menu {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .main-menu .menu .item {
+    display: inline-block;
+    margin: 20px;
+    padding: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .main-menu .menu .item:hover {
+    border-color: #f3951e;
+    background: rgba(243, 149, 30, 0.1);
+  }
+
+  .main-menu .menu .item .icn {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .main-menu .social {
+    margin-top: 40px;
+  }
+
+  .main-menu .social a {
+    margin: 0 15px;
+    padding: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    transition: all 0.3s ease;
+  }
+
+  .main-menu .social a:hover {
+    color: white;
+    border-color: #f3951e;
   }
   
   .line-clamp-3 {

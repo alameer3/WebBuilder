@@ -9,8 +9,7 @@ declare global {
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
-  const typedElementRef = useRef<HTMLSpanElement>(null);
-  const searchTypedRef = useRef<HTMLSpanElement>(null);
+  const typedElementRef = useRef<HTMLInputElement>(null);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,288 +20,241 @@ export default function Home() {
 
   useEffect(() => {
     let typedInstance: any = null;
-    let searchTypedInstance: any = null;
 
-    // Initialize typing animations after the scripts are loaded
-    const initTypedAnimations = () => {
-      if (typeof window.Typed !== 'undefined') {
-        // Typing animation for the main logo
-        if (typedElementRef.current && !typedInstance) {
-          typedInstance = new window.Typed(typedElementRef.current, {
-            strings: [
-              "𝐘𝐄𝐌𝐄𝐍_𝐅𝐋𝐈𝐗",
-              "يمن فليكس",
-              "موقع الأفلام العربي",
-              "أفلام ومسلسلات عربية",
-              "مشاهدة مجانية"
-            ],
-            typeSpeed: 60,
-            backSpeed: 40,
-            loop: true,
-            backDelay: 2000,
-            startDelay: 500,
-            showCursor: true,
-            cursorChar: '|'
-          });
-        }
-
-        // Typing animation for search placeholder  
-        if (searchTypedRef.current && !searchTypedInstance) {
-          searchTypedInstance = new window.Typed(searchTypedRef.current, {
-            strings: [
-              "ابحث عن أفلامك المفضلة...",
-              "مسلسلات عربية وأجنبية...", 
-              "أحدث الأفلام 2025...",
-              "أفلام أكشن ودراما...",
-              "كوميديا ورعب..."
-            ],
-            typeSpeed: 50,
-            backSpeed: 30,
-            loop: true,
-            backDelay: 1500,
-            startDelay: 1000,
-            showCursor: false
-          });
-        }
+    // Initialize typing animation for search placeholder
+    const initTypedAnimation = () => {
+      if (typeof window.Typed !== 'undefined' && typedElementRef.current) {
+        typedInstance = new window.Typed(typedElementRef.current, {
+          strings: [
+            "ابحث عن فيلم او مسلسل ...",
+            "^200 مثال: الجزيرة",
+            "^400 مثال آخر: اسم مؤقت", 
+            "^600 مثال: FIFA",
+            "^800 ابحث هنا في يمن فليكس باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به"
+          ],
+          attr: 'placeholder',
+          typeSpeed: 50,
+          backSpeed: 30,
+          loop: true,
+          backDelay: 2000,
+          startDelay: 500,
+          showCursor: false
+        });
       }
     };
 
-    // Check if scripts are loaded with retries
+    // Check if scripts are loaded
     let retryCount = 0;
-    const maxRetries = 50; // 5 seconds max wait time
+    const maxRetries = 50;
     
     const checkScripts = () => {
       if (typeof window.Typed !== 'undefined') {
-        initTypedAnimations();
+        initTypedAnimation();
       } else if (retryCount < maxRetries) {
         retryCount++;
         setTimeout(checkScripts, 100);
-      } else {
-        console.warn('Typed.js not loaded after 5 seconds, using fallback');
-        // Fallback: show static text
-        if (typedElementRef.current) {
-          typedElementRef.current.textContent = '𝐘𝐄𝐌𝐄𝐍_𝐅𝐋𝐈𝐗';
-        }
-        if (searchTypedRef.current) {
-          searchTypedRef.current.textContent = 'ابحث هنا عن فيلم أو مسلسل...';
-        }
       }
     };
 
-    // Start checking after a small delay to ensure DOM is ready
-    const timeoutId = setTimeout(checkScripts, 100);
+    setTimeout(checkScripts, 100);
 
-    // Cleanup function
     return () => {
-      clearTimeout(timeoutId);
       if (typedInstance) {
         typedInstance.destroy();
-      }
-      if (searchTypedInstance) {
-        searchTypedInstance.destroy();
       }
     };
   }, []);
 
   return (
-    <div className="min-h-screen relative overflow-hidden page-home yemen-flix-home">
-      {/* Loading animation background */}
-      <div className="yemen-flix-loading-bg"></div>
-      {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-50 p-4">
-        <div className="flex justify-between items-center">
-          {/* User Panel */}
-          <div className="flex items-center text-white">
-            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center ml-2">
-              <div className="w-4 h-4 rounded-full bg-white"></div>
-            </div>
-            <span className="text-sm">أضيف حديثاً</span>
-          </div>
-          
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <img 
-              src="/src/assets/images/yemen-flix-logo.svg" 
-              alt="Yemen Flix Logo" 
-              className="h-10 w-auto filter brightness-110"
-            />
-            <div className="text-white text-xl font-bold tracking-wider min-h-[2rem]">
-              <span ref={typedElementRef} className="yemen-flix-typed"></span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="flex flex-col items-center justify-center min-h-screen px-4">
-        {/* Central Logo Circle with YEMEN_FLIX Style */}
-        <div className="mb-12 yemen-flix-fade-in">
-          <div className="home-site-btn-container">
-            <div className="home-site-btn">
-              <div className="logo text-center text-white">
-                <div className="text-5xl text-white font-bold mb-2" style={{ fontFamily: 'yemen-flix, Noto Sans Arabic' }}>
-                  Y
-                </div>
-              </div>
-              <div className="text text-center text-white">
-                <div className="text-sm font-semibold">الصفحة الرئيسية</div>
-              </div>
+    <div className="header-fixed body-home page-home">
+      <span className="site-overlay"></span>
+      
+      {/* Main Menu */}
+      <div className="main-menu">
+        <div className="d-flex flex-column">
+          <div className="my-auto w-100">
+            <div className="menu d-flex flex-wrap justify-content-center">
+              <a href="/movies" className="item">
+                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
+                <div className="text">أفلام</div>
+              </a>
+              <a href="/series" className="item">
+                <div className="icn ml-3"><i className="icon-monitor"></i></div>
+                <div className="text">مسلسلات</div>
+              </a>
+              <a href="/shows" className="item">
+                <div className="icn ml-3"><i className="icon-tv"></i></div>
+                <div className="text">تلفزيون</div>
+              </a>
+              <a href="/mix" className="item">
+                <div className="icn ml-3"><i className="icon-mix"></i></div>
+                <div className="text">منوعات</div>
+              </a>
             </div>
           </div>
-        </div>
-
-        {/* Search Box */}
-        <div className="mb-12 w-full max-w-2xl yemen-flix-slide-up">
-          <form onSubmit={handleSearch} className="relative">
-            <div className="relative w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder=""
-                className="w-full h-16 text-white text-lg px-6 pl-24 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 yemen-flix-search-box"
-                style={{ borderRadius: '0' }}
-              />
-              <div className="absolute top-0 left-6 right-24 h-16 flex items-center pointer-events-none text-white/60 text-lg">
-                <span ref={searchTypedRef} className="search-typed-placeholder"></span>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="absolute left-2 top-2 bottom-2 px-6 text-white font-semibold yemen-flix-search-btn"
-              style={{ borderRadius: '0' }}
-            >
-              بحث
-            </button>
-          </form>
-        </div>
-
-        {/* Featured Movies Section */}
-        <div className="mb-16 w-full max-w-6xl yemen-flix-fade-in">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">أحدث الأفلام</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div key={item} className="relative group cursor-pointer home-site-btn">
-                <div className="aspect-[2/3] bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg overflow-hidden border border-gray-600 hover:border-orange-500 transition-all duration-300">
-                  <img 
-                    src="/src/assets/images/default.jpg" 
-                    alt={`فيلم ${item}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                    }}
-                  />
-                  <div className="w-full h-full flex items-center justify-center text-gray-400 hidden">
-                    <div className="text-center">
-                      <div className="text-2xl mb-2">🎬</div>
-                      <div className="text-sm">فيلم {item}</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-                  <div className="text-white text-sm font-semibold">شاهد الآن</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Category Icons */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16 yemen-flix-slide-up">
-          {/* Movies */}
-          <a href="/movies" className="no-underline">
-            <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">
-              <div className="w-20 h-20 yemen-flix-category-icon flex items-center justify-center mb-4">
-                <div className="text-center">
-                  <div className="text-2xl mb-1">🎬</div>
-                  <div className="text-xs">MOVIE</div>
-                </div>
-              </div>
-              <span className="text-lg font-semibold">أفلام</span>
-            </div>
-          </a>
-
-          {/* TV Shows */}
-          <a href="/shows" className="no-underline">
-            <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">
-              <div className="w-20 h-20 yemen-flix-category-icon flex items-center justify-center mb-4">
-                <div className="text-center">
-                  <div className="text-2xl mb-1">📺</div>
-                  <div className="text-xs">TV</div>
-                </div>
-              </div>
-              <span className="text-lg font-semibold">تلفزيون</span>
-            </div>
-          </a>
-
-          {/* Series */}
-          <a href="/series" className="no-underline">
-            <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">
-              <div className="w-20 h-20 yemen-flix-category-icon flex items-center justify-center mb-4">
-                <div className="text-center">
-                  <div className="text-2xl mb-1">📱</div>
-                  <div className="text-xs">SERIES</div>
-                </div>
-              </div>
-              <span className="text-lg font-semibold">مسلسلات</span>
-            </div>
-          </a>
-
-          {/* Mix */}
-          <a href="/mix" className="no-underline">
-            <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">
-              <div className="w-20 h-20 yemen-flix-category-icon flex items-center justify-center mb-4">
-                <div className="text-center">
-                  <div className="text-2xl mb-1">🎭</div>
-                  <div className="text-xs">MIX</div>
-                </div>
-              </div>
-              <span className="text-lg font-semibold">منوعات</span>
-            </div>
-          </a>
+          <nav className="social d-flex justify-content-center">
+            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
+            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
+          </nav>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 p-6">
-        <div className="flex justify-center space-x-6 space-x-reverse text-white/60 mb-4">
-          <a href="#" className="hover:text-white transition-colors">
-            <div className="w-8 h-8 border border-white/30 rounded-full flex items-center justify-center">
-              <span className="text-xs">📱</span>
-            </div>
-          </a>
-          <a href="#" className="hover:text-white transition-colors">
-            <div className="w-8 h-8 border border-white/30 rounded-full flex items-center justify-center">
-              <span className="text-xs">📧</span>
-            </div>
-          </a>
-          <a href="#" className="hover:text-white transition-colors">
-            <div className="w-8 h-8 border border-white/30 rounded-full flex items-center justify-center">
-              <span className="text-xs">📺</span>
-            </div>
-          </a>
-          <a href="#" className="hover:text-white transition-colors">
-            <div className="w-8 h-8 border border-white/30 rounded-full flex items-center justify-center">
-              <span className="text-xs">🌐</span>
-            </div>
-          </a>
-          <a href="#" className="hover:text-white transition-colors">
-            <div className="w-8 h-8 border border-white/30 rounded-full flex items-center justify-center">
-              <span className="text-xs">📱</span>
-            </div>
-          </a>
-          <a href="#" className="hover:text-white transition-colors">
-            <div className="w-8 h-8 border border-white/30 rounded-full flex items-center justify-center">
-              <span className="text-xs">📧</span>
-            </div>
-          </a>
+      {/* Search Box */}
+      <div className="search-box px-xl-5">
+        <div className="container search-container">
+          <form onSubmit={handleSearch} className="search-form">
+            <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
+              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
+              <input 
+                type="search" 
+                name="q" 
+                id="searchBoxInput" 
+                placeholder="ابحث هنا"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </label>
+          </form>
+          <div className="search-toggle"><i className="icon-arrow-back"></i></div>
         </div>
-        
-        <div className="text-center text-white/60 text-sm">
-          <p>جميع الحقوق محفوظة لـ شبكة 𝐘𝐄𝐌𝐄𝐍_𝐅𝐋𝐈𝐗 © 2025</p>
+      </div>
+
+      {/* Site Container */}
+      <div className="site-container">
+        <div className="page-home">
+          <div className="main-header-top"></div>
+          
+          {/* Header */}
+          <header className="main-header">
+            <div className="container">
+              <div className="row align-items-center">
+                <div className="col-auto">
+                  <h2 className="main-logo m-0">
+                    <a href="/" className="d-inline-flex">
+                      <img src="/src/assets/images/logo-white.svg" className="img-fluid" alt="يمن فليكس" />
+                    </a>
+                  </h2>
+                </div>
+                <div className="col-auto menu-toggle-container">
+                  <button type="button" className="menu-toggle d-flex align-items-center text-white" style={{background: 'none', border: 'none'}}>
+                    <span className="icn"></span>
+                    <div className="text font-size-18 mr-3">الأقسام</div>
+                  </button>
+                </div>
+                <div className="ml-auto"></div>
+                <div className="col-md-5 col-lg-6 search-container">
+                  <div className="search-form">
+                    <form onSubmit={handleSearch}>
+                      <input 
+                        type="text" 
+                        id="headerSearchInput" 
+                        name="q"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
+                      <button type="submit"><i className="icon-search"></i></button>
+                    </form>
+                  </div>
+                </div>
+                <div className="col-auto recently-container">
+                  <a href="/recent" className="btn-recently">
+                    <i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span>
+                  </a>
+                </div>
+                <div className="col-auto user-profile-container">
+                  <div className="user-panel">
+                    <a className="user-toggle d-block font-size-20 public" href="/login">
+                      <i className="icon-user"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+          
+          <div className="main-header-height"></div>
+          
+          {/* Main Content */}
+          <div className="container py-5 my-5">
+            {/* Home Site Button */}
+            <div className="home-site-btn-container mt-5">
+              <h1>
+                <a href="/" className="link" style={{position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: 10}}></a>
+              </h1>
+              <div className="home-site-btn" style={{backgroundImage: `url('/src/assets/images/default.jpg')`, transition: 'background-position 5s'}}>
+                <span className="logo">
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="87px" height="80px">
+                    <path fillRule="evenodd" fill="rgb(255, 255, 255)" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"></path>
+                  </svg>
+                </span>
+                <span className="text font-size-20 font-weight-medium text-white">الصفحة الرئيسية</span>
+              </div>
+            </div>
+
+            {/* Search Widget */}
+            <div className="widget-2 widget mb-4">
+              <div className="widget-body row">
+                <div className="col-lg-8 mx-auto">
+                  <form className="form d-flex no-gutters mb-20" onSubmit={handleSearch}>
+                    <div className="col pl-12">
+                      <input 
+                        type="text" 
+                        className="form-control" 
+                        id="widget2SearchInput" 
+                        name="q"
+                        ref={typedElementRef}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <label htmlFor="widget2SearchInput" className="m-0">
+                        <span className="label">ابحث عن فيلم او مسلسل</span>
+                        <span className="typed-cursor">|</span>
+                      </label>
+                    </div>
+                    <div className="col-auto">
+                      <button type="submit" className="btn btn-orange">بحث</button>
+                    </div>
+                  </form>
+                  
+                  {/* Main Categories */}
+                  <div className="main-categories-list">
+                    <div className="row">
+                      <div className="col-lg col-4">
+                        <a href="/movies" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-video-camera"></i></div>
+                          <div className="font-size-16">أفلام</div>
+                        </a>
+                      </div>
+                      <div className="col-lg col-4">
+                        <a href="/shows" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-tv"></i></div>
+                          <div className="font-size-16">تلفزيون</div>
+                        </a>
+                      </div>
+                      <div className="col-lg col-4">
+                        <a href="/series" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-monitor"></i></div>
+                          <div className="font-size-16">مسلسلات</div>
+                        </a>
+                      </div>
+                      <div className="col-lg col-4">
+                        <a href="/mix" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-mix"></i></div>
+                          <div className="font-size-16">منوعات</div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
