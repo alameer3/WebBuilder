@@ -1,0 +1,90 @@
+/* Arabic Fonts - Yemen Flix */
+
+/* Import Google Fonts for Arabic Support */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+
+/* Custom Yemen Flix Font */
+@font-face {
+  font-family: 'akoam';
+  src: url('data:font/woff2;base64,') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'yemen-flix';
+  src: url('data:font/woff2;base64,') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Font classes for different sections */
+.arabic-font {
+  font-family: 'Noto Sans Arabic', 'Cairo', 'Tajawal', 'akoam', Arial, sans-serif;
+}
+
+.title-font {
+  font-family: 'Cairo', 'yemen-flix', 'Noto Sans Arabic', sans-serif;
+  font-weight: 600;
+}
+
+.body-font {
+  font-family: 'Noto Sans Arabic', 'Tajawal', sans-serif;
+  font-weight: 400;
+}
+
+/* Apply to common elements */
+body, .main-content {
+  font-family: 'akoam', 'Noto Sans Arabic', 'Cairo', Arial, Helvetica, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+h1, h2, h3, h4, h5, h6, .heading {
+  font-family: 'Cairo', 'yemen-flix', 'Noto Sans Arabic', sans-serif;
+  font-weight: 600;
+}
+
+/* Specific font weights for Arabic text */
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* RTL Support */
+.rtl-text {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Noto Sans Arabic', 'Cairo', 'Tajawal', sans-serif;
+}
+
+/* Typography improvements for Arabic */
+.arabic-text {
+  letter-spacing: 0.5px;
+  line-height: 1.8;
+  word-spacing: 2px;
+}
+
+/* Logo font styling */
+.logo-text {
+  font-family: 'yemen-flix', 'Cairo', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+}

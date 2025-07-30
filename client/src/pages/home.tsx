@@ -23,6 +23,7 @@ export default function Home() {
   useEffect(() => {
     // Add body class for homepage styling
     document.body.classList.add('body-home', 'page-home');
+    document.documentElement.lang = 'ar';
     
     let typedInstance: any = null;
 
@@ -145,6 +146,7 @@ export default function Home() {
     return () => {
       // Clean up body classes when component unmounts
       document.body.classList.remove('body-home', 'page-home');
+      document.documentElement.lang = 'en';
       
       if (typedInstance) {
         typedInstance.destroy();

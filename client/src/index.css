@@ -3,6 +3,9 @@
 
 /* Import YEMEN_FLIX CSS files */
 @import './assets/css/plugins.css';
+/* Import all CSS files first */
+@import './assets/css/fonts.css';
+@import './assets/css/akwam-style.css';
 @import './assets/css/style.css';
 @import './assets/css/home.css';
 @import './assets/css/yemen-flix.css';
@@ -81,7 +84,7 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: 'yemen-flix', 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'akoam', 'Noto Sans Arabic', 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
     direction: rtl;
     background-color: #161619;
     color: #ffffff;
