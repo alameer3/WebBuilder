@@ -1,7 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+
+declare global {
+  interface Window {
+    Typed: any;
+    $: any;
+  }
+}
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const typedElementRef = useRef<HTMLSpanElement>(null);
+  const searchTypedRef = useRef<HTMLSpanElement>(null);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -9,6 +18,91 @@ export default function Home() {
       window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
   };
+
+  useEffect(() => {
+    let typedInstance: any = null;
+    let searchTypedInstance: any = null;
+
+    // Initialize typing animations after the scripts are loaded
+    const initTypedAnimations = () => {
+      if (typeof window.Typed !== 'undefined') {
+        // Typing animation for the main logo
+        if (typedElementRef.current && !typedInstance) {
+          typedInstance = new window.Typed(typedElementRef.current, {
+            strings: [
+              "𝐘𝐄𝐌𝐄𝐍_𝐅𝐋𝐈𝐗",
+              "يمن فليكس",
+              "موقع الأفلام العربي",
+              "أفلام ومسلسلات عربية",
+              "مشاهدة مجانية"
+            ],
+            typeSpeed: 60,
+            backSpeed: 40,
+            loop: true,
+            backDelay: 2000,
+            startDelay: 500,
+            showCursor: true,
+            cursorChar: '|'
+          });
+        }
+
+        // Typing animation for search placeholder  
+        if (searchTypedRef.current && !searchTypedInstance) {
+          searchTypedInstance = new window.Typed(searchTypedRef.current, {
+            strings: [
+              "ابحث عن أفلامك المفضلة...",
+              "مسلسلات عربية وأجنبية...", 
+              "أحدث الأفلام 2025...",
+              "أفلام أكشن ودراما...",
+              "كوميديا ورعب..."
+            ],
+            typeSpeed: 50,
+            backSpeed: 30,
+            loop: true,
+            backDelay: 1500,
+            startDelay: 1000,
+            showCursor: false
+          });
+        }
+      }
+    };
+
+    // Check if scripts are loaded with retries
+    let retryCount = 0;
+    const maxRetries = 50; // 5 seconds max wait time
+    
+    const checkScripts = () => {
+      if (typeof window.Typed !== 'undefined') {
+        initTypedAnimations();
+      } else if (retryCount < maxRetries) {
+        retryCount++;
+        setTimeout(checkScripts, 100);
+      } else {
+        console.warn('Typed.js not loaded after 5 seconds, using fallback');
+        // Fallback: show static text
+        if (typedElementRef.current) {
+          typedElementRef.current.textContent = '𝐘𝐄𝐌𝐄𝐍_𝐅𝐋𝐈𝐗';
+        }
+        if (searchTypedRef.current) {
+          searchTypedRef.current.textContent = 'ابحث هنا عن فيلم أو مسلسل...';
+        }
+      }
+    };
+
+    // Start checking after a small delay to ensure DOM is ready
+    const timeoutId = setTimeout(checkScripts, 100);
+
+    // Cleanup function
+    return () => {
+      clearTimeout(timeoutId);
+      if (typedInstance) {
+        typedInstance.destroy();
+      }
+      if (searchTypedInstance) {
+        searchTypedInstance.destroy();
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen relative overflow-hidden page-home yemen-flix-home">
@@ -24,8 +118,8 @@ export default function Home() {
           </div>
           
           {/* Logo */}
-          <div className="text-white text-xl font-bold tracking-wider">
-            𝐘𝐄𝐌𝐄𝐍_𝐅𝐋𝐈𝐗
+          <div className="text-white text-xl font-bold tracking-wider min-h-[2rem]">
+            <span ref={typedElementRef} className="yemen-flix-typed"></span>
           </div>
         </div>
       </header>
@@ -51,14 +145,19 @@ export default function Home() {
         {/* Search Box */}
         <div className="mb-12 w-full max-w-2xl yemen-flix-slide-up">
           <form onSubmit={handleSearch} className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="ابحث هنا عن فيلم أو مسلسل..."
-              className="w-full h-16 text-white text-lg px-6 pl-24 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 yemen-flix-search-box"
-              style={{ borderRadius: '0' }}
-            />
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder=""
+                className="w-full h-16 text-white text-lg px-6 pl-24 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 yemen-flix-search-box"
+                style={{ borderRadius: '0' }}
+              />
+              <div className="absolute top-0 left-6 right-24 h-16 flex items-center pointer-events-none text-white/60 text-lg">
+                <span ref={searchTypedRef} className="search-typed-placeholder"></span>
+              </div>
+            </div>
             <button
               type="submit"
               className="absolute left-2 top-2 bottom-2 px-6 text-white font-semibold yemen-flix-search-btn"

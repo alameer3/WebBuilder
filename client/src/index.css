@@ -233,6 +233,32 @@
     text-align: right;
     color: #161619;
   }
+
+  /* Custom Typed.js cursor styling for YEMEN_FLIX */
+  .typed-cursor {
+    opacity: 1;
+    animation: blink 1s infinite;
+    color: #f3951e;
+    font-weight: 100;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* Yemen Flix typed text styling */
+  .yemen-flix-typed {
+    color: #f3951e;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+  }
+
+  /* Search placeholder typed animation */
+  .search-typed-placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.125rem;
+  }
   
   .line-clamp-3 {
     overflow: hidden;
