@@ -32,12 +32,12 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center min-h-screen px-4">
-        {/* Central Logo Circle with AKWAM Style */}
-        <div className="mb-12 akwam-fade-in">
+        {/* Central Logo Circle with YEMEN_FLIX Style */}
+        <div className="mb-12 yemen-flix-fade-in">
           <div className="home-site-btn-container">
             <div className="home-site-btn">
               <div className="logo text-center text-white">
-                <div className="text-5xl text-white font-bold mb-2" style={{ fontFamily: 'akoam, Noto Sans Arabic' }}>
+                <div className="text-5xl text-white font-bold mb-2" style={{ fontFamily: 'yemen-flix, Noto Sans Arabic' }}>
                   Y
                 </div>
               </div>
@@ -49,7 +49,7 @@ export default function Home() {
         </div>
 
         {/* Search Box */}
-        <div className="mb-12 w-full max-w-2xl akwam-slide-up">
+        <div className="mb-12 w-full max-w-2xl yemen-flix-slide-up">
           <form onSubmit={handleSearch} className="relative">
             <input
               type="text"
@@ -70,7 +70,7 @@ export default function Home() {
         </div>
 
         {/* Category Icons */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16 akwam-slide-up">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16 yemen-flix-slide-up">
           {/* Movies */}
           <a href="/movies" className="no-underline">
             <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">

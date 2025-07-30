@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap');
 
-/* Import AKWAM CSS files */
+/* Import YEMEN_FLIX CSS files */
 @import './assets/css/plugins.css';
 @import './assets/css/style.css';
 @import './assets/css/home.css';
-@import './assets/css/akwam.css';
+@import './assets/css/yemen-flix.css';
 
 @tailwind base;
 @tailwind components;
@@ -16,23 +16,23 @@
   font-family: 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* AKWAM-like styling */
+/* YEMEN_FLIX-like styling */
 @font-face {
-  font-family: 'akoam';
+  font-family: 'yemen-flix';
   src: local('Noto Sans Arabic');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'akoam';
+  font-family: 'yemen-flix';
   src: local('Noto Sans Arabic');
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'akoam';
+  font-family: 'yemen-flix';
   src: local('Noto Sans Arabic');
   font-weight: 700;
   font-style: normal;
@@ -45,14 +45,14 @@
 
 @layer base {
   :root {
-    /* AKWAM Exact Colors */
+    /* YEMEN_FLIX Exact Colors */
     --background: 0 0% 8.6%; /* #161619 */
     --foreground: 0 0% 100%; /* #ffffff */
     --card: 0 0% 15.3%; /* #27272c */
     --card-foreground: 0 0% 100%;
     --popover: 0 0% 8.6%;
     --popover-foreground: 0 0% 100%;
-    --primary: 28 94% 52%; /* #f3951e - AKWAM Orange */
+    --primary: 28 94% 52%; /* #f3951e - YEMEN_FLIX Orange */
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 15.3%; /* #27272c */
     --secondary-foreground: 0 0% 100%;
@@ -65,7 +65,7 @@
     --border: 0 0% 15.3%;
     --input: 0 0% 15.3%;
     --ring: 28 94% 52%;
-    --radius: 3px; /* AKWAM uses 3px radius */
+    --radius: 3px; /* YEMEN_FLIX uses 3px radius */
     --chart-1: 28 94% 52%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -81,7 +81,7 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: 'akoam', 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'yemen-flix', 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
     direction: rtl;
     background-color: #161619;
     color: #ffffff;
@@ -92,16 +92,16 @@
     direction: rtl;
   }
   
-  /* AKWAM-specific animations and effects */
-  .akwam-fade-in {
-    animation: akwamFadeIn 1.5s ease-in-out;
+  /* YEMEN_FLIX-specific animations and effects */
+  .yemen-flix-fade-in {
+    animation: yemenFlixFadeIn 1.5s ease-in-out;
   }
   
-  .akwam-slide-up {
-    animation: akwamSlideUp 1s ease-out 0.3s both;
+  .yemen-flix-slide-up {
+    animation: yemenFlixSlideUp 1s ease-out 0.3s both;
   }
   
-  .akwam-backdrop-blur {
+  .yemen-flix-backdrop-blur {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
   }
@@ -169,8 +169,8 @@
     -webkit-line-clamp: 2;
   }
   
-  /* AKWAM Animations */
-  @keyframes akwamFadeIn {
+  /* YEMEN_FLIX Animations */
+  @keyframes yemenFlixFadeIn {
     from {
       opacity: 0;
       transform: translateY(20px);
@@ -181,7 +181,7 @@
     }
   }
   
-  @keyframes akwamSlideUp {
+  @keyframes yemenFlixSlideUp {
     from {
       opacity: 0;
       transform: translateY(30px);
@@ -192,8 +192,8 @@
     }
   }
   
-  /* AKWAM Home page specific styles */
-  .akwam-home-bg {
+  /* YEMEN_FLIX Home page specific styles */
+  .yemen-flix-home-bg {
     background-image: 
       linear-gradient(to bottom, rgba(0, 0, 0, 0.55), #000 100%),
       radial-gradient(circle at center, #331300 0%, #1a1008 50%, #000000 100%);
@@ -202,32 +202,32 @@
     background-attachment: fixed;
   }
   
-  .akwam-glass {
+  .yemen-flix-glass {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
   
-  .akwam-glass-dark {
+  .yemen-flix-glass-dark {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 4px solid rgba(255, 255, 255, 0.3);
   }
   
-  .akwam-orange-btn {
+  .yemen-flix-orange-btn {
     background: #f3951e;
     transition: background-color 0.3s ease;
   }
   
-  .akwam-orange-btn:hover {
+  .yemen-flix-orange-btn:hover {
     background: #e8851a;
   }
 
-  /* AKWAM Body Style Override */
+  /* YEMEN_FLIX Body Style Override */
   body {
-    font-family: akoam, Arial, Helvetica, sans-serif, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: yemen-flix, Arial, Helvetica, sans-serif, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     background-color: #161619;
     direction: rtl;
     text-align: right;
