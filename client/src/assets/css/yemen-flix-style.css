@@ -1,6 +1,6 @@
-/* AKWAM Style CSS - Adapted for Yemen Flix */
+/* Yemen Flix Main Style CSS */
 
-/* Core styles from reference design */
+/* Core styles for Yemen Flix design */
 a, body {
   color: #161619;
 }
@@ -10,7 +10,7 @@ a, a:hover {
 }
 
 body {
-  font-family: akoam, 'Noto Sans Arabic', Arial, Helvetica, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: 'yemen-flix', 'Noto Sans Arabic', Arial, Helvetica, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   line-height: 1.5;
   background-color: #161619;
   direction: rtl;

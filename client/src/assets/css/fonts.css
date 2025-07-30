@@ -7,7 +7,7 @@
 
 /* Custom Yemen Flix Font */
 @font-face {
-  font-family: 'akoam';
+  font-family: 'yemen-flix-font';
   src: url('data:font/woff2;base64,') format('woff2');
   font-weight: normal;
   font-style: normal;
@@ -24,7 +24,7 @@
 
 /* Font classes for different sections */
 .arabic-font {
-  font-family: 'Noto Sans Arabic', 'Cairo', 'Tajawal', 'akoam', Arial, sans-serif;
+  font-family: 'Noto Sans Arabic', 'Cairo', 'Tajawal', 'yemen-flix-font', Arial, sans-serif;
 }
 
 .title-font {
@@ -39,7 +39,7 @@
 
 /* Apply to common elements */
 body, .main-content {
-  font-family: 'akoam', 'Noto Sans Arabic', 'Cairo', Arial, Helvetica, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: 'yemen-flix-font', 'Noto Sans Arabic', 'Cairo', Arial, Helvetica, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 h1, h2, h3, h4, h5, h6, .heading {
