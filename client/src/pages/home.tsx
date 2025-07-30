@@ -23,33 +23,112 @@ export default function Home() {
 
     // Initialize typing animation for search placeholder
     const initTypedAnimation = () => {
-      if (typeof window.Typed !== 'undefined' && typedElementRef.current) {
-        typedInstance = new window.Typed(typedElementRef.current, {
-          strings: [
-            "ابحث عن فيلم او مسلسل ...",
-            "^200 مثال: الجزيرة",
-            "^400 مثال آخر: اسم مؤقت", 
-            "^600 مثال: FIFA",
-            "^800 ابحث هنا في يمن فليكس باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به"
-          ],
-          attr: 'placeholder',
-          typeSpeed: 50,
-          backSpeed: 30,
-          loop: true,
-          backDelay: 2000,
-          startDelay: 500,
-          showCursor: false
-        });
+      if (typeof window.Typed !== 'undefined') {
+        // Target the label span inside the search widget
+        const targetElement = document.querySelector('.widget-2 .form label[for="widget2SearchInput"] span.label');
+        if (targetElement) {
+          typedInstance = new window.Typed('.widget-2 .form label[for="widget2SearchInput"] span.label', {
+            stringsElement: '.widget-2 .form .label-text',
+            typeSpeed: 30,
+            loop: true,
+            backDelay: 2000,
+            startDelay: 500,
+            showCursor: false
+          });
+        }
       }
     };
 
-    // Check if scripts are loaded
+    // Initialize menu interactions
+    const initMenuInteractions = () => {
+      // Menu toggle functionality
+      const menuToggle = document.querySelector('.menu-toggle');
+      const siteOverlay = document.querySelector('.site-overlay');
+      const searchToggle = document.querySelector('.search-toggle');
+      
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+          document.body.classList.remove('search-active');
+          document.body.classList.toggle('main-menu-active');
+        });
+      }
+
+      if (siteOverlay) {
+        siteOverlay.addEventListener('click', () => {
+          document.body.classList.remove('main-menu-active', 'search-active');
+        });
+      }
+
+      if (searchToggle) {
+        searchToggle.addEventListener('click', () => {
+          document.body.classList.remove('main-menu-active');
+          document.body.classList.toggle('search-active');
+          setTimeout(() => {
+            const searchInput = document.querySelector('.search-box form input') as HTMLInputElement;
+            if (searchInput) searchInput.focus();
+          }, 200);
+        });
+      }
+
+      // Escape key handling
+      document.addEventListener('keydown', (e) => {
+        if (e.keyCode === 27) { // ESC key
+          document.body.classList.remove('search-active', 'main-menu-active');
+        }
+      });
+
+      // Input handling for styling
+      const inputs = document.querySelectorAll('input, textarea');
+      inputs.forEach(input => {
+        const handleInputChange = () => {
+          if ((input as HTMLInputElement).value) {
+            input.classList.add('not-empty');
+          } else {
+            input.classList.remove('not-empty');
+          }
+        };
+
+        input.addEventListener('focusout', handleInputChange);
+        input.addEventListener('change', handleInputChange);
+        input.addEventListener('submit', handleInputChange);
+        input.addEventListener('blur', handleInputChange);
+      });
+
+      // Header background on scroll
+      const updateHeaderBackground = () => {
+        const mainHeader = document.querySelector('.main-header');
+        const categoriesListEnd = document.querySelector('.main-categories-list-end');
+        
+        if (mainHeader) {
+          if (window.scrollY <= 50) {
+            document.body.classList.remove('header-bg');
+          } else {
+            document.body.classList.add('header-bg');
+          }
+
+          if (categoriesListEnd) {
+            const endOffset = categoriesListEnd.getBoundingClientRect().top + window.scrollY;
+            if (window.scrollY <= endOffset) {
+              document.body.classList.remove('header-menu');
+            } else {
+              document.body.classList.add('header-menu');
+            }
+          }
+        }
+      };
+
+      updateHeaderBackground();
+      window.addEventListener('scroll', updateHeaderBackground);
+    };
+
+    // Check if scripts are loaded and initialize
     let retryCount = 0;
     const maxRetries = 50;
     
     const checkScripts = () => {
-      if (typeof window.Typed !== 'undefined') {
+      if (typeof window.$ !== 'undefined' && typeof window.Typed !== 'undefined') {
         initTypedAnimation();
+        initMenuInteractions();
       } else if (retryCount < maxRetries) {
         retryCount++;
         setTimeout(checkScripts, 100);
@@ -139,10 +218,10 @@ export default function Home() {
                   </h2>
                 </div>
                 <div className="col-auto menu-toggle-container">
-                  <button type="button" className="menu-toggle d-flex align-items-center text-white" style={{background: 'none', border: 'none'}}>
+                  <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
                     <span className="icn"></span>
                     <div className="text font-size-18 mr-3">الأقسام</div>
-                  </button>
+                  </a>
                 </div>
                 <div className="ml-auto"></div>
                 <div className="col-md-5 col-lg-6 search-container">
@@ -180,7 +259,7 @@ export default function Home() {
           
           {/* Main Content */}
           <div className="container py-5 my-5">
-            {/* Home Site Button */}
+            {/* Home Site Button - Central Circle */}
             <div className="home-site-btn-container mt-5">
               <h1>
                 <a href="/" className="link" style={{position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: 10}}></a>
@@ -214,6 +293,13 @@ export default function Home() {
                         <span className="label">ابحث عن فيلم او مسلسل</span>
                         <span className="typed-cursor">|</span>
                       </label>
+                      <div className="label-text d-none" style={{display: 'none'}}>
+                        <p>ابحث عن فيلم او مسلسل او لعبة او برنامج ...</p>
+                        <p>^200 مثال: الجزيرة</p>
+                        <p>^400 مثال آخر: اسم مؤقت</p>
+                        <p>^600 مثال: FIFA</p>
+                        <p>^800 ابحث هنا في يمن فليكس باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
+                      </div>
                     </div>
                     <div className="col-auto">
                       <button type="submit" className="btn btn-orange">بحث</button>
@@ -230,15 +316,15 @@ export default function Home() {
                         </a>
                       </div>
                       <div className="col-lg col-4">
-                        <a href="/shows" className="item d-block text-center text-white py-3 h-100">
-                          <div className="icn"><i className="icon-tv"></i></div>
-                          <div className="font-size-16">تلفزيون</div>
-                        </a>
-                      </div>
-                      <div className="col-lg col-4">
                         <a href="/series" className="item d-block text-center text-white py-3 h-100">
                           <div className="icn"><i className="icon-monitor"></i></div>
                           <div className="font-size-16">مسلسلات</div>
+                        </a>
+                      </div>
+                      <div className="col-lg col-4">
+                        <a href="/shows" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-tv"></i></div>
+                          <div className="font-size-16">تلفزيون</div>
                         </a>
                       </div>
                       <div className="col-lg col-4">
@@ -252,8 +338,29 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            <div className="main-categories-list-end"></div>
           </div>
         </div>
+        
+        {/* Footer */}
+        <footer className="main-footer py-5">
+          <nav className="social d-flex justify-content-center">
+            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
+            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
+          </nav>
+
+          <nav className="links d-flex justify-content-center mt-3">
+            <a href="/" className="mx-2">يمن فليكس</a>
+            <a href="/dmca" className="mx-2">DMCA</a>
+            <a href="/ad-policy" className="mx-2">AD-P</a>
+            <a href="/contactus" className="mx-2">شبكة يمن فليكس</a>
+          </nav>
+
+          <p className="copyright mb-0 font-size-12 text-center mt-3">جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025</p>
+        </footer>
       </div>
     </div>
   );
