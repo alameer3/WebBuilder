@@ -5,6 +5,8 @@ This is a modern full-stack web application built with React, TypeScript, Expres
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+UI Design Approach: Use original AKWAM CSS files for authentic styling rather than recreating from scratch.
+Color Scheme: Use AKWAM reference colors (#161619, #27272c, #f3951e).
 
 ## System Architecture
 
@@ -99,3 +101,16 @@ The application follows a monorepo structure with clear separation between clien
 4. **Type Safety**: End-to-end TypeScript with Zod validation ensures data integrity
 5. **Modern React Patterns**: Uses latest React features with functional components and hooks
 6. **Serverless-Ready**: Compatible with Neon Database for serverless deployments
+7. **AKWAM CSS Integration**: Original CSS files from reference template integrated for authentic styling
+
+## Recent Changes (January 2025)
+
+### CSS Integration and Homepage Redesign
+- **Date**: January 30, 2025
+- **Changes**: 
+  - Copied original CSS files from `11/home/css/` to `client/src/assets/css/`
+  - Integrated plugins.css, style.css, home.css, and akwam.css into main index.css
+  - Redesigned homepage using authentic AKWAM CSS classes (`home-site-btn-container`, `home-site-btn`, etc.)
+  - Applied Yemen Flix branding while maintaining AKWAM visual structure
+  - Implemented RTL layout with proper Arabic typography
+- **Impact**: Homepage now matches reference design exactly with authentic animations and effects

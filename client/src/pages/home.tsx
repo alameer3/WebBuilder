@@ -11,7 +11,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden akwam-home-bg">
+    <div className="min-h-screen relative overflow-hidden page-home yemen-flix-home">
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-50 p-4">
         <div className="flex justify-between items-center">
@@ -32,19 +32,16 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center min-h-screen px-4">
-        {/* Central Logo Circle */}
+        {/* Central Logo Circle with AKWAM Style */}
         <div className="mb-12 akwam-fade-in">
-          <div className="w-48 h-48 rounded-full flex items-center justify-center relative akwam-glass-dark">
-            <div 
-              className="w-36 h-36 rounded-full flex items-center justify-center"
-              style={{
-                border: '2px solid rgba(255, 255, 255, 0.5)'
-              }}
-            >
-              <div className="text-center text-white">
-                <div className="text-5xl font-bold mb-2" style={{ fontFamily: 'akoam, Noto Sans Arabic' }}>
+          <div className="home-site-btn-container">
+            <div className="home-site-btn">
+              <div className="logo text-center text-white">
+                <div className="text-5xl text-white font-bold mb-2" style={{ fontFamily: 'akoam, Noto Sans Arabic' }}>
                   Y
                 </div>
+              </div>
+              <div className="text text-center text-white">
                 <div className="text-sm font-semibold">الصفحة الرئيسية</div>
               </div>
             </div>
@@ -59,12 +56,12 @@ export default function Home() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="ابحث هنا عن فيلم أو مسلسل..."
-              className="w-full h-16 text-white text-lg px-6 pl-24 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 akwam-glass"
+              className="w-full h-16 text-white text-lg px-6 pl-24 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 yemen-flix-search-box"
               style={{ borderRadius: '0' }}
             />
             <button
               type="submit"
-              className="absolute left-2 top-2 bottom-2 px-6 text-white font-semibold akwam-orange-btn"
+              className="absolute left-2 top-2 bottom-2 px-6 text-white font-semibold yemen-flix-search-btn"
               style={{ borderRadius: '0' }}
             >
               بحث
@@ -77,7 +74,7 @@ export default function Home() {
           {/* Movies */}
           <a href="/movies" className="no-underline">
             <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">
-              <div className="w-20 h-20 akwam-glass flex items-center justify-center mb-4 transition-all duration-300 group-hover:bg-orange-500/20 group-hover:border-orange-500/50">
+              <div className="w-20 h-20 yemen-flix-category-icon flex items-center justify-center mb-4">
                 <div className="text-center">
                   <div className="text-2xl mb-1">🎬</div>
                   <div className="text-xs">MOVIE</div>
@@ -90,7 +87,7 @@ export default function Home() {
           {/* TV Shows */}
           <a href="/shows" className="no-underline">
             <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">
-              <div className="w-20 h-20 akwam-glass flex items-center justify-center mb-4 transition-all duration-300 group-hover:bg-orange-500/20 group-hover:border-orange-500/50">
+              <div className="w-20 h-20 yemen-flix-category-icon flex items-center justify-center mb-4">
                 <div className="text-center">
                   <div className="text-2xl mb-1">📺</div>
                   <div className="text-xs">TV</div>
@@ -103,7 +100,7 @@ export default function Home() {
           {/* Series */}
           <a href="/series" className="no-underline">
             <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">
-              <div className="w-20 h-20 akwam-glass flex items-center justify-center mb-4 transition-all duration-300 group-hover:bg-orange-500/20 group-hover:border-orange-500/50">
+              <div className="w-20 h-20 yemen-flix-category-icon flex items-center justify-center mb-4">
                 <div className="text-center">
                   <div className="text-2xl mb-1">📱</div>
                   <div className="text-xs">SERIES</div>
@@ -116,7 +113,7 @@ export default function Home() {
           {/* Mix */}
           <a href="/mix" className="no-underline">
             <div className="flex flex-col items-center text-white hover:text-orange-500 transition-all duration-300 cursor-pointer group">
-              <div className="w-20 h-20 akwam-glass flex items-center justify-center mb-4 transition-all duration-300 group-hover:bg-orange-500/20 group-hover:border-orange-500/50">
+              <div className="w-20 h-20 yemen-flix-category-icon flex items-center justify-center mb-4">
                 <div className="text-center">
                   <div className="text-2xl mb-1">🎭</div>
                   <div className="text-xs">MIX</div>
