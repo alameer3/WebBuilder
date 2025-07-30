@@ -259,6 +259,31 @@
     color: rgba(255, 255, 255, 0.6);
     font-size: 1.125rem;
   }
+
+  /* Background pattern overlay */
+  .yemen-flix-bg-pattern {
+    background-image: 
+      linear-gradient(45deg, rgba(22, 22, 25, 0.9) 25%, transparent 25%), 
+      linear-gradient(-45deg, rgba(22, 22, 25, 0.9) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(22, 22, 25, 0.9) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(22, 22, 25, 0.9) 75%);
+    background-size: 60px 60px;
+    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+  }
+
+  /* Loading gif integration */
+  .yemen-flix-loading-bg {
+    background-image: url('/src/assets/images/0.gif');
+    background-size: 40px 40px;
+    background-repeat: repeat;
+    opacity: 0.05;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
   
   .line-clamp-3 {
     overflow: hidden;

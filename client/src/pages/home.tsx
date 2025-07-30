@@ -106,6 +106,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative overflow-hidden page-home yemen-flix-home">
+      {/* Loading animation background */}
+      <div className="yemen-flix-loading-bg"></div>
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-50 p-4">
         <div className="flex justify-between items-center">
@@ -118,8 +120,15 @@ export default function Home() {
           </div>
           
           {/* Logo */}
-          <div className="text-white text-xl font-bold tracking-wider min-h-[2rem]">
-            <span ref={typedElementRef} className="yemen-flix-typed"></span>
+          <div className="flex items-center gap-3">
+            <img 
+              src="/src/assets/images/yemen-flix-logo.svg" 
+              alt="Yemen Flix Logo" 
+              className="h-10 w-auto filter brightness-110"
+            />
+            <div className="text-white text-xl font-bold tracking-wider min-h-[2rem]">
+              <span ref={typedElementRef} className="yemen-flix-typed"></span>
+            </div>
           </div>
         </div>
       </header>
@@ -166,6 +175,37 @@ export default function Home() {
               بحث
             </button>
           </form>
+        </div>
+
+        {/* Featured Movies Section */}
+        <div className="mb-16 w-full max-w-6xl yemen-flix-fade-in">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">أحدث الأفلام</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+            {[1, 2, 3, 4, 5, 6].map((item) => (
+              <div key={item} className="relative group cursor-pointer home-site-btn">
+                <div className="aspect-[2/3] bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg overflow-hidden border border-gray-600 hover:border-orange-500 transition-all duration-300">
+                  <img 
+                    src="/src/assets/images/default.jpg" 
+                    alt={`فيلم ${item}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 hidden">
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">🎬</div>
+                      <div className="text-sm">فيلم {item}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                  <div className="text-white text-sm font-semibold">شاهد الآن</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Category Icons */}

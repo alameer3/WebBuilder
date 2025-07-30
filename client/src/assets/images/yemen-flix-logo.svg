@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Yemen Flix Logo - Modified from original AKWAM design -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         viewBox="0 0 1243.6 415.2" style="enable-background:new 0 0 1243.6 415.2;" xml:space="preserve">
+<style type="text/css">
+        .st0{fill-rule:evenodd;clip-rule:evenodd;fill:#f3951e;}
+        .st1{fill:#f3951e;}
+        .st2{fill:#FFFFFF;}
+</style>
+<title>YemenFlix</title>
+<!-- Play button symbol -->
+<path class="st0" d="M123.7,248.1c0-7.2-0.2-14.3,0.1-21.4c0.2-6.9,5-9.6,10.9-6.3c12.9,7.2,25.6,14.5,38.3,22.1
+        c5.7,3.4,5.7,9.4,0,12.8c-12.7,7.5-25.4,14.9-38.3,22c-6,3.3-10.7,0.5-10.9-6.3C123.5,263.3,123.7,255.7,123.7,248.1L123.7,248.1z"
+        />
+<!-- Yemen Flix Text -->
+<text x="280" y="180" class="st2" style="font-family:Arial, sans-serif; font-size:48px; font-weight:bold;">يمن فليكس</text>
+<text x="280" y="240" class="st0" style="font-family:Arial, sans-serif; font-size:36px; font-weight:bold;">YEMEN FLIX</text>
+<text x="280" y="280" class="st2" style="font-family:Arial, sans-serif; font-size:18px;">الموقع اليمني الأول للأفلام والمسلسلات</text>
+
+<!-- Decorative elements -->
+<circle cx="210" cy="248" r="80" fill="none" stroke="#f3951e" stroke-width="3" opacity="0.3"/>
+<circle cx="210" cy="248" r="60" fill="none" stroke="#f3951e" stroke-width="2" opacity="0.5"/>
+</svg>
