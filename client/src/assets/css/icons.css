@@ -1,20 +1,12 @@
-/* Icons CSS for Yemen Flix */
-
-/* Font Icons */
 @font-face {
   font-family: 'icons';
-  src:  url('../fonts/icons.eot?4xtr0l');
-  src:  url('../fonts/icons.eot?4xtr0l#iefix') format('embedded-opentype'),
-    url('../fonts/icons.ttf?4xtr0l') format('truetype'),
-    url('../fonts/icons.woff?4xtr0l') format('woff'),
-    url('../fonts/icons.svg?4xtr0l#icons') format('svg');
+  src: url('data:font/woff;base64,d09GRgABAAAAABQUAAsAAAAAGfAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADsAAABUIIslek9TLzIAAAFEAAAAQwAAAFZAeUhsY21hcAAAAYgAAABQAAAAXghmA') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icons' !important;
   speak: never;
   font-style: normal;
@@ -22,69 +14,19 @@
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Icon classes */
-.icon-home:before {
-  content: "\e900";
-}
-.icon-video-camera:before {
-  content: "\e901";
-}
-.icon-monitor:before {
-  content: "\e902";
-}
-.icon-tv:before {
-  content: "\e903";
-}
-.icon-mix:before {
-  content: "\e904";
-}
-.icon-search:before {
-  content: "\e905";
-}
-.icon-user:before {
-  content: "\e906";
-}
-.icon-facebook:before {
-  content: "\e907";
-}
-.icon-youtube:before {
-  content: "\e908";
-}
-.icon-app-store:before {
-  content: "\e909";
-}
-.icon-email:before {
-  content: "\e90a";
-}
-.icon-arrow-back:before {
-  content: "\e90b";
-}
-.icon-plus2:before {
-  content: "\e90c";
-}
-
-/* Icon colors */
-.icon-home { color: #f3951e; }
-.icon-facebook { color: #3b5998; }
-.icon-youtube { color: #ff0000; }
-.icon-app-store { color: #007aff; }
-.icon-email { color: #f3951e; }
-
-/* Responsive icon sizes */
-@media (max-width: 768px) {
-  [class^="icon-"], [class*=" icon-"] {
-    font-size: 1.2em;
-  }
-}
-
-@media (min-width: 992px) {
-  [class^="icon-"], [class*=" icon-"] {
-    font-size: 1.1em;
-  }
-}
+.icon-video-camera:before { content: "\e900"; }
+.icon-monitor:before { content: "\e901"; }
+.icon-tv:before { content: "\e902"; }
+.icon-mix:before { content: "\e903"; }
+.icon-home:before { content: "\e904"; }
+.icon-facebook:before { content: "\e905"; }
+.icon-youtube:before { content: "\e906"; }
+.icon-email:before { content: "\e907"; }
+.icon-user:before { content: "\e908"; }
+.icon-search:before { content: "\e909"; }
+.icon-plus2:before { content: "\e90a"; }
+.icon-arrow-back:before { content: "\e90b"; }

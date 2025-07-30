@@ -301,3 +301,38 @@ body.search-active .site-overlay {
   .font-size-xl-28 { font-size: 28px !important; }
   .font-size-xl-30 { font-size: 30px !important; }
 }
+
+/* Yemen Flix Custom Styles */
+:root {
+  --bg-primary: #161619;
+  --bg-secondary: #27272c;
+  --bg-tertiary: #1e1e21;
+  --bg-quaternary: #17171a;
+  --accent-orange: #f3951e;
+  --accent-blue: #26baee;
+  --accent-dark-blue: #0d82ab;
+  --text-primary: #ffffff;
+  --text-secondary: #73747d;
+  --text-muted: #a2a2a2;
+  --border-color: #1e1e21;
+}
+
+body {
+  font-family: 'akoam', Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  direction: rtl;
+  text-align: right;
+}
+
+.btn-orange {
+  background-color: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: var(--text-primary);
+}
+
+.btn-orange:hover {
+  background-color: #e1830c;
+  border-color: #d37b0b;
+  color: var(--text-primary);
+}
