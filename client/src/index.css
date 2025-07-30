@@ -1,260 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* YEMEN FLIX Colors - AKWAM inspired */
-  --yf-bg-primary: #161619;
-  --yf-bg-secondary: #1e1e22;
-  --yf-accent: #f3951e;
-  --yf-accent-hover: #e8851a;
-  --yf-text-primary: #ffffff;
-  --yf-text-secondary: #b3b3b3;
-  --yf-border: #2a2a2e;
-
-  /* Shadcn compatible variables */
-  --background: hsl(225, 6%, 8%);
-  --foreground: hsl(0, 0%, 100%);
-  --muted: hsl(227, 6%, 12%);
-  --muted-foreground: hsl(0, 0%, 70%);
-  --popover: hsl(225, 6%, 8%);
-  --popover-foreground: hsl(0, 0%, 100%);
-  --card: hsl(227, 6%, 12%);
-  --card-foreground: hsl(0, 0%, 100%);
-  --border: hsl(228, 6%, 16%);
-  --input: hsl(228, 6%, 16%);
-  --primary: hsl(24, 87%, 53%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(227, 6%, 12%);
-  --secondary-foreground: hsl(0, 0%, 100%);
-  --accent: hsl(24, 87%, 53%);
-  --accent-foreground: hsl(0, 0%, 100%);
-  --destructive: hsl(0, 62%, 30%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(24, 87%, 53%);
-  --radius: 0.5rem;
-  
-  /* Custom colors matching the design */
-  --primary-50: hsl(214, 100%, 97%);
-  --primary-500: hsl(216, 83%, 59%);
-  --primary-600: hsl(216, 83%, 59%);
-  --primary-700: hsl(224, 76%, 48%);
-  --primary-900: hsl(224, 64%, 33%);
-  
-  --secondary-500: hsl(262, 76%, 55%);
-  --secondary-600: hsl(262, 76%, 55%);
-  
-  --accent-500: hsl(38, 92%, 50%);
-  
-  --slate-50: hsl(210, 40%, 98%);
-  --slate-200: hsl(214, 32%, 91%);
-  --slate-300: hsl(213, 27%, 84%);
-  --slate-400: hsl(215, 20%, 65%);
-  --slate-500: hsl(215, 16%, 47%);
-  --slate-600: hsl(215, 19%, 35%);
-  --slate-700: hsl(215, 25%, 27%);
-  --slate-800: hsl(217, 33%, 17%);
-  --slate-900: hsl(222, 84%, 5%);
+  direction: rtl;
+  font-family: 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* Default is dark mode for YEMEN FLIX */
-body {
-  background: linear-gradient(135deg, var(--yf-bg-primary) 0%, var(--yf-bg-secondary) 100%);
-  color: var(--yf-text-primary);
-  min-height: 100vh;
+[lang="en"], [lang="en"] * {
+  direction: ltr;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  :root {
+    /* Yemen Flix Colors - Dark Theme */
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 20.5 90.2% 48.2%; /* Orange */
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 20.5 90.2% 48.2%;
+    --radius: 0.5rem;
+    --chart-1: 20.5 90.2% 48.2%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
 }
 
 @layer base {
   * {
     @apply border-border;
   }
-
+  
   body {
-    @apply font-arabic antialiased bg-background text-foreground;
-    font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
+    direction: rtl;
   }
   
   html {
-    scroll-behavior: smooth;
+    direction: rtl;
+  }
+}
+
+@layer components {
+  /* Yemen Flix Components */
+  .yf-btn-primary {
+    @apply bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+  
+  .yf-movie-card {
+    @apply bg-gray-800 border-gray-700 rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/10;
+  }
+  
+  .yf-rating {
+    @apply absolute top-2 right-2 bg-black/70 text-yellow-400 px-2 py-1 rounded text-xs font-semibold flex items-center;
+  }
+  
+  .yf-genre-tag {
+    @apply bg-gray-700 text-gray-300 text-xs px-2 py-1 rounded;
+  }
+  
+  .yf-sidebar {
+    @apply fixed right-0 top-16 h-[calc(100vh-4rem)] w-64 bg-gray-900/95 backdrop-blur-sm border-l border-gray-800 overflow-y-auto;
+  }
+  
+  .yf-navbar {
+    @apply bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50;
+  }
+  
+  .yf-container {
+    @apply container mx-auto px-4 lg:mr-64;
   }
 }
 
 @layer utilities {
-  .font-arabic {
-    font-family: 'Noto Sans Arabic', sans-serif;
-  }
-  
-  .font-inter {
-    font-family: 'Inter', sans-serif;
-  }
-  
-  .gradient-bg {
-    background: linear-gradient(135deg, hsl(230, 73%, 73%) 0%, hsl(262, 54%, 60%) 100%);
-  }
-  
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  
   .hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    @apply transition-transform duration-300 ease-in-out;
   }
   
   .hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    @apply transform -translate-y-1 shadow-lg;
   }
   
   .animate-fade-in {
-    animation: fadeIn 0.6s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
   }
   
   .animate-slide-up {
-    animation: slideUp 0.8s ease-out;
+    animation: slideUp 0.8s ease-out 0.2s both;
   }
   
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+/* RTL Support */
+.rtl {
+  direction: rtl;
 }
 
-/* Custom Scrollbar for YEMEN FLIX */
+.ltr {
+  direction: ltr;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--yf-bg-primary);
+  background: #1f2937;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--yf-accent);
+  background: #4b5563;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--yf-accent-hover);
+  background: #6b7280;
 }
 
-/* YEMEN FLIX Custom Components */
-.yf-movie-card {
-  background: var(--yf-bg-secondary);
-  border: 1px solid var(--yf-border);
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  transition: all 0.3s ease;
-  cursor: pointer;
+/* Loading Animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.yf-movie-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--yf-accent);
-  box-shadow: 0 15px 35px rgba(243, 149, 30, 0.2);
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
-.yf-rating {
-  background: linear-gradient(135deg, var(--yf-accent) 0%, var(--yf-accent-hover) 100%);
-  color: white;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 10;
+/* Yemen Flix Specific Styles */
+.yf-hero-bg {
+  background: linear-gradient(135deg, #161619 0%, #2d1b69 50%, #f3951e 100%);
 }
 
-.yf-genre-tag {
-  background: var(--yf-border);
-  color: var(--yf-text-secondary);
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 11px;
-  margin: 2px;
-  display: inline-block;
-  transition: all 0.2s ease;
+.yf-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.yf-genre-tag:hover {
-  background: var(--yf-accent);
-  color: white;
+.yf-card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
 }
 
-.yf-btn-primary {
-  background: linear-gradient(135deg, var(--yf-accent) 0%, var(--yf-accent-hover) 100%);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  cursor: pointer;
+.yf-text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-.yf-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(243, 149, 30, 0.3);
+.yf-glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
-.yf-nav-item {
-  color: var(--yf-text-secondary);
-  padding: 12px 16px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Arabic Font Improvements */
+.arabic-text {
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1;
 }
 
-.yf-nav-item:hover,
-.yf-nav-item.active {
-  background: var(--yf-bg-secondary);
-  color: var(--yf-accent);
-  border: 1px solid var(--yf-border);
+/* Enhanced focus states for accessibility */
+.focus-visible:focus {
+  outline: 2px solid #f3951e;
+  outline-offset: 2px;
 }
 
-.yf-search-input {
-  background: var(--yf-bg-secondary);
-  border: 1px solid var(--yf-border);
-  border-radius: 8px;
-  padding: 12px 16px;
-  color: var(--yf-text-primary);
-  width: 100%;
-  transition: all 0.3s ease;
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .yf-sidebar {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .yf-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .yf-container {
+    margin-right: 0;
+  }
 }
 
-.yf-search-input:focus {
-  outline: none;
-  border-color: var(--yf-accent);
-  box-shadow: 0 0 0 3px rgba(243, 149, 30, 0.1);
-}
-
-.yf-search-input::placeholder {
-  color: var(--yf-text-secondary);
+/* Print Styles */
+@media print {
+  .yf-sidebar,
+  .yf-navbar,
+  button {
+    display: none !important;
+  }
 }

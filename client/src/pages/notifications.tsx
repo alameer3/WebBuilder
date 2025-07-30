@@ -30,7 +30,7 @@ export default function Notifications() {
     },
   });
 
-  const getNotificationIcon = (type: string) => {
+  const getNotificationIcon = (type?: string) => {
     switch (type) {
       case 'new_movie':
         return <Film className="h-5 w-5 text-blue-500" />;
@@ -47,7 +47,7 @@ export default function Notifications() {
     }
   };
 
-  const getNotificationTypeLabel = (type: string) => {
+  const getNotificationTypeLabel = (type?: string) => {
     switch (type) {
       case 'new_movie':
         return 'فيلم جديد';
@@ -65,7 +65,7 @@ export default function Notifications() {
   };
 
   // Mock notifications data if none exist
-  const mockNotifications: Notification[] = [
+  const mockNotifications: (Notification & { type: string })[] = [
     {
       id: "1",
       userId: "user-1",
@@ -187,7 +187,7 @@ export default function Notifications() {
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0">
-                  {getNotificationIcon(notification.type)}
+                  {getNotificationIcon((notification as any).type)}
                 </div>
                 
                 <div className="flex-1 min-w-0">
@@ -199,7 +199,7 @@ export default function Notifications() {
                       variant="secondary" 
                       className="text-xs bg-gray-700 text-gray-300"
                     >
-                      {getNotificationTypeLabel(notification.type)}
+                      {getNotificationTypeLabel((notification as any).type)}
                     </Badge>
                     {!notification.isRead && (
                       <div className="w-2 h-2 bg-orange-500 rounded-full"></div>

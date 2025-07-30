@@ -68,7 +68,7 @@ export default function Series() {
 
                 {/* Episode Badge */}
                 <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-semibold">
-                  {show.episodeCount || 12} حلقة
+                  {show.duration ? Math.floor(show.duration / 30) : 12} حلقة
                 </div>
 
                 {/* Hover Overlay */}
