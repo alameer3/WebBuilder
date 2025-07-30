@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -24,12 +24,15 @@ import Notifications from "@/pages/notifications";
 import NotFound from "@/pages/not-found";
 
 function Router() {
+  const [location] = useLocation();
+  const isHomePage = location === "/" || location === "/home" || location === "/main";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      <Navbar />
-      <div className="flex">
-        <Sidebar />
-        <main className="flex-1 lg:mr-64 px-4 py-6">
+      {!isHomePage && <Navbar />}
+      <div className={isHomePage ? "" : "flex"}>
+        {!isHomePage && <Sidebar />}
+        <main className={isHomePage ? "" : "flex-1 lg:mr-64 px-4 py-6"}>
           <Switch>
             <Route path="/" component={Home} />
             <Route path="/home" component={Home} />
