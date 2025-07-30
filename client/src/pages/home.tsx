@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import defaultImage from "@/assets/images/default.jpg";
+import logoWhite from "@/assets/images/logo-white.svg";
 
 declare global {
   interface Window {
@@ -19,6 +21,9 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // Add body class for homepage styling
+    document.body.classList.add('body-home', 'page-home');
+    
     let typedInstance: any = null;
 
     // Initialize typing animation for search placeholder
@@ -138,6 +143,9 @@ export default function Home() {
     setTimeout(checkScripts, 100);
 
     return () => {
+      // Clean up body classes when component unmounts
+      document.body.classList.remove('body-home', 'page-home');
+      
       if (typedInstance) {
         typedInstance.destroy();
       }
@@ -213,15 +221,15 @@ export default function Home() {
                 <div className="col-auto">
                   <h2 className="main-logo m-0">
                     <a href="/" className="d-inline-flex">
-                      <img src="/src/assets/images/logo-white.svg" className="img-fluid" alt="يمن فليكس" />
+                      <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
                     </a>
                   </h2>
                 </div>
                 <div className="col-auto menu-toggle-container">
-                  <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
+                  <button type="button" className="menu-toggle d-flex align-items-center text-white" style={{background: 'none', border: 'none'}}>
                     <span className="icn"></span>
                     <div className="text font-size-18 mr-3">الأقسام</div>
-                  </a>
+                  </button>
                 </div>
                 <div className="ml-auto"></div>
                 <div className="col-md-5 col-lg-6 search-container">
@@ -264,7 +272,7 @@ export default function Home() {
               <h1>
                 <a href="/" className="link" style={{position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: 10}}></a>
               </h1>
-              <div className="home-site-btn" style={{backgroundImage: `url('/src/assets/images/default.jpg')`, transition: 'background-position 5s'}}>
+              <div className="home-site-btn" style={{backgroundImage: `url(${defaultImage})`, transition: 'background-position 5s'}}>
                 <span className="logo">
                   <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="87px" height="80px">
                     <path fillRule="evenodd" fill="rgb(255, 255, 255)" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"></path>
