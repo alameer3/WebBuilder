@@ -1,127 +1,127 @@
-# Project Overview
+# نظرة عامة على المشروع
 
-This is a modern full-stack web application built with React, TypeScript, Express.js, and PostgreSQL. The application appears to be an Arabic-language website (with RTL support) featuring a contact form system and modern UI components.
+هذا تطبيق ويب حديث متكامل مبني باستخدام React و TypeScript و Express.js و PostgreSQL. التطبيق عبارة عن موقع ويب باللغة العربية (مع دعم RTL) يتضمن نظام نماذج الاتصال ومكونات واجهة مستخدم حديثة.
 
-## User Preferences
+## تفضيلات المستخدم
 
-Preferred communication style: Simple, everyday language.
-UI Design Approach: Use original AKWAM CSS files for authentic styling rather than recreating from scratch.
-Color Scheme: Use AKWAM reference colors (#161619, #27272c, #f3951e).
+أسلوب التواصل المفضل: لغة بسيطة ويومية.
+نهج تصميم واجهة المستخدم: استخدام ملفات CSS الأصلية من AKWAM للحصول على تصميم أصيل بدلاً من إعادة الإنشاء من الصفر.
+نظام الألوان: استخدام ألوان AKWAM المرجعية (#161619, #27272c, #f3951e).
 
-## System Architecture
+## معمارية النظام
 
-The application follows a monorepo structure with clear separation between client-side (React) and server-side (Express) code, with shared schemas and types.
+يتبع التطبيق هيكل مستودع موحد مع فصل واضح بين كود العميل (React) وكود الخادم (Express)، مع مخططات وأنواع مشتركة.
 
-### Frontend Architecture
-- **Framework**: React 18 with TypeScript
-- **Build Tool**: Vite for fast development and optimized builds
-- **UI Framework**: shadcn/ui components built on Radix UI primitives
-- **Styling**: Tailwind CSS with CSS variables for theming
-- **State Management**: TanStack Query (React Query) for server state
-- **Routing**: Wouter for lightweight client-side routing
-- **Form Handling**: React Hook Form with Zod validation
-- **Internationalization**: Arabic language support with RTL layout
+### معمارية الواجهة الأمامية
+- **الإطار**: React 18 مع TypeScript
+- **أداة البناء**: Vite للتطوير السريع والبناء المحسن
+- **إطار واجهة المستخدم**: مكونات shadcn/ui مبنية على Radix UI primitives
+- **التصميم**: Tailwind CSS مع متغيرات CSS للثيمات
+- **إدارة الحالة**: TanStack Query (React Query) لحالة الخادم
+- **التوجيه**: Wouter للتوجيه الخفيف من جانب العميل
+- **معالجة النماذج**: React Hook Form مع التحقق من Zod
+- **التدويل**: دعم اللغة العربية مع تخطيط RTL
 
-### Backend Architecture
-- **Framework**: Express.js with TypeScript
-- **Database**: PostgreSQL with Drizzle ORM
-- **Database Provider**: Neon Database (serverless PostgreSQL)
-- **API Style**: RESTful endpoints
-- **Session Management**: Connect-pg-simple for PostgreSQL session storage
-- **Development**: Hot module replacement with Vite integration
+### معمارية الخادم
+- **الإطار**: Express.js مع TypeScript
+- **قاعدة البيانات**: PostgreSQL مع Drizzle ORM
+- **مزود قاعدة البيانات**: Neon Database (PostgreSQL بلا خادم)
+- **نمط API**: نقاط نهاية RESTful
+- **إدارة الجلسة**: Connect-pg-simple لتخزين جلسة PostgreSQL
+- **التطوير**: استبدال الوحدة الساخنة مع تكامل Vite
 
-## Key Components
+## المكونات الرئيسية
 
-### Database Schema
-- **Users Table**: Basic user authentication with username/password
-- **Contacts Table**: Contact form submissions with name, email, subject, message, and timestamp
-- **Schema Validation**: Zod schemas for type-safe data validation
+### مخطط قاعدة البيانات
+- **جدول المستخدمين**: مصادقة المستخدم الأساسية باستخدام اسم المستخدم/كلمة المرور
+- **جدول الاتصال**: إرسالات نموذج الاتصال مع الاسم والبريد الإلكتروني والموضوع والرسالة والطابع الزمني
+- **التحقق من المخطط**: مخططات Zod للتحقق الآمن من نوع البيانات
 
-### API Endpoints
-- `POST /api/contact` - Submit contact form
-- `GET /api/contacts` - Retrieve all contact messages (admin)
+### نقاط نهاية API
+- `POST /api/contact` - إرسال نموذج الاتصال
+- `GET /api/contacts` - استرجاع جميع رسائل الاتصال (المشرف)
 
-### UI Components
-- Comprehensive component library using shadcn/ui
-- Form components with validation
-- Toast notifications for user feedback
-- Responsive design with mobile-first approach
+### مكونات واجهة المستخدم
+- مكتبة مكونات شاملة باستخدام shadcn/ui
+- مكونات النماذج مع التحقق
+- إشعارات Toast لتعليقات المستخدم
+- تصميم متجاوب مع نهج الهاتف المحمول أولاً
 
-## Data Flow
+## تدفق البيانات
 
-1. **Contact Form Submission**:
-   - Client validates form data using Zod schemas
-   - Data sent to `/api/contact` endpoint
-   - Server validates and stores in PostgreSQL
-   - Success/error feedback via toast notifications
+1. **إرسال نموذج الاتصال**:
+   - العميل يتحقق من بيانات النموذج باستخدام مخططات Zod
+   - البيانات ترسل إلى نقطة نهاية `/api/contact`
+   - الخادم يتحقق ويخزن في PostgreSQL
+   - تعليقات النجاح/الخطأ عبر إشعارات toast
 
-2. **Development Setup**:
-   - Vite dev server proxies API requests to Express
-   - Hot module replacement for fast development
-   - TypeScript compilation across frontend and backend
+2. **إعداد التطوير**:
+   - خادم Vite dev يوكل طلبات API إلى Express
+   - استبدال الوحدة الساخنة للتطوير السريع
+   - تجميع TypeScript عبر الواجهة الأمامية والخلفية
 
-## External Dependencies
+## التبعيات الخارجية
 
-### Core Technologies
-- **Database**: Neon Database (serverless PostgreSQL)
-- **UI Components**: Radix UI primitives
-- **Validation**: Zod for schema validation
-- **ORM**: Drizzle with automatic migrations
-- **Fonts**: Google Fonts (Inter and Noto Sans Arabic)
+### التقنيات الأساسية
+- **قاعدة البيانات**: Neon Database (PostgreSQL بلا خادم)
+- **مكونات واجهة المستخدم**: Radix UI primitives
+- **التحقق**: Zod للتحقق من المخطط
+- **ORM**: Drizzle مع الترحيلات التلقائية
+- **الخطوط**: Google Fonts (Inter و Noto Sans Arabic)
 
-### Development Tools
-- **Build**: Vite with React plugin
-- **TypeScript**: Strict mode with path aliases
-- **Linting**: ESBuild for server bundling
-- **Runtime**: Node.js with ES modules
+### أدوات التطوير
+- **البناء**: Vite مع React plugin
+- **TypeScript**: الوضع الصارم مع أسماء مستعارة للمسار
+- **التحقق من الكود**: ESBuild لتجميع الخادم
+- **وقت التشغيل**: Node.js مع وحدات ES
 
-## Deployment Strategy
+## استراتيجية النشر
 
-### Production Build
-- Frontend builds to `dist/public` directory
-- Backend bundles with ESBuild to `dist/index.js`
-- Static files served by Express in production
-- Environment-based configuration for database connections
+### بناء الإنتاج
+- الواجهة الأمامية تبني إلى مجلد `dist/public`
+- الخادم يجمع مع ESBuild إلى `dist/index.js`
+- الملفات الثابتة تُخدم بواسطة Express في الإنتاج
+- تكوين قائم على البيئة لاتصالات قاعدة البيانات
 
-### Database Management
-- Drizzle migrations stored in `/migrations` directory
-- Schema defined in `/shared/schema.ts`
-- Push-based deployment with `db:push` command
+### إدارة قاعدة البيانات
+- ترحيلات Drizzle مخزنة في مجلد `/migrations`
+- المخطط معرف في `/shared/schema.ts`
+- نشر قائم على الدفع مع أمر `db:push`
 
-### Environment Configuration
-- Development: Vite dev server with Express API
-- Production: Single Express server serving static files and API
-- Database URL required via environment variables
+### تكوين البيئة
+- التطوير: خادم Vite dev مع Express API
+- الإنتاج: خادم Express واحد يخدم الملفات الثابتة و API
+- رابط قاعدة البيانات مطلوب عبر متغيرات البيئة
 
-## Notable Architecture Decisions
+## قرارات المعمارية البارزة
 
-1. **Monorepo Structure**: Shared types and schemas between client and server prevent type mismatches
-2. **Memory Storage Fallback**: Development includes in-memory storage implementation for quick setup
-3. **Arabic Language Support**: RTL layout and Arabic fonts configured throughout
-4. **Type Safety**: End-to-end TypeScript with Zod validation ensures data integrity
-5. **Modern React Patterns**: Uses latest React features with functional components and hooks
-6. **Serverless-Ready**: Compatible with Neon Database for serverless deployments
-7. **AKWAM CSS Integration**: Original CSS files from reference template integrated for authentic styling
+1. **هيكل المستودع الموحد**: الأنواع والمخططات المشتركة بين العميل والخادم تمنع عدم التطابق في الأنواع
+2. **احتياطي تخزين الذاكرة**: التطوير يتضمن تنفيذ تخزين في الذاكرة للإعداد السريع
+3. **دعم اللغة العربية**: تخطيط RTL والخطوط العربية مكونة في جميع أنحاء التطبيق
+4. **أمان الأنواع**: TypeScript من النهاية إلى النهاية مع التحقق من Zod يضمن سلامة البيانات
+5. **أنماط React الحديثة**: يستخدم أحدث ميزات React مع المكونات الوظيفية والخطافات
+6. **جاهز بلا خادم**: متوافق مع Neon Database للنشر بلا خادم
+7. **تكامل CSS من AKWAM**: ملفات CSS الأصلية من قالب المرجع متكاملة للحصول على تصميم أصيل
 
-## Recent Changes (January 2025)
+## التغييرات الأخيرة (يناير 2025)
 
-### CSS Integration and Homepage Redesign
-- **Date**: January 30, 2025
-- **Changes**: 
-  - Copied original CSS files from `11/home/css/` to `client/src/assets/css/`
-  - Integrated plugins.css, style.css, home.css, and akwam.css into main index.css
-  - Redesigned homepage using authentic AKWAM CSS classes (`home-site-btn-container`, `home-site-btn`, etc.)
-  - Applied Yemen Flix branding while maintaining AKWAM visual structure
-  - Implemented RTL layout with proper Arabic typography
-- **Impact**: Homepage now matches reference design exactly with authentic animations and effects
+### تكامل CSS وإعادة تصميم الصفحة الرئيسية
+- **التاريخ**: 30 يناير 2025
+- **التغييرات**: 
+  - نسخ ملفات CSS الأصلية من `11/home/css/` إلى `client/src/assets/css/`
+  - دمج plugins.css و style.css و home.css و akwam.css في index.css الرئيسي
+  - إعادة تصميم الصفحة الرئيسية باستخدام فئات CSS الأصلية من AKWAM (`home-site-btn-container`, `home-site-btn`, إلخ.)
+  - تطبيق علامة Yemen Flix التجارية مع الحفاظ على الهيكل البصري لـ AKWAM
+  - تنفيذ تخطيط RTL مع الطباعة العربية المناسبة
+- **التأثير**: الصفحة الرئيسية الآن تطابق التصميم المرجعي تماماً مع الرسوم المتحركة والتأثيرات الأصلية
 
-### Complete AKWAM to YEMEN_FLIX Rebranding
-- **Date**: January 30, 2025
-- **Changes**:
-  - Replaced all "اكوام" (AKWAM) references with "𝐘𝐄𝐌𝐄𝐍_𝐅𝐋𝐈𝐗" throughout client-side code
-  - Updated CSS class names from `akwam-*` to `yemen-flix-*` 
-  - Renamed animations from `akwamFadeIn`/`akwamSlideUp` to `yemenFlixFadeIn`/`yemenFlixSlideUp`
-  - Updated font-family references from `akoam` to `yemen-flix`
-  - Created `yemen-flix.css` as renamed copy of `akwam.css`
-  - Updated all comments and documentation references
-- **Impact**: Complete rebranding while preserving original styling and functionality
+### إعادة العلامة التجارية الكاملة من AKWAM إلى YEMEN_FLIX
+- **التاريخ**: 30 يناير 2025
+- **التغييرات**:
+  - استبدال جميع المراجع "اكوام" (AKWAM) بـ "𝐘𝐄𝐌𝐄𝐍_𝐅𝐋𝐈𝐗" في جميع أنحاء كود العميل
+  - تحديث أسماء فئات CSS من `akwam-*` إلى `yemen-flix-*`
+  - إعادة تسمية الرسوم المتحركة من `akwamFadeIn`/`akwamSlideUp` إلى `yemenFlixFadeIn`/`yemenFlixSlideUp`
+  - تحديث مراجع font-family من `akoam` إلى `yemen-flix`
+  - إنشاء `yemen-flix.css` كنسخة معاد تسميتها من `akwam.css`
+  - تحديث جميع التعليقات ومراجع التوثيق
+- **التأثير**: إعادة علامة تجارية كاملة مع الحفاظ على التصميم الأصلي والوظائف
