@@ -139,6 +139,7 @@ export class MemStorage implements IStorage {
     const user: User = { 
       ...insertUser, 
       id,
+      avatar: insertUser.avatar || null,
       joinDate: new Date(),
       isActive: true
     };
@@ -191,6 +192,14 @@ export class MemStorage implements IStorage {
     const movie: Movie = { 
       ...insertMovie, 
       id,
+      originalTitle: insertMovie.originalTitle || null,
+      duration: insertMovie.duration || null,
+      rating: insertMovie.rating || null,
+      backdrop: insertMovie.backdrop || null,
+      trailer: insertMovie.trailer || null,
+      subtitle: insertMovie.subtitle || [],
+      isNew: insertMovie.isNew || false,
+      isFeatured: insertMovie.isFeatured || false,
       viewCount: 0,
       addedDate: new Date()
     };
