@@ -4,7 +4,7 @@ hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["python312Packages.gdown", "unzipNLS"]
+packages = ["python312Packages.gdown", "unzipNLS", "wget", "httrack"]
 
 [deployment]
 deploymentTarget = "autoscale"

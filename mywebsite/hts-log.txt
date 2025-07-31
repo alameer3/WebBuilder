@@ -1,0 +1,10 @@
+HTTrack3.49-2 launched on Thu, 31 Jul 2025 03:38:58 at https://ak.sv/series/5022/220-%D9%8A%D9%88%D9%85
+(/nix/store/zf9jrac7qc21nx1ms6cy530f452bbcnq-httrack-3.49.2/bin/httrack https://ak.sv/series/5022/220-%D9%8A%D9%88%D9%85 -O mywebsite )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+03:39:01	Error: 	"Forbidden" (403) at link https://ak.sv/series/5022/220-يوم (from primary/primary)
+03:39:01	Warning: 	No data seems to have been transferred during this session! : restoring previous one!
