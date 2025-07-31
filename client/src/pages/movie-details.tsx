@@ -8,9 +8,7 @@ import '../assets/css/yemen-flix.css';
 
 // استيراد الصور والأصول المطلوبة
 import logoWhite from "../assets/images/logo-white.svg";
-import tmdbIcon from "../assets/images/tmdb.png";
-import imdbIcon from "../assets/images/imdb.png";
-import headerIcon from "../assets/images/icn-w-header.png";
+// سنستخدم روابط خارجية للأيقونات بدلاً من نسخها محلياً
 
 // بيانات تجريبية للفيلم - مطابقة للأصل
 const movieData = {
@@ -253,10 +251,10 @@ export default function MovieDetails() {
                   
                   <div className="font-size-16 text-white mt-2 d-flex align-items-center">
                     <a href="https://www.themoviedb.org/movie/1100988-28-years-later" rel="nofollow" className="ml-2" target="_blank">
-                      <img src={tmdbIcon} height="20" alt="TMDB" />
+                      <span className="badge badge-pill badge-warning font-size-12">TMDB</span>
                     </a>
                     <a href="https://www.imdb.com/title/tt10548174" rel="nofollow" target="_blank">
-                      <img src={imdbIcon} alt="IMDB" />
+                      <span className="badge badge-pill badge-warning font-size-12 mr-2">IMDB</span>
                     </a>
                     <span className="mx-2">{movieData.imdbRating}</span>
                     <i className="icon-star text-orange"></i>
@@ -335,7 +333,7 @@ export default function MovieDetails() {
                 <div className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">قصة الفيلم</span>
                 </div>
-                <img src={headerIcon} className="header-img" alt="" />
+                <div className="header-decoration"></div>
               </header>
               <div className="widget-body">
                 <h2>
@@ -360,7 +358,7 @@ export default function MovieDetails() {
                 <h3 className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">فريق العمل</span>
                 </h3>
-                <img src={headerIcon} className="header-img" alt="" />
+                <div className="header-decoration"></div>
               </header>
               <div className="widget-body row">
                 {movieData.cast.map((actor, index) => (
@@ -386,7 +384,7 @@ export default function MovieDetails() {
                 <h3 className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">مشاهدة والتحميل</span>
                 </h3>
-                <img src={headerIcon} className="header-img" alt="" />
+                <div className="header-decoration"></div>
               </header>
               <div className="widget-body">
                 <div className="d-flex justify-content-center">
@@ -420,7 +418,7 @@ export default function MovieDetails() {
                 <h3 className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">شاهد المزيد</span>
                 </h3>
-                <img src={headerIcon} className="header-img" alt="" />
+                <div className="header-decoration"></div>
               </header>
               <div className="widget-body row">
                 {relatedMovies.map((movie) => (
