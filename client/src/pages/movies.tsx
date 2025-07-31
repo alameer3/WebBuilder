@@ -359,65 +359,69 @@ export default function Movies() {
             </div>
           </div>
 
-          {/* التنقل بين الصفحات - مطابق للأصل */}
-          <nav className="pagination-container d-flex justify-content-center mt-5">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="الصفحة السابقة">‹</a>
+          {/* التنقل بين الصفحات - مطابق للأصل تماماً */}
+          <div className="d-none d-sm-block">
+            <nav aria-label="Page navigation" className="mt-5">
+              <ul className="pagination justify-content-center" role="navigation">
+                <li className="page-item mx-1 disabled" aria-disabled="true" aria-label="« السابق">
+                  <span className="page-link" aria-hidden="true">‹</span>
+                </li>
+                <li className="page-item mx-1 active" aria-current="page"><span className="page-link">1</span></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=2">2</a></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=3">3</a></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=4">4</a></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=5">5</a></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=6">6</a></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=7">7</a></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=8">8</a></li>
+                <li className="page-item mx-1 disabled" aria-disabled="true"><span className="page-link">...</span></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=316">316</a></li>
+                <li className="page-item mx-1"><a className="page-link" href="/movies?page=317">317</a></li>
+                <li className="page-item mx-1">
+                  <a className="page-link" href="/movies?page=2" rel="next" aria-label="التالي »">›</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          
+          {/* التنقل للهواتف المحمولة */}
+          <div className="d-block d-lg-none mt-5">
+            <ul className="pagination d-flex justify-content-center" role="navigation">
+              <li className="page-item disabled mx-2" aria-disabled="true">
+                <span className="page-link">« السابق</span>
               </li>
-              <li className="page-item active">
-                <a className="page-link" href="#">1</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">2</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">3</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">4</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">5</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">6</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">7</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">8</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">9</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="الصفحة التالية">›</a>
+              <li className="page-item mx-2">
+                <a className="page-link" href="/movies?page=2" rel="next">التالي »</a>
               </li>
             </ul>
-          </nav>
+          </div>
+
+          <div className="mt-5" style={{borderTop: '1px solid #27272c'}}></div>
         </div>
       </div>
 
-      {/* الفوتر - مطابق للأصل */}
-      <footer className="main-footer py-4 mt-5">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <p className="text-white-50 mb-0 font-size-14">جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025</p>
-            </div>
-            <div className="col-md-6 text-md-left">
-              <div className="social d-flex justify-content-md-end">
-                <a href="#" className="text-white-50 mx-2 font-size-16"><i className="icon-facebook"></i></a>
-                <a href="#" className="text-white-50 mx-2 font-size-16"><i className="icon-twitter"></i></a>
-                <a href="#" className="text-white-50 mx-2 font-size-16"><i className="icon-instagram"></i></a>
-                <a href="#" className="text-white-50 mx-2 font-size-16"><i className="icon-telegram"></i></a>
-                <a href="#" className="text-white-50 mx-2 font-size-16"><i className="icon-youtube"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* الفوتر - مطابق للأصل تماماً */}
+      <footer className="main-footer py-5">
+        <nav className="social d-flex justify-content-center">
+          <a href="/" target="" className="home mx-2"><i className="icon-home"></i></a>
+          <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+          <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+          <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
+          <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
+          <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
+          <a href="/contact" target="" className="email mx-2"><i className="icon-email"></i></a>
+        </nav>
+
+        <nav className="links d-flex justify-content-center mt-3">
+          <a href="/" target="" className="mx-2">يمن فليكس</a>
+          <a href="#" target="_blank" className="mx-2">الموقع القديم</a>
+          <a href="#" target="" className="mx-2">DMCA</a>
+          <a href="#" target="" className="mx-2">AD-P</a>
+          <a href="#" target="_blank" className="mx-2">يمن فليكس نيوز</a>
+          <a href="#" target="_blank" className="mx-2">شبكة يمن فليكس</a>
+        </nav>
+
+        <p className="copyright mb-0 font-size-12 text-center mt-3">جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025</p>
       </footer>
     </>
   );
