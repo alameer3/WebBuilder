@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 // استيراد الأيقونات الجديدة من مجلد 2020
 import imdbIcon from "../assets/images/imdb.png";
 import tmdbIcon from "../assets/images/tmdb.png";
+// استيراد المكونات المحسنة
+import ImageGallery from "../components/ImageGallery";
+import { useSweetAlert } from "../components/SweetAlert";
 
 declare global {
   interface Window {
@@ -15,6 +18,7 @@ declare global {
 export default function MovieDetail() {
   const { id } = useParams() as { id: string };
   const [showReportModal, setShowReportModal] = useState(false);
+  const { showSuccess, showError, showConfirm } = useSweetAlert();
 
   useEffect(() => {
     // إضافة body classes مطابقة للأصل
@@ -83,6 +87,12 @@ export default function MovieDetail() {
       { name: "Nisa Sofiya Aksongur", image: "/src/assets/images/default.jpg" },
       { name: "Deniz Baysal", image: "/src/assets/images/default.jpg" },
       { name: "İlker Aksum", image: "/src/assets/images/default.jpg" }
+    ],
+    gallery: [
+      "/src/assets/images/default.jpg",
+      "/src/assets/images/default.jpg",
+      "/src/assets/images/default.jpg",
+      "/src/assets/images/default.jpg"
     ],
     servers: [
       { name: "الخادم الأول", url: "#", quality: "1080p" },
@@ -277,25 +287,45 @@ export default function MovieDetail() {
 
                   {/* Action Buttons */}
                   <div className="action-buttons">
-                    <button className="btn btn-primary btn-watch">
+                    <button 
+                      className="btn btn-primary btn-watch"
+                      onClick={() => showSuccess('جاري التحضير...', 'سيتم تشغيل الفيلم قريباً')}
+                    >
                       <i className="icon-play"></i>
                       مشاهدة
                     </button>
-                    <button className="btn btn-secondary btn-trailer">
+                    <button 
+                      className="btn btn-secondary btn-trailer"
+                      onClick={() => showSuccess('فتح الإعلان', 'سيتم تشغيل إعلان الفيلم')}
+                    >
                       <i className="icon-video"></i>
                       الإعلان
                     </button>
-                    <button className="btn btn-outline btn-download">
+                    <button 
+                      className="btn btn-outline btn-download"
+                      onClick={() => showConfirm(
+                        'تأكيد التحميل',
+                        'هل تريد تحميل هذا الفيلم؟',
+                        () => showSuccess('جاري التحميل', 'تم بدء تحميل الفيلم')
+                      )}
+                    >
                       <i className="icon-download"></i>
                       تحميل
                     </button>
-                    <button className="btn btn-outline btn-favorite">
+                    <button 
+                      className="btn btn-outline btn-favorite"
+                      onClick={() => showSuccess('تمت الإضافة!', 'تم إضافة الفيلم إلى قائمتك المفضلة')}
+                    >
                       <i className="icon-heart"></i>
                       قائمتي
                     </button>
                     <button 
                       className="btn btn-outline btn-report"
-                      onClick={() => setShowReportModal(true)}
+                      onClick={() => showConfirm(
+                        'تبليغ عن مشكلة',
+                        'هل تريد الإبلاغ عن مشكلة في هذا الفيلم؟',
+                        () => showSuccess('تم التبليغ', 'شكراً لك، سنراجع التبليغ قريباً')
+                      )}
                     >
                       <i className="icon-flag"></i>
                       تبليغ
@@ -327,6 +357,12 @@ export default function MovieDetail() {
             <div className="description-content">
               <p>{movieData.description}</p>
             </div>
+          </div>
+
+          {/* Movie Gallery */}
+          <div className="gallery-section">
+            <h3 className="section-title">معرض الصور</h3>
+            <ImageGallery images={movieData.gallery} title={movieData.title} />
           </div>
 
           {/* Cast Section */}

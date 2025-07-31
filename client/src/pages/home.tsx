@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import Carousel from "../components/Carousel";
 // ملفات CSS متضمنة في index.css
 
 // استيراد الصور

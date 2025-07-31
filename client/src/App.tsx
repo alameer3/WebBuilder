@@ -26,11 +26,13 @@ import Notifications from "@/pages/notifications";
 import NotFound from "@/pages/not-found";
 import PersonDetail from "@/components/PersonDetail";
 import EpisodeDetail from "@/components/EpisodeDetail";
+import DMCA from "@/pages/dmca";
+import AdPolicy from "@/pages/ad-policy";
 
 function Router() {
   const [location] = useLocation();
   const isHomePage = location === "/" || location === "/home" || location === "/main";
-  const isFullLayoutPage = isHomePage || location === "/movies" || location === "/series" || location === "/shows" || location === "/mix" || location === "/recent" || location === "/search" || location === "/login" || location === "/profile" || location === "/contactus" || location.startsWith("/movie/") || location.startsWith("/series/") || location.startsWith("/person/") || location.includes("/episode/");
+  const isFullLayoutPage = isHomePage || location === "/movies" || location === "/series" || location === "/shows" || location === "/mix" || location === "/recent" || location === "/search" || location === "/login" || location === "/profile" || location === "/contactus" || location === "/dmca" || location === "/ad-policy" || location.startsWith("/movie/") || location.startsWith("/series/") || location.startsWith("/person/") || location.includes("/episode/");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
@@ -55,6 +57,8 @@ function Router() {
             <Route path="/series/:id" component={SeriesDetail} />
             <Route path="/person/:id" component={PersonDetail} />
             <Route path="/series/:seriesId/episode/:episodeId" component={EpisodeDetail} />
+            <Route path="/dmca" component={DMCA} />
+            <Route path="/ad-policy" component={AdPolicy} />
             <Route path="/favorites" component={Favorites} />
             <Route path="/notifications" component={Notifications} />
             <Route component={NotFound} />
