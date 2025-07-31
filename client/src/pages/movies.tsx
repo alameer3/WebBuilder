@@ -59,9 +59,12 @@ export default function Movies() {
 
   return (
     <>
-      {/* Pace Loading */}
+      {/* Pace Loading Indicator - مطابق للأصل */}
       <div className="pace pace-inactive">
-        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{transform: 'translate3d(100%, 0px, 0px)'}}></div>
+        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{transform: 'translate3d(100%, 0px, 0px)'}}>
+          <div className="pace-progress-inner"></div>
+        </div>
+        <div className="pace-activity"></div>
       </div>
 
       {/* طبقة التراكب للقائمة */}
@@ -397,6 +400,9 @@ export default function Movies() {
             </ul>
           </div>
 
+          {/* العنصر المطلوب للـ JavaScript */}
+          <div className="main-categories-list-end"></div>
+          
           <div className="mt-5" style={{borderTop: '1px solid #27272c'}}></div>
         </div>
       </div>
