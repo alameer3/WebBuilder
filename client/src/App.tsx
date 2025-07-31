@@ -24,8 +24,8 @@ import SeriesDetail from "@/pages/series-detail";
 import Favorites from "@/pages/favorites";
 import Notifications from "@/pages/notifications";
 import NotFound from "@/pages/not-found";
-import PersonDetail from "@/components/PersonDetail";
-import EpisodeDetail from "@/components/EpisodeDetail";
+import PersonDetail from "@/pages/person-detail";
+import EpisodeDetail from "@/pages/episode-detail";
 import DMCA from "@/pages/dmca";
 import AdPolicy from "@/pages/ad-policy";
 
