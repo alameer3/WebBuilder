@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Movie } from "@shared/schema";
 
 // بيانات المسلسلات النموذجية مطابقة للتصميم الأصلي
@@ -77,6 +77,40 @@ export default function Series() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 317;
 
+  useEffect(() => {
+    // إضافة classes للجسم مطابقة للأصل
+    document.body.className = "header-fixed header-pages pace-done";
+    
+    // تطبيق JavaScript للتفاعلات
+    const handleMenuToggle = () => {
+      document.body.classList.toggle('main-menu-active');
+    };
+
+    const handleSearchToggle = () => {
+      document.body.classList.toggle('search-active');
+    };
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        document.body.classList.remove('main-menu-active', 'search-active');
+      }
+    };
+
+    // إضافة مستمعي الأحداث
+    const menuToggle = document.querySelector('.menu-toggle');
+    const searchToggle = document.querySelector('.search-toggle');
+    
+    menuToggle?.addEventListener('click', handleMenuToggle);
+    searchToggle?.addEventListener('click', handleSearchToggle);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      menuToggle?.removeEventListener('click', handleMenuToggle);
+      searchToggle?.removeEventListener('click', handleSearchToggle);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
+
   // محاكاة بيانات متعددة الصفحات
   const generateMoreSeries = () => {
     const moreSeries = [];
@@ -108,11 +142,108 @@ export default function Series() {
         <div className="pace-activity"></div>
       </div>
 
-      {/* Hidden Form Inputs */}
-      <input type="hidden" id="page_app" value="series" className="not-empty" />
-      <input type="hidden" id="page_id" value="0" className="not-empty" />
+      {/* Site Overlay */}
+      <div className="site-overlay"></div>
 
-      {/* Page Content */}
+      {/* Main Menu */}
+      <div className="main-menu">
+        <div className="main-menu-body">
+          <div className="close"><i className="icon-arrow-back"></i></div>
+          <div className="categories">
+            <Link href="/movies" className="item">
+              <div className="icn ml-3"><i className="icon-film"></i></div>
+              <div className="text">أفلام</div>
+            </Link>
+            <Link href="/series" className="item">
+              <div className="icn ml-3"><i className="icon-monitor"></i></div>
+              <div className="text">مسلسلات</div>
+            </Link>
+            <Link href="/shows" className="item">
+              <div className="icn ml-3"><i className="icon-tv"></i></div>
+              <div className="text">تلفزيون</div>
+            </Link>
+            <Link href="/mix" className="item">
+              <div className="icn ml-3"><i className="icon-mix"></i></div>
+              <div className="text">منوعات</div>
+            </Link>
+          </div>
+        </div>
+        <nav className="social d-flex justify-content-center">
+          <a href="https://yemenflix.net" target="" className="home mx-2"><i className="icon-home"></i></a>
+          <a href="https://www.facebook.com/yemenflix" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+          <a href="https://www.youtube.com/c/yemenflix" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
+          <Link href="/contactus" className="email mx-2"><i className="icon-email"></i></Link>
+        </nav>
+      </div>
+
+      {/* Search Box */}
+      <div className="search-box px-xl-5">
+        <div className="container search-container">
+          <form action="/search" className="search-form" method="get">
+            <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
+              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
+              <input type="search" name="q" id="searchBoxInput" placeholder="ابحث هنا" />
+            </label>
+          </form>
+          <div className="search-toggle"><i className="icon-arrow-back"></i></div>
+        </div>
+      </div>
+
+      {/* Site Container */}
+      <div className="site-container">
+        <div className="main-header-top"></div>
+        <header className="main-header">
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-auto">
+                <h2 className="main-logo m-0">
+                  <Link href="/main" className="d-inline-flex">
+                    <img src="/images/logo-white.svg" className="img-fluid" alt="يمن فليكس" />
+                  </Link>
+                </h2>
+              </div>
+              <div className="col-auto menu-toggle-container">
+                <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
+                  <span className="icn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </span>
+                  <div className="text font-size-18 mr-3">الأقسام</div>
+                </a>
+              </div>
+              <div className="ml-auto"></div>
+              <div className="col-md-5 col-lg-6 search-container">
+                <div className="search-form">
+                  <form action="/search" method="get">
+                    <input type="text" id="headerSearchInput" name="q" />
+                    <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
+                    <button><i className="icon-search"></i></button>
+                  </form>
+                </div>
+              </div>
+              <div className="col-auto recently-container">
+                <Link href="/recent" className="btn-recently">
+                  <i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span>
+                </Link>
+              </div>
+              <div className="col-auto user-profile-container">
+                <div className="user-panel">
+                  <Link className="user-toggle d-block font-size-20 public" href="/login">
+                    <i className="icon-user"></i>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div className="main-header-height"></div>
+
+        {/* Hidden Form Inputs */}
+        <input type="hidden" id="page_app" value="series" className="not-empty" />
+        <input type="hidden" id="page_id" value="0" className="not-empty" />
+
+        {/* Page Content */}
       <div className="page page-archive">
         <div className="archive-cover mb-4" style={{backgroundImage: "url('https://img.downet.net/uploads/USfXq.webp')"}}>
           <div className="container">
@@ -364,6 +495,37 @@ export default function Series() {
 
         {/* Main Categories List End (Required for JS) */}
         <div className="main-categories-list-end"></div>
+      </div>
+
+      {/* Footer */}
+      <footer className="main-footer">
+        <div className="container">
+          <div className="footer-body d-flex flex-wrap">
+            <div className="col-12 col-md-8 border-bottom border-md-0 border-gray-5">
+              <nav className="social d-flex justify-content-center justify-content-md-start">
+                <a href="https://yemenflix.net" target="" className="home mx-2"><i className="icon-home"></i></a>
+                <a href="https://www.facebook.com/yemenflix" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+                <a href="https://www.youtube.com/c/yemenflix" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
+                <Link href="/contactus" className="email mx-2"><i className="icon-email"></i></Link>
+              </nav>
+            </div>
+            <div className="col-12 col-md-4">
+              <nav className="d-flex align-items-center justify-content-center justify-content-md-end h-100">
+                <Link href="/contactus" className="mx-2">اتصل بنا</Link>
+                <span className="mx-2">|</span>
+                <a href="#" className="mx-2">سياسة الموقع</a>
+              </nav>
+            </div>
+            <div className="col-12">
+              <div className="text-center text-md-left py-3">
+                <p className="mb-0">
+                  جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
       </div>
     </>
   );
