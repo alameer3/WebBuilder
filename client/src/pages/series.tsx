@@ -324,7 +324,7 @@ export default function Series() {
                           <span className="label quality">{item.quality || 'WEB-DL'}</span>
                         </div>
                         <div className="entry-image">
-                          <Link href={`/movie/${item.id}`} className="box">
+                          <Link href={`/series/${item.id}`} className="box">
                             <picture>
                               <img 
                                 src={item.poster || defaultAvatar} 
@@ -336,7 +336,7 @@ export default function Series() {
                         </div>
                         <div className="entry-body px-3 pb-3 text-center">
                           <div className="actions d-flex justify-content-center">
-                            <Link href={`/movie/${item.id}`} className="icn play">
+                            <Link href={`/series/${item.id}`} className="icn play">
                               <i className="icon-play"></i>
                               <div>مشاهدة</div>
                             </Link>
