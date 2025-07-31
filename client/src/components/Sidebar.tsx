@@ -18,9 +18,9 @@ const menuItems = [
   { href: "/", label: "الرئيسية", icon: Home },
   { href: "/movies", label: "أفلام", icon: Film },
   { href: "/series", label: "مسلسلات", icon: Tv },
+  { href: "/shows", label: "تلفزيون", icon: PlayCircle },
+  { href: "/mix", label: "منوعات", icon: Shuffle },
   { href: "/recent", label: "الأحدث", icon: Clock },
-  { href: "/shows", label: "برامج", icon: PlayCircle },
-  { href: "/mix", label: "متنوع", icon: Shuffle },
 ];
 
 const userItems = [

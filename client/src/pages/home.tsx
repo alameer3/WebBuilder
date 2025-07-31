@@ -137,21 +137,21 @@ export default function Home() {
         <div className="d-flex flex-column">
           <div className="my-auto w-100">
             <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
+              <a href="/movies" className="item">
+                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
+                <div className="text">أفلام</div>
               </a>
               <a href="/series" className="item">
                 <div className="icn ml-3"><i className="icon-monitor"></i></div>
                 <div className="text">مسلسلات</div>
               </a>
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
+              <a href="/shows" className="item">
+                <div className="icn ml-3"><i className="icon-tv"></i></div>
+                <div className="text">تلفزيون</div>
+              </a>
+              <a href="/mix" className="item">
+                <div className="icn ml-3"><i className="icon-mix"></i></div>
+                <div className="text">منوعات</div>
               </a>
             </div>
           </div>
@@ -198,11 +198,7 @@ export default function Home() {
                 </div>
                 <div className="col-auto menu-toggle-container">
                   <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
-                    <span className="icn">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </span>
+                    <span className="icn"></span>
                     <div className="text font-size-18 mr-3">الأقسام</div>
                   </a>
                 </div>
@@ -312,15 +308,9 @@ export default function Home() {
                   <div className="main-categories-list">
                     <div className="row">
                       <div className="col-lg col-4">
-                        <a href="/mix" className="item d-block text-center text-white py-3 h-100">
-                          <div className="icn"><i className="icon-mix"></i></div>
-                          <div className="font-size-16">منوعات</div>
-                        </a>
-                      </div>
-                      <div className="col-lg col-4">
-                        <a href="/shows" className="item d-block text-center text-white py-3 h-100">
-                          <div className="icn"><i className="icon-tv"></i></div>
-                          <div className="font-size-16">تلفزيون</div>
+                        <a href="/movies" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-video-camera"></i></div>
+                          <div className="font-size-16">أفلام</div>
                         </a>
                       </div>
                       <div className="col-lg col-4">
@@ -330,9 +320,15 @@ export default function Home() {
                         </a>
                       </div>
                       <div className="col-lg col-4">
-                        <a href="/movies" className="item d-block text-center text-white py-3 h-100">
-                          <div className="icn"><i className="icon-video-camera"></i></div>
-                          <div className="font-size-16">أفلام</div>
+                        <a href="/shows" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-tv"></i></div>
+                          <div className="font-size-16">تلفزيون</div>
+                        </a>
+                      </div>
+                      <div className="col-lg col-4">
+                        <a href="/mix" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-mix"></i></div>
+                          <div className="font-size-16">منوعات</div>
                         </a>
                       </div>
                     </div>

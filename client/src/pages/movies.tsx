@@ -80,21 +80,21 @@ export default function Movies() {
         <div className="d-flex flex-column">
           <div className="my-auto w-100">
             <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
+              <a href="/movies" className="item">
+                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
+                <div className="text">أفلام</div>
               </a>
               <a href="/series" className="item">
                 <div className="icn ml-3"><i className="icon-monitor"></i></div>
                 <div className="text">مسلسلات</div>
               </a>
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
+              <a href="/shows" className="item">
+                <div className="icn ml-3"><i className="icon-tv"></i></div>
+                <div className="text">تلفزيون</div>
+              </a>
+              <a href="/mix" className="item">
+                <div className="icn ml-3"><i className="icon-mix"></i></div>
+                <div className="text">منوعات</div>
               </a>
             </div>
           </div>
