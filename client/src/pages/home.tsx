@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import '../assets/css/plugins.css';
 import '../assets/css/style.css';  
-import '../assets/css/yemen-flix.css';
+import '../assets/css/akwam.css';
 import '../assets/css/home.css';
 
 // استيراد الصور

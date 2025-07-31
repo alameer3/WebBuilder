@@ -2,6 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { useEffect } from "react";
 
+// استيراد ملفات CSS المطلوبة
+import '../assets/css/plugins.css';
+import '../assets/css/style.css';  
+import '../assets/css/akwam.css';
+
 // استيراد الصور والأصول المطلوبة
 import logoWhite from "../assets/images/logo-white.svg";
 import defaultAvatar from "../assets/images/default.jpg";
