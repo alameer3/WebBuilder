@@ -5,7 +5,7 @@ import { useEffect } from "react";
 // استيراد ملفات CSS المطلوبة
 import '../assets/css/plugins.css';
 import '../assets/css/style.css';  
-import '../assets/css/akwam.css';
+import '../assets/css/yemen-flix.css';
 
 // استيراد الصور والأصول المطلوبة
 import logoWhite from "../assets/images/logo-white.svg";
