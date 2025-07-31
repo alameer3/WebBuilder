@@ -336,3 +336,82 @@ body {
   border-color: #d37b0b;
   color: var(--text-primary);
 }
+
+/* تخطيط الشبكة المحسن للعرض - 6 عناصر في الصف */
+.widget[data-grid="6"] .widget-body .col-lg-2 {
+  flex: 0 0 16.666667% !important;
+  max-width: 16.666667% !important;
+}
+
+.widget[data-grid="6"] .widget-body .col-lg-auto {
+  flex: 0 0 16.666667% !important;
+  max-width: 16.666667% !important;
+}
+
+@media (max-width: 991.98px) {
+  .widget[data-grid="6"] .widget-body .col-lg-2,
+  .widget[data-grid="6"] .widget-body .col-lg-auto {
+    flex: 0 0 33.333333% !important;
+    max-width: 33.333333% !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .widget[data-grid="6"] .widget-body .col-lg-2,
+  .widget[data-grid="6"] .widget-body .col-lg-auto {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+}
+
+/* تحسينات إضافية للعرض */
+.entry-box {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.entry-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.entry-image {
+  overflow: hidden;
+}
+
+.entry-image img {
+  transition: transform 0.3s ease;
+}
+
+.entry-box:hover .entry-image img {
+  transform: scale(1.05);
+}
+
+/* تحسينات الفلاتر */
+.form-control {
+  background: rgba(39, 39, 44, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.form-control:focus {
+  background: rgba(39, 39, 44, 0.9);
+  border-color: #f3951e;
+  color: white;
+}
+
+/* تحسين الأحجام الحديثة */
+.mb-12 {
+  margin-bottom: 1.5rem !important;
+}
+
+.font-size-14 {
+  font-size: 14px !important;
+}
+
+.font-size-16 {
+  font-size: 16px !important;
+}
+
+.font-size-34 {
+  font-size: 34px !important;
+}

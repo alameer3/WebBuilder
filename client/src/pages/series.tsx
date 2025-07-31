@@ -231,6 +231,7 @@ export default function Series() {
                           <div className="form-group mb-12 mb-lg-0">
                             <select className="form-control select2" name="year">
                               <option value="0">سنة الإنتاج</option>
+                              <option>2045</option>
                               <option>2025</option>
                               <option>2024</option>
                               <option>2023</option>
@@ -242,6 +243,45 @@ export default function Series() {
                               <option>2017</option>
                               <option>2016</option>
                               <option>2015</option>
+                              <option>2014</option>
+                              <option>2013</option>
+                              <option>2012</option>
+                              <option>2011</option>
+                              <option>2010</option>
+                              <option>2009</option>
+                              <option>2008</option>
+                              <option>2007</option>
+                              <option>2006</option>
+                              <option>2005</option>
+                              <option>2004</option>
+                              <option>2003</option>
+                              <option>2002</option>
+                              <option>2001</option>
+                              <option>2000</option>
+                              <option>1999</option>
+                              <option>1998</option>
+                              <option>1997</option>
+                              <option>1996</option>
+                              <option>1995</option>
+                              <option>1994</option>
+                              <option>1993</option>
+                              <option>1992</option>
+                              <option>1991</option>
+                              <option>1990</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6 col-12">
+                          <div className="form-group mb-12 mb-lg-0">
+                            <select className="form-control select2" name="language">
+                              <option value="0">اللغة</option>
+                              <option value="1">العربية</option>
+                              <option value="2">الإنجليزية</option>
+                              <option value="3">الهندية</option>
+                              <option value="4">التركية</option>
+                              <option value="5">الكورية</option>
+                              <option value="6">اليابانية</option>
+                              <option value="7">الصينية</option>
                             </select>
                           </div>
                         </div>
@@ -272,7 +312,7 @@ export default function Series() {
                 // شبكة المسلسلات - مطابقة للأصل تماماً
                 series && series.length > 0 ? (
                   series.map((item) => (
-                    <div key={item.id} className="col-lg-auto col-md-4 col-6 mb-12">
+                    <div key={item.id} className="col-lg-2 col-md-4 col-6 mb-12">
                       <div className="entry-box entry-box-1">
                         <div className="labels d-flex">
                           {item.rating && (
