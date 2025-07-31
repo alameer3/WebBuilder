@@ -47,17 +47,51 @@ export default function Home() {
               });
             }
 
-            // تفعيل وظائف jQuery الأساسية
+            // تفعيل وظائف jQuery الأساسية (مطابق للأصل)
             $(document).ready(() => {
+              // Header background on scroll
+              function handleScroll() {
+                if ($(".main-header").length) {
+                  if ($(window).scrollTop()! <= 50) {
+                    $("body").removeClass("header-bg");
+                  } else {
+                    $("body").addClass("header-bg");
+                  }
+                  
+                  if ($(".main-categories-list-end").length) {
+                    if ($(window).scrollTop()! <= $(".main-categories-list-end").offset()!.top) {
+                      $("body").removeClass("header-menu");
+                    } else {
+                      $("body").addClass("header-menu");
+                    }
+                  }
+                }
+              }
+              
+              handleScroll();
+              $(window).on("scroll", handleScroll);
+              
+              // Input focus states
+              $("input, textarea").on("focusout change submit blur", function(){
+                if ($(this).val()) {
+                  $(this).addClass("not-empty");
+                } else {
+                  $(this).removeClass("not-empty");
+                }
+              });
+              
+              // Reset button functionality
+              $('button[type="reset"]').on("click", function(){
+                $(this).parents("form").find("input, textarea").removeClass("not-empty");
+              });
+
               // Menu toggle
-              $(".menu-toggle").on("click", function(e){
-                e.preventDefault();
+              $(".menu-toggle").on("click", function(){
                 $("body").removeClass("search-active").toggleClass("main-menu-active");
               });
               
               // Search toggle
-              $(".search-toggle").on("click", function(e){
-                e.preventDefault();
+              $(".search-toggle").on("click", function(){
                 $("body").removeClass("main-menu-active").toggleClass("search-active");
                 setTimeout(function(){
                   $(".search-box form input").focus();
@@ -70,7 +104,7 @@ export default function Home() {
               });
 
               // ESC key
-              $(document).on("keydown", function(e){
+              $(document).on("keydown", function(e: any){
                 if (e.keyCode === 27) {
                   $("body").removeClass("search-active main-menu-active");
                 }
@@ -291,8 +325,8 @@ export default function Home() {
                         </a>
                       </div>
                     </div>
-                    <div className="main-categories-list-end"></div>
                   </div>
+                  <div className="main-categories-list-end"></div>
                 </div>
               </div>
             </div>
