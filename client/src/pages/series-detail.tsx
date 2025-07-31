@@ -2,17 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import { useEffect } from "react";
 
-// استيراد ملفات CSS المطلوبة
-import '../assets/css/plugins.css';
-import '../assets/css/style.css';  
-import '../assets/css/yemen-flix.css';
+// ملفات CSS متضمنة في index.css
 
 // استيراد الصور والأصول المطلوبة
 import logoWhite from "../assets/images/logo-white.svg";
 import defaultAvatar from "../assets/images/default.jpg";
-import tmdbIcon from "../assets/images/tmdb.png";
-import imdbIcon from "../assets/images/imdb.png";
-import reportIcon from "../assets/images/report.svg";
+// استيراد الأيقونات من مجلد الأصول
+const tmdbIcon = "/client/src/assets/images/default.jpg"; // سيتم تحديثها لاحقاً
+const imdbIcon = "/client/src/assets/images/default.jpg"; // سيتم تحديثها لاحقاً
 
 interface SeriesDetail {
   id: string;
@@ -63,7 +60,7 @@ export default function SeriesDetail() {
       title: "220 يوم",
       titleEn: "220 Days",
       description: "مسلسل 220 يوم يحكي قصة مشوقة ومثيرة تجري أحداثها خلال 220 يوماً حافلاً بالأحداث المتلاحقة والمفاجآت التي تبقي المشاهد في حالة ترقب مستمر. يمزج المسلسل بين عناصر الإثارة والرومانسية والدراما بطريقة مميزة تجعله من أبرز الأعمال الدرامية.",
-      poster: "/client/src/assets/images/default.jpg",
+      poster: defaultAvatar,
       backdrop: "/client/src/assets/images/home-bg.webp",
       year: 2025,
       genre: ["اثارة", "رومانسي", "دراما"],
@@ -82,15 +79,15 @@ export default function SeriesDetail() {
       trailerUrl: "https://www.youtube.com/watch?v=Q6z0EKgBvmw",
       episodesCount: 24,
       cast: [
-        { id: "1", name: "ممثل رئيسي 1", image: "/client/src/assets/images/default.jpg" },
-        { id: "2", name: "ممثل رئيسي 2", image: "/client/src/assets/images/default.jpg" },
-        { id: "3", name: "ممثل رئيسي 3", image: "/client/src/assets/images/default.jpg" }
+        { id: "1", name: "ممثل رئيسي 1", image: defaultAvatar },
+        { id: "2", name: "ممثل رئيسي 2", image: defaultAvatar },
+        { id: "3", name: "ممثل رئيسي 3", image: defaultAvatar }
       ],
       gallery: [
-        "/client/src/assets/images/default.jpg",
-        "/client/src/assets/images/default.jpg",
-        "/client/src/assets/images/default.jpg",
-        "/client/src/assets/images/default.jpg"
+        defaultAvatar,
+        defaultAvatar,
+        defaultAvatar,
+        defaultAvatar
       ],
       episodes: Array.from({ length: 24 }, (_, i) => ({
         id: `ep-${i + 1}`,
@@ -502,7 +499,7 @@ export default function SeriesDetail() {
           <div className="widget widget-style-1 mb-5">
             <header className="widget-header border-0 mb-4">
               <div className="header-title font-size-18 font-weight-bold mb-0 d-flex align-items-center">
-                <img src={reportIcon} alt="error icon" className="ml-2" style={{width: '20px'}} />
+                <span>🔴</span>
                 <span className="header-link text-white">التبليغ عن خطأ</span>
               </div>
             </header>
