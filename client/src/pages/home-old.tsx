@@ -19,71 +19,36 @@ declare global {
 
 export default function Home() {
   useEffect(() => {
-    // إضافة الكلاسات والخلفية للـ body
+    // إضافة الخلفية للـ body وكلاسات CSS
     document.body.className = 'header-fixed body-home';
     document.body.style.background = `linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(${homeBg})`;
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center';
     document.body.style.backgroundAttachment = 'fixed';
 
-    // تحميل jQuery أولاً
-    const jqueryScript = document.createElement('script');  
+    // تحميل jQuery ثم Typed.js
+    const jqueryScript = document.createElement('script');
     jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
     jqueryScript.onload = () => {
-      // ثم تحميل Typed.js
       const typedScript = document.createElement('script');
       typedScript.src = '/src/assets/js/typed.min.js';
       typedScript.onload = () => {
-        // انتظار قليل للتأكد من تحميل الـ DOM
-        setTimeout(() => {
-          if (window.Typed && window.$) {
-            const $ = window.$;
-            
-            // تطبيق Typed.js بالطريقة الأصلية
-            if ($('.widget-2').length) {
-              new window.Typed('.widget-2 .form label[for="widget2SearchInput"] span', {
-                stringsElement: ".widget-2 .form .label-text",
-                typeSpeed: 30
-              });
-            }
-
-            // تفعيل وظائف jQuery الأساسية
-            $(document).ready(() => {
-              // Menu toggle
-              $(".menu-toggle").on("click", function(e){
-                e.preventDefault();
-                $("body").removeClass("search-active").toggleClass("main-menu-active");
-              });
-              
-              // Search toggle
-              $(".search-toggle").on("click", function(e){
-                e.preventDefault();
-                $("body").removeClass("main-menu-active").toggleClass("search-active");
-                setTimeout(function(){
-                  $(".search-box form input").focus();
-                }, 200);
-              });
-
-              // Site overlay
-              $(".site-overlay").on("click", function(){
-                $("body").removeClass("main-menu-active search-active");
-              });
-
-              // ESC key
-              $(document).on("keydown", function(e){
-                if (e.keyCode === 27) {
-                  $("body").removeClass("search-active main-menu-active");
-                }
-              });
-            });
-          }
-        }, 300);
+        if (window.Typed) {
+          // تطبيق Typed.js على مربع البحث الرئيسي (بنفس الطريقة الأصلية)
+          new window.Typed('.widget-2 .form label[for="widget2SearchInput"] span', {
+            stringsElement: ".widget-2 .form .label-text",
+            typeSpeed: 30
+          });
+        }
       };
       document.head.appendChild(typedScript);
+
+      // إضافة التفاعلات
+      setupInteractions();
     };
     document.head.appendChild(jqueryScript);
 
-    // تنظيف عند الخروج
+    // تنظيف عند إلغاء التحميل
     return () => {
       document.body.className = '';
       document.body.style.background = '';
@@ -93,11 +58,44 @@ export default function Home() {
     };
   }, []);
 
+  const setupInteractions = () => {
+    if (window.$) {
+      const $ = window.$;
+      
+      // تفعيل القائمة الجانبية
+      $(document).on('click', '.menu-toggle', function(e: any) {
+        e.preventDefault();
+        $('body').toggleClass('main-menu-active');
+      });
+
+      // تفعيل صندوق البحث
+      $(document).on('click', '.search-toggle', function(e: any) {
+        e.preventDefault();
+        $('body').toggleClass('search-active');
+      });
+      
+      // تفعيل البحث في الهيدر
+      $(document).on('click', '.main-header .search-toggle', function(e: any) {
+        e.preventDefault();
+        $('body').toggleClass('search-active');
+      });
+
+      // إغلاق القوائم عند الضغط على الطبقة الشفافة
+      $(document).on('click', '.site-overlay', function() {
+        $('body').removeClass('main-menu-active search-active');
+      });
+
+      // إغلاق القوائم بمفتاح ESC
+      $(document).on('keyup', function(e: any) {
+        if (e.keyCode === 27) {
+          $('body').removeClass('main-menu-active search-active');
+        }
+      });
+    }
+  };
+
   return (
     <>
-      {/* Site overlay - يجب أن يكون خارج كل شيء */}
-      <span className="site-overlay"></span>
-
       {/* القائمة الجانبية */}
       <div className="main-menu">
         <div className="d-flex flex-column">
@@ -146,12 +144,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* الحاوي الرئيسي */}
       <div className="site-container">
         <div className="page-home">
           <div className="main-header-top"></div>
-          
-          {/* الهيدر */}
           <header className="main-header">
             <div className="container">
               <div className="row align-items-center">
@@ -163,14 +158,12 @@ export default function Home() {
                   </h2>
                 </div>
                 <div className="col-auto menu-toggle-container">
-                  <a href="#" className="menu-toggle d-flex align-items-center text-white">
+                  <a href="#" className="menu-toggle d-flex align-items-center text-white" onClick={(e) => e.preventDefault()}>
                     <span className="icn"></span>
                     <div className="text font-size-18 mr-3">الأقسام</div>
                   </a>
                 </div>
                 <div className="ml-auto"></div>
-                
-                {/* مربع البحث في الهيدر */}
                 <div className="col-md-5 col-lg-6 search-container">
                   <div className="search-form">
                     <form action="/search" method="get">
@@ -180,7 +173,6 @@ export default function Home() {
                     </form>
                   </div>
                 </div>
-                
                 <div className="col-auto recently-container">
                   <a href="/recent" className="btn-recently">
                     <i className="icon-plus2 ml-2"></i>
@@ -190,7 +182,7 @@ export default function Home() {
 
                 <div className="col-auto user-profile-container">
                   <div className="user-panel">
-                    <a className="user-toggle d-block font-size-20 private hide" href="#">
+                    <a className="user-toggle d-block font-size-20 private hide" href="#" onClick={(e) => e.preventDefault()}>
                       <i className="icon-user"></i>
                     </a>
                     <div className="login-panel private hide">
@@ -222,14 +214,13 @@ export default function Home() {
 
           <div className="main-header-height"></div>
           
-          {/* المحتوى الرئيسي */}
           <div className="container py-5 my-5">
             {/* الدائرة المركزية */}
             <div className="home-site-btn-container mt-5">
               <h1>
                 <a href="/" className="link" style={{
                   position: 'absolute',
-                  top: 0, 
+                  top: 0,
                   right: 0,
                   width: '100%',
                   height: '100%',
@@ -250,7 +241,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* ويدجت البحث الرئيسي */}
+            {/* ويدجت البحث */}
             <div className="widget-2 widget mb-4">
               <div className="widget-body row">
                 <div className="col-lg-8 mx-auto">
@@ -274,7 +265,6 @@ export default function Home() {
                     </div>
                   </form>
                   
-                  {/* قائمة الأقسام الرئيسية */}
                   <div className="main-categories-list">
                     <div className="row">
                       <div className="col-lg col-4">
@@ -302,40 +292,42 @@ export default function Home() {
                         </a>
                       </div>
                     </div>
-                    <div className="main-categories-list-end"></div>
                   </div>
                 </div>
               </div>
             </div>
+            <div className="main-categories-list-end"></div>
           </div>
         </div>
+
+        <footer className="main-footer py-5">
+          <nav className="social d-flex justify-content-center">
+            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
+            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <a href="/notifications" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="/contact" className="email mx-2"><i className="icon-email"></i></a>
+          </nav>
+
+          <nav className="links d-flex justify-content-center mt-3">
+            <a href="/" className="mx-2">يمن فليكس</a>
+            <a href="/old" target="_blank" className="mx-2">الموقع القديم</a>
+            <a href="/dmca" className="mx-2">DMCA</a>
+            <a href="/ad-policy" className="mx-2">AD-P</a>
+            <a href="/news" target="_blank" className="mx-2">يمن فليكس نيوز</a>
+            <a href="/network" target="_blank" className="mx-2">شبكة يمن فليكس</a>
+          </nav>
+
+          <p className="copyright mb-0 font-size-12 text-center mt-3">
+            جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
+          </p>
+        </footer>
       </div>
 
-      {/* Footer */}
-      <footer className="main-footer py-5">
-        <nav className="social d-flex justify-content-center">
-          <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-          <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-          <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-          <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-          <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
-          <a href="/notifications" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-          <a href="/contact" className="email mx-2"><i className="icon-email"></i></a>
-        </nav>
-
-        <nav className="links d-flex justify-content-center mt-3">
-          <a href="/" className="mx-2">يمن فليكس</a>
-          <a href="/old" target="_blank" className="mx-2">الموقع القديم</a>
-          <a href="/dmca" className="mx-2">DMCA</a>
-          <a href="/ad-policy" className="mx-2">AD-P</a>
-          <a href="/news" target="_blank" className="mx-2">يمن فليكس نيوز</a>
-          <a href="/network" target="_blank" className="mx-2">شبكة يمن فليكس</a>
-        </nav>
-
-        <p className="copyright mb-0 font-size-12 text-center mt-3">
-          جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
-        </p>
-      </footer>
+      {/* الطبقة الشفافة */}
+      <span className="site-overlay"></span>
     </>
   );
 }
