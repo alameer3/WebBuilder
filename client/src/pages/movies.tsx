@@ -111,11 +111,12 @@ export default function Movies() {
         </div>
       </div>
 
-      {/* الهيدر العلوي */}
-      <div className="main-header-top"></div>
-      
-      {/* الهيدر الرئيسي - مطابق للأصل تماماً */}
-      <header className="main-header">
+      {/* site-container مطابق للأصل */}
+      <div className="site-container">
+        <div className="main-header-top"></div>
+        
+        {/* الهيدر الرئيسي - مطابق للأصل تماماً */}
+        <header className="main-header">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-auto">
@@ -423,6 +424,8 @@ export default function Movies() {
 
         <p className="copyright mb-0 font-size-12 text-center mt-3">جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025</p>
       </footer>
+      
+      </div> {/* إغلاق site-container */}
     </>
   );
 }
