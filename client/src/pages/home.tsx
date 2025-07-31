@@ -197,7 +197,7 @@ export default function Home() {
                   </h2>
                 </div>
                 <div className="col-auto menu-toggle-container">
-                  <a href="#" className="menu-toggle d-flex align-items-center text-white">
+                  <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
                     <span className="icn"></span>
                     <div className="text font-size-18 mr-3">الأقسام</div>
                   </a>
@@ -220,7 +220,7 @@ export default function Home() {
                 </div>
                 <div className="col-auto user-profile-container">
                   <div className="user-panel">
-                    <a className="user-toggle d-block font-size-20 private hide" href="#">
+                    <a className="user-toggle d-block font-size-20 private hide" href="#" onClick={(e) => e.preventDefault()}>
                       <i className="icon-user"></i>
                     </a>
                     <div className="login-panel private hide">
@@ -236,7 +236,7 @@ export default function Home() {
                       </div>
                       <nav className="list">
                         <a href="/profile">تعديل البروفايل</a>
-                        <a href="/favorites">قائمتي المفضلة</a>
+                        <a href="/favorite/movies">قائمتي المفضلة</a>
                         <span className="line"></span>
                         <a href="/logout">تسجيل خروج</a>
                       </nav>
