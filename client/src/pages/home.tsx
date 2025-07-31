@@ -167,8 +167,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* صندوق البحث - مخفي في الصورة الأصلية، يظهر عند النقر على زر البحث */}
-      <div className="search-box px-xl-5" style={{display: 'none'}}>
+      {/* صندوق البحث - مطابق للأصل */}
+      <div className="search-box px-xl-5">
         <div className="container search-container">
           <form action="/search" className="search-form" method="get">
             <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
@@ -183,35 +183,78 @@ export default function Home() {
       {/* الحاوي الرئيسي - مطابق للأصل */}
       <div className="site-container">
         <div className="page-home">
-          {/* زر القائمة في الزاوية اليسرى العلوية مطابق للصورة الأصلية */}
-          <div className="top-menu-toggle" style={{
-            position: 'fixed',
-            top: '20px',
-            left: '20px',
-            zIndex: 1000
-          }}>
-            <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
-              <span className="icn">
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-              <div className="text font-size-16 mr-3">الأقسام</div>
-            </a>
-          </div>
+          <div className="main-header-top"></div>
+          
+          {/* الهيدر - مطابق للأصل تماماً */}
+          <header className="main-header">
+            <div className="container">
+              <div className="row align-items-center">
+                <div className="col-auto">
+                  <h2 className="main-logo m-0">
+                    <a href="/" className="d-inline-flex">
+                      <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
+                    </a>
+                  </h2>
+                </div>
+                <div className="col-auto menu-toggle-container">
+                  <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
+                    <span className="icn">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </span>
+                    <div className="text font-size-18 mr-3">الأقسام</div>
+                  </a>
+                </div>
+                <div className="ml-auto"></div>
+                <div className="col-md-5 col-lg-6 search-container">
+                  <div className="search-form">
+                    <form action="/search" method="get">
+                      <input type="text" id="headerSearchInput" name="q" />
+                      <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
+                      <button><i className="icon-search"></i></button>
+                    </form>
+                  </div>
+                </div>
+                <div className="col-auto recently-container">
+                  <a href="/recent" className="btn-recently">
+                    <i className="icon-plus2 ml-2"></i>
+                    <span>أضيف حديثا</span>
+                  </a>
+                </div>
+                <div className="col-auto user-profile-container">
+                  <div className="user-panel">
+                    <a className="user-toggle d-block font-size-20 private hide" href="#" onClick={(e) => e.preventDefault()}>
+                      <i className="icon-user"></i>
+                    </a>
+                    <div className="login-panel private hide">
+                      <div className="user-logged d-flex align-items-center no-gutters p-3">
+                        <div className="col-auto">
+                          <img src={defaultAvatar} className="img-fluid rounded-circle" alt="user avatar" />
+                        </div>
+                        <div className="col pr-2">
+                          <div className="username font-size-14 font-weight-normal text-truncate text-white mb-0 mr-1" style={{width: '120px', height: '22px'}}>
+                            مستخدم
+                          </div>
+                        </div>
+                      </div>
+                      <nav className="list">
+                        <a href="/profile">تعديل البروفايل</a>
+                        <a href="/favorite/movies">قائمتي المفضلة</a>
+                        <span className="line"></span>
+                        <a href="/logout">تسجيل خروج</a>
+                      </nav>
+                    </div>
+                    <a className="user-toggle d-block font-size-20 public" href="/login">
+                      <i className="icon-user"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
 
-          {/* زر المستخدم في الزاوية اليمنى العلوية مطابق للصورة الأصلية */}
-          <div className="top-user-toggle" style={{
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            zIndex: 1000
-          }}>
-            <a href="/login" className="user-toggle d-flex align-items-center text-white">
-              <i className="icon-user font-size-20"></i>
-              <div className="text font-size-16 mr-2">أضيف حديثا</div>
-            </a>
-          </div>
+          <div className="main-header-height"></div>
           
           {/* المحتوى الرئيسي */}
           <div className="container py-5 my-5">
