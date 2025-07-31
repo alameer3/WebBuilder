@@ -1,16 +1,12 @@
-@font-face {
-  font-family: 'icons';
-  src: url('data:font/woff;base64,d09GRgABAAAAABQUAAsAAAAAGfAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADsAAABUIIslek9TLzIAAAFEAAAAQwAAAFZAeUhsY21hcAAAAYgAAABQAAAAXghmA') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
+/* FontAwesome Icons - Yemen Flix Style */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
 [class^="icon-"], [class*=" icon-"] {
-  font-family: 'icons' !important;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Pro' !important;
   speak: never;
   font-style: normal;
-  font-weight: normal;
+  font-weight: 900;
   font-variant: normal;
   text-transform: none;
   line-height: 1;
@@ -18,15 +14,50 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-video-camera:before { content: "\e900"; }
-.icon-monitor:before { content: "\e901"; }
-.icon-tv:before { content: "\e902"; }
-.icon-mix:before { content: "\e903"; }
-.icon-home:before { content: "\e904"; }
-.icon-facebook:before { content: "\e905"; }
-.icon-youtube:before { content: "\e906"; }
-.icon-email:before { content: "\e907"; }
-.icon-user:before { content: "\e908"; }
-.icon-search:before { content: "\e909"; }
-.icon-plus2:before { content: "\e90a"; }
-.icon-arrow-back:before { content: "\e90b"; }
+/* Main category icons */
+.icon-video-camera:before { content: "\f03d"; }
+.icon-monitor:before { content: "\f108"; }
+.icon-tv:before { content: "\f26c"; }
+.icon-mix:before { content: "\f1b2"; }
+
+/* UI icons */
+.icon-home:before { content: "\f015"; }
+.icon-search:before { content: "\f002"; }
+.icon-user:before { content: "\f007"; }
+.icon-plus2:before { content: "\f067"; }
+.icon-arrow-back:before { content: "\f053"; }
+
+/* Social media icons */
+.icon-facebook:before { content: "\f09a"; }
+.icon-youtube:before { content: "\f167"; }
+.icon-twitter:before { content: "\f099"; }
+.icon-instagram:before { content: "\f16d"; }
+.icon-telegram:before { content: "\f2c6"; }
+.icon-whatsapp:before { content: "\f232"; }
+
+/* App store icons */
+.icon-app-store:before { content: "\f179"; }
+.icon-google-play:before { content: "\f3ab"; }
+
+/* Contact icons */
+.icon-email:before { content: "\f0e0"; }
+.icon-phone:before { content: "\f095"; }
+
+/* Additional utility icons */
+.icon-close:before { content: "\f00d"; }
+.icon-menu:before { content: "\f0c9"; }
+.icon-star:before { content: "\f005"; }
+.icon-heart:before { content: "\f004"; }
+.icon-bookmark:before { content: "\f02e"; }
+.icon-share:before { content: "\f064"; }
+.icon-download:before { content: "\f019"; }
+.icon-play:before { content: "\f04b"; }
+.icon-pause:before { content: "\f04c"; }
+.icon-volume:before { content: "\f028"; }
+.icon-settings:before { content: "\f013"; }
+
+/* Force FontAwesome classes */
+[class*="icon-"] {
+  font-family: 'Font Awesome 6 Free' !important;
+  font-weight: 900 !important;
+}

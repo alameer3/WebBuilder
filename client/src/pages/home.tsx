@@ -185,7 +185,7 @@ export default function Home() {
         <div className="page-home">
           <div className="main-header-top"></div>
           
-          {/* الهيدر */}
+          {/* الهيدر - مطابق للأصل تماماً */}
           <header className="main-header">
             <div className="container">
               <div className="row align-items-center">
@@ -202,6 +202,7 @@ export default function Home() {
                     <div className="text font-size-18 mr-3">الأقسام</div>
                   </a>
                 </div>
+                <div className="ml-auto"></div>
                 <div className="col-md-5 col-lg-6 search-container">
                   <div className="search-form">
                     <form action="/search" method="get">
@@ -217,7 +218,6 @@ export default function Home() {
                     <span>أضيف حديثا</span>
                   </a>
                 </div>
-
                 <div className="col-auto user-profile-container">
                   <div className="user-panel">
                     <a className="user-toggle d-block font-size-20 private hide" href="#">
