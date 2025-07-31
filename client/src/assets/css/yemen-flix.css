@@ -108,3 +108,65 @@ body, .main-header, .main-logo, .menu-toggle {
   background: #f3951e;
   transition: width 0.3s ease;
 }
+
+/* إصلاح مشكلة عرض الصور */
+.entry-image {
+  position: relative;
+  overflow: hidden;
+  height: 260px;
+  border-radius: 8px;
+}
+
+.entry-image .image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.entry-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* تحسين ظهور الصور الافتراضية */
+.entry-image .image {
+  background-color: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.entry-image .image::before {
+  content: "🎬";
+  font-size: 2rem;
+  color: #666;
+  position: absolute;
+  z-index: 1;
+}
+
+/* إخفاء الأيقونة عند تحميل الصورة */
+.entry-image .image img {
+  position: relative;
+  z-index: 2;
+}
+
+/* تحسين عرض النصوص على الصور الافتراضية */
+.entry-image .image::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  background: rgba(0,0,0,0.7);
+  padding: 5px;
+  border-radius: 4px;
+  z-index: 3;
+}

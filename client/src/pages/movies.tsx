@@ -8,6 +8,7 @@ import '../assets/css/yemen-flix.css';
 
 // استيراد الصور والأصول المطلوبة
 import logoWhite from "../assets/images/logo-white.svg";
+import defaultImage from "../assets/images/default.jpg";
 
 interface Movie {
   id: string;
@@ -23,45 +24,45 @@ interface Movie {
 
 // بيانات الأفلام العربية التجريبية - مطابقة للقطة الشاشة
 const sampleMovies: Movie[] = [
-  // الصف الأول
-  { id: "1", title: "Special Ops: Lioness", description: "مسلسل أكشن أمريكي", poster: "https://img.downet.net/thumb/178x260/uploads/1nPPx.webp", year: 2023, genre: ["أكشن", "دراما"], rating: 7.6, quality: "WEB-DL" },
-  { id: "2", title: "Venom: The Last Dance", description: "فيلم أكشن خيال علمي", poster: "https://img.downet.net/thumb/178x260/uploads/92298.webp", year: 2024, genre: ["أكشن", "خيال علمي"], rating: 6.2, quality: "CAM" },
-  { id: "3", title: "Beneath Us", description: "فيلم رعب أمريكي", poster: "https://img.downet.net/thumb/178x260/uploads/BV1RS.webp", year: 2019, genre: ["رعب", "إثارة"], rating: 5.3, quality: "WEB-DL" },
-  { id: "4", title: "Dogs", description: "فيلم دراما", poster: "https://img.downet.net/thumb/178x260/uploads/F41b1.webp", year: 2024, genre: ["دراما"], rating: 6.8, quality: "WEB-DL" },
-  { id: "5", title: "28 Years Later", description: "فيلم رعب وإثارة", poster: "https://img.downet.net/thumb/178x260/uploads/Gn5bw.webp", year: 2025, genre: ["رعب", "إثارة"], rating: 7.1, quality: "WEB-DL" },
+  // الصف الأول - استخدام الصورة الافتراضية لجميع الأفلام
+  { id: "1", title: "Special Ops: Lioness", description: "مسلسل أكشن أمريكي", year: 2023, genre: ["أكشن", "دراما"], rating: 7.6, quality: "WEB-DL" },
+  { id: "2", title: "Venom: The Last Dance", description: "فيلم أكشن خيال علمي", year: 2024, genre: ["أكشن", "خيال علمي"], rating: 6.2, quality: "CAM" },
+  { id: "3", title: "Beneath Us", description: "فيلم رعب أمريكي", year: 2019, genre: ["رعب", "إثارة"], rating: 5.3, quality: "WEB-DL" },
+  { id: "4", title: "Dogs", description: "فيلم دراما", year: 2024, genre: ["دراما"], rating: 6.8, quality: "WEB-DL" },
+  { id: "5", title: "28 Years Later", description: "فيلم رعب وإثارة", year: 2025, genre: ["رعب", "إثارة"], rating: 7.1, quality: "WEB-DL" },
   
   // الصف الثاني
-  { id: "6", title: "Decided", description: "فيلم دراما", poster: "https://img.downet.net/thumb/178x260/uploads/J0AF8.webp", year: 2024, genre: ["دراما"], rating: 6.9, quality: "WEB-DL" },
-  { id: "7", title: "Osiris", description: "فيلم خيال علمي", poster: "https://img.downet.net/thumb/178x260/uploads/KogC3.webp", year: 2024, genre: ["خيال علمي"], rating: 5.8, quality: "WEB-DL" },
-  { id: "8", title: "Army of Darkness", description: "فيلم رعب كوميدي كلاسيكي", poster: "https://img.downet.net/thumb/178x260/uploads/Z2Djf.webp", year: 1992, genre: ["رعب", "كوميدي"], rating: 7.4, quality: "BluRay" },
-  { id: "9", title: "Revolver", description: "فيلم جريمة وإثارة", poster: "https://img.downet.net/thumb/178x260/uploads/Zupcj.webp", year: 2005, genre: ["جريمة", "إثارة"], rating: 6.3, quality: "BluRay" },
-  { id: "10", title: "Red Velvet", description: "فيلم رعب", poster: "https://img.downet.net/thumb/178x260/uploads/bSO7K.webp", year: 2024, genre: ["رعب"], rating: 5.2, quality: "WEB-DL" },
+  { id: "6", title: "Decided", description: "فيلم دراما", year: 2024, genre: ["دراما"], rating: 6.9, quality: "WEB-DL" },
+  { id: "7", title: "Osiris", description: "فيلم خيال علمي", year: 2024, genre: ["خيال علمي"], rating: 5.8, quality: "WEB-DL" },
+  { id: "8", title: "Army of Darkness", description: "فيلم رعب كوميدي كلاسيكي", year: 1992, genre: ["رعب", "كوميدي"], rating: 7.4, quality: "BluRay" },
+  { id: "9", title: "Revolver", description: "فيلم جريمة وإثارة", year: 2005, genre: ["جريمة", "إثارة"], rating: 6.3, quality: "BluRay" },
+  { id: "10", title: "Red Velvet", description: "فيلم رعب", year: 2024, genre: ["رعب"], rating: 5.2, quality: "WEB-DL" },
   
   // الصف الثالث
-  { id: "11", title: "Gilmore Girls", description: "مسلسل دراما كوميدي", poster: "https://img.downet.net/thumb/178x260/uploads/gk2fl.webp", year: 2000, genre: ["دراما", "كوميدي"], rating: 8.7, quality: "WEB-DL" },
-  { id: "12", title: "The Chronicles of Narnia", description: "فيلم فانتازيا ومغامرة", poster: "https://img.downet.net/thumb/178x260/uploads/jXyXQ.webp", year: 2005, genre: ["فانتازيا", "مغامرة"], rating: 6.9, quality: "BluRay" },
-  { id: "13", title: "Normal Human", description: "فيلم دراما", poster: "https://img.downet.net/thumb/178x260/uploads/oSJ7Y.webp", year: 2024, genre: ["دراما"], rating: 6.1, quality: "WEB-DL" },
-  { id: "14", title: "The Cleaner", description: "فيلم أكشن", poster: "https://img.downet.net/thumb/178x260/uploads/pv9vE.webp", year: 2024, genre: ["أكشن"], rating: 6.5, quality: "WEB-DL" },
-  { id: "15", title: "My Sweet Monster", description: "فيلم رسوم متحركة", poster: "https://img.downet.net/thumb/178x260/uploads/vGVxu.webp", year: 2021, genre: ["رسوم متحركة", "عائلي"], rating: 6.8, quality: "WEB-DL" },
+  { id: "11", title: "Gilmore Girls", description: "مسلسل دراما كوميدي", year: 2000, genre: ["دراما", "كوميدي"], rating: 8.7, quality: "WEB-DL" },
+  { id: "12", title: "The Chronicles of Narnia", description: "فيلم فانتازيا ومغامرة", year: 2005, genre: ["فانتازيا", "مغامرة"], rating: 6.9, quality: "BluRay" },
+  { id: "13", title: "Normal Human", description: "فيلم دراما", year: 2024, genre: ["دراما"], rating: 6.1, quality: "WEB-DL" },
+  { id: "14", title: "The Cleaner", description: "فيلم أكشن", year: 2024, genre: ["أكشن"], rating: 6.5, quality: "WEB-DL" },
+  { id: "15", title: "My Sweet Monster", description: "فيلم رسوم متحركة", year: 2021, genre: ["رسوم متحركة", "عائلي"], rating: 6.8, quality: "WEB-DL" },
   
   // إضافة أفلام إضافية لملء الشبكة (30 فيلم كما في الأصل)
-  { id: "16", title: "The Wicked", description: "فيلم رعب", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["رعب"], rating: 5.9, quality: "WEB-DL" },
-  { id: "17", title: "Desert Warrior", description: "فيلم مغامرة", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["مغامرة"], rating: 6.2, quality: "WEB-DL" },
-  { id: "18", title: "Blood Moon", description: "فيلم رعب", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["رعب"], rating: 5.7, quality: "WEB-DL" },
-  { id: "19", title: "City of Lights", description: "فيلم دراما", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["دراما"], rating: 7.1, quality: "WEB-DL" },
-  { id: "20", title: "The Last Stand", description: "فيلم أكشن", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["أكشن"], rating: 6.8, quality: "WEB-DL" },
+  { id: "16", title: "The Wicked", description: "فيلم رعب", year: 2024, genre: ["رعب"], rating: 5.9, quality: "WEB-DL" },
+  { id: "17", title: "Desert Warrior", description: "فيلم مغامرة", year: 2024, genre: ["مغامرة"], rating: 6.2, quality: "WEB-DL" },
+  { id: "18", title: "Blood Moon", description: "فيلم رعب", year: 2024, genre: ["رعب"], rating: 5.7, quality: "WEB-DL" },
+  { id: "19", title: "City of Lights", description: "فيلم دراما", year: 2024, genre: ["دراما"], rating: 7.1, quality: "WEB-DL" },
+  { id: "20", title: "The Last Stand", description: "فيلم أكشن", year: 2024, genre: ["أكشن"], rating: 6.8, quality: "WEB-DL" },
   
   // المزيد من الأفلام لإكمال 30 فيلم
-  { id: "21", title: "Mystery Valley", description: "فيلم غموض", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["غموض"], rating: 6.4, quality: "WEB-DL" },
-  { id: "22", title: "Space Rangers", description: "فيلم خيال علمي", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["خيال علمي"], rating: 6.9, quality: "WEB-DL" },
-  { id: "23", title: "Love Stories", description: "فيلم رومانسي", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["رومانسي"], rating: 7.2, quality: "WEB-DL" },
-  { id: "24", title: "War Heroes", description: "فيلم حربي", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["حربي"], rating: 7.5, quality: "WEB-DL" },
-  { id: "25", title: "Comedy Night", description: "فيلم كوميدي", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["كوميدي"], rating: 6.7, quality: "WEB-DL" },
-  { id: "26", title: "Ancient Secrets", description: "فيلم مغامرة", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["مغامرة"], rating: 6.6, quality: "WEB-DL" },
-  { id: "27", title: "Digital Dreams", description: "فيلم خيال علمي", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["خيال علمي"], rating: 6.3, quality: "WEB-DL" },
-  { id: "28", title: "Family Bonds", description: "فيلم عائلي", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["عائلي"], rating: 7.0, quality: "WEB-DL" },
-  { id: "29", title: "Ocean Deep", description: "فيلم مغامرة", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["مغامرة"], rating: 6.8, quality: "WEB-DL" },
-  { id: "30", title: "Time Traveler", description: "فيلم خيال علمي", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", year: 2024, genre: ["خيال علمي"], rating: 7.3, quality: "WEB-DL" }
+  { id: "21", title: "Mystery Valley", description: "فيلم غموض", year: 2024, genre: ["غموض"], rating: 6.4, quality: "WEB-DL" },
+  { id: "22", title: "Space Rangers", description: "فيلم خيال علمي", year: 2024, genre: ["خيال علمي"], rating: 6.9, quality: "WEB-DL" },
+  { id: "23", title: "Love Stories", description: "فيلم رومانسي", year: 2024, genre: ["رومانسي"], rating: 7.2, quality: "WEB-DL" },
+  { id: "24", title: "War Heroes", description: "فيلم حربي", year: 2024, genre: ["حربي"], rating: 7.5, quality: "WEB-DL" },
+  { id: "25", title: "Comedy Night", description: "فيلم كوميدي", year: 2024, genre: ["كوميدي"], rating: 6.7, quality: "WEB-DL" },
+  { id: "26", title: "Ancient Secrets", description: "فيلم مغامرة", year: 2024, genre: ["مغامرة"], rating: 6.6, quality: "WEB-DL" },
+  { id: "27", title: "Digital Dreams", description: "فيلم خيال علمي", year: 2024, genre: ["خيال علمي"], rating: 6.3, quality: "WEB-DL" },
+  { id: "28", title: "Family Bonds", description: "فيلم عائلي", year: 2024, genre: ["عائلي"], rating: 7.0, quality: "WEB-DL" },
+  { id: "29", title: "Ocean Deep", description: "فيلم مغامرة", year: 2024, genre: ["مغامرة"], rating: 6.8, quality: "WEB-DL" },
+  { id: "30", title: "Time Traveler", description: "فيلم خيال علمي", year: 2024, genre: ["خيال علمي"], rating: 7.3, quality: "WEB-DL" }
 ];
 
 export default function Movies() {
@@ -351,7 +352,13 @@ export default function Movies() {
                     <div className="entry-box entry-box-1">
                       <a href={`/movie/${movie.id}`}>
                         <div className="entry-image">
-                          <div className="image" style={{ backgroundImage: `url("${movie.poster}")` }}></div>
+                          <div className="image" data-title={movie.title} style={{ backgroundImage: `url("${defaultImage}")` }}>
+                            <img 
+                              src={defaultImage} 
+                              alt={movie.title}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          </div>
                           <div className="entry-overlay">
                             <div className="overlay-content">
                               <div className="entry-rating">
