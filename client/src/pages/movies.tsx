@@ -101,19 +101,6 @@ export default function Movies() {
         </div>
       </div>
 
-      {/* صندوق البحث - مطابق للأصل */}
-      <div className="search-box px-xl-5">
-        <div className="container search-container">
-          <form action="/search" className="search-form" method="get">
-            <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
-              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
-              <input type="search" name="q" id="searchBoxInput" placeholder="ابحث هنا" />
-            </label>
-          </form>
-          <div className="search-toggle"><i className="icon-arrow-back"></i></div>
-        </div>
-      </div>
-
       {/* site-container مطابق للأصل */}
       <div className="site-container">
         <div className="main-header-top"></div>
