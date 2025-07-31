@@ -1,7 +1,77 @@
 import { useEffect } from "react";
 import logoWhite from "@/assets/images/logo-white.svg";
 
-export default function Login() {
+// بيانات الأفلام المفضلة
+const favoriteMovies = [
+  {
+    id: 1,
+    title: "فيلم مفضل رقم 1",
+    category: "دراما",
+    year: "2024",
+    rating: 9.5,
+    image: "/assets/images/default.jpg",
+    description: "فيلم درامي رائع",
+    isFavorite: true,
+    addedDate: "2024-01-15"
+  },
+  {
+    id: 2,
+    title: "فيلم أكشن مميز",
+    category: "أكشن",
+    year: "2023",
+    rating: 9.2,
+    image: "/assets/images/default.jpg",
+    description: "فيلم أكشن مثير",
+    isFavorite: true,
+    addedDate: "2024-01-10"
+  },
+  {
+    id: 3,
+    title: "كوميديا محبوبة",
+    category: "كوميديا",
+    year: "2024",
+    rating: 8.8,
+    image: "/assets/images/default.jpg",
+    description: "فيلم كوميدي ممتع",
+    isFavorite: true,
+    addedDate: "2024-01-08"
+  },
+  {
+    id: 4,
+    title: "إثارة وتشويق",
+    category: "إثارة",
+    year: "2023",
+    rating: 9.0,
+    image: "/assets/images/default.jpg",
+    description: "فيلم مثير للغاية",
+    isFavorite: true,
+    addedDate: "2024-01-05"
+  },
+  {
+    id: 5,
+    title: "رومانسية جميلة",
+    category: "رومانسي",
+    year: "2024",
+    rating: 8.7,
+    image: "/assets/images/default.jpg",
+    description: "قصة حب رائعة",
+    isFavorite: true,
+    addedDate: "2024-01-01"
+  },
+  {
+    id: 6,
+    title: "خيال علمي",
+    category: "خيال علمي",
+    year: "2023",
+    rating: 8.9,
+    image: "/assets/images/default.jpg",
+    description: "فيلم خيال علمي مذهل",
+    isFavorite: true,
+    addedDate: "2023-12-28"
+  }
+];
+
+export default function FavoriteMovies() {
   useEffect(() => {
     // تغيير body class لتطابق الأصل
     document.body.className = 'header-fixed header-pages pace-done';
@@ -155,75 +225,124 @@ export default function Login() {
         <div className="main-header-height"></div>
         
         {/* Hidden inputs مطابقة للأصل */}
-        <input type="hidden" id="page_app" value="login" className="not-empty" />
+        <input type="hidden" id="page_app" value="favorite_movies" className="not-empty" />
         <input type="hidden" id="page_id" value="0" className="not-empty" />
 
-        {/* صفحة تسجيل الدخول */}
-        <div className="page page-login">
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-lg-6 col-md-8">
-                <div className="login-container">
-                  <div className="login-header text-center mb-4">
-                    <h1 className="login-title">تسجيل الدخول</h1>
-                    <p className="login-subtitle">ادخل لحسابك في يمن فليكس</p>
+        {/* صفحة الأرشيف - مطابقة للأصل */}
+        <div className="page page-archive">
+          <div className="archive-cover mb-4" style={{backgroundImage: "url('/assets/images/site-new.webp')"}}>
+            <div className="container">
+              <div className="row pb-3">
+                <div className="col-12 mt-auto">
+                  <div className="archive-title">
+                    <h1 className="title">الأفلام المفضلة</h1>
+                    <p className="description">مجموعة أفلامك المفضلة المحفوظة في قائمتك الشخصية</p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                  <form className="login-form">
-                    <div className="form-group mb-3">
-                      <label className="form-label">البريد الإلكتروني أو اسم المستخدم</label>
-                      <input 
-                        type="text" 
-                        className="form-control" 
-                        placeholder="أدخل بريدك الإلكتروني أو اسم المستخدم"
-                        required 
-                      />
-                    </div>
-
-                    <div className="form-group mb-3">
-                      <label className="form-label">كلمة المرور</label>
-                      <input 
-                        type="password" 
-                        className="form-control" 
-                        placeholder="أدخل كلمة المرور"
-                        required 
-                      />
-                    </div>
-
-                    <div className="form-group mb-3 d-flex justify-content-between align-items-center">
-                      <div className="form-check">
-                        <input type="checkbox" className="form-check-input" id="remember" />
-                        <label className="form-check-label" htmlFor="remember">
-                          تذكرني
-                        </label>
+          {/* فلاتر المحتوى */}
+          <div className="container mb-4">
+            <div className="page-filters">
+              <div className="row">
+                <div className="col-12">
+                  <div className="filters-wrap">
+                    <div className="filters d-flex flex-wrap">
+                      <div className="filter-item">
+                        <select className="form-control filter-select">
+                          <option value="">جميع الفئات</option>
+                          <option value="drama">دراما</option>
+                          <option value="action">أكشن</option>
+                          <option value="comedy">كوميديا</option>
+                          <option value="thriller">إثارة</option>
+                          <option value="romance">رومانسي</option>
+                          <option value="sci-fi">خيال علمي</option>
+                        </select>
                       </div>
-                      <a href="#" className="forgot-password">نسيت كلمة المرور؟</a>
-                    </div>
-
-                    <button type="submit" className="btn btn-primary btn-block w-100 mb-3">
-                      تسجيل الدخول
-                    </button>
-
-                    <div className="text-center">
-                      <p>ليس لديك حساب؟ <a href="#" className="register-link">إنشاء حساب جديد</a></p>
-                    </div>
-                  </form>
-
-                  <div className="social-login mt-4">
-                    <div className="divider">
-                      <span>أو</span>
-                    </div>
-                    <div className="social-buttons">
-                      <button className="btn btn-social btn-facebook">
-                        <i className="icon-facebook"></i>
-                        تسجيل الدخول بالفيسبوك
-                      </button>
-                      <button className="btn btn-social btn-google">
-                        <i className="icon-google"></i>
-                        تسجيل الدخول بجوجل
-                      </button>
+                      <div className="filter-item">
+                        <select className="form-control filter-select">
+                          <option value="">السنة</option>
+                          <option value="2024">2024</option>
+                          <option value="2023">2023</option>
+                          <option value="2022">2022</option>
+                        </select>
+                      </div>
+                      <div className="filter-item">
+                        <select className="form-control filter-select">
+                          <option value="">الترتيب</option>
+                          <option value="added">آخر إضافة</option>
+                          <option value="rating">الأعلى تقييماً</option>
+                          <option value="alphabetical">أبجدياً</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* شبكة الأفلام المفضلة */}
+          <div className="container">
+            <div className="page-content">
+              <div className="archive-content">
+                <div className="widgets-posts row">
+                  {favoriteMovies.map((movie) => (
+                    <div key={movie.id} className="col-lg-2 col-md-3 col-4 mb-4">
+                      <div className="widget widget-1">
+                        <div className="entry-box">
+                          <div className="entry-image">
+                            <a href={`/movie/${movie.id}`}>
+                              <img src={movie.image} alt={movie.title} className="img-fluid" />
+                              <div className="entry-overlay">
+                                <div className="overlay-content">
+                                  <div className="favorite-indicator">
+                                    <i className="icon-heart favorite-icon"></i>
+                                  </div>
+                                  <div className="rating">
+                                    <span className="rating-star">★</span>
+                                    <span className="rating-value">{movie.rating}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </a>
+                          </div>
+                          <div className="entry-content">
+                            <div className="entry-header">
+                              <h3 className="entry-title">
+                                <a href={`/movie/${movie.id}`}>
+                                  {movie.title}
+                                </a>
+                              </h3>
+                            </div>
+                            <div className="entry-meta">
+                              <span className="entry-category">{movie.category}</span>
+                              <span className="entry-year">{movie.year}</span>
+                              <span className="entry-added">أُضيف في {movie.addedDate}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* التنقل بين الصفحات */}
+                <div className="pagination-wrap mt-5">
+                  <nav className="pagination">
+                    <ul className="page-numbers d-flex justify-content-center">
+                      <li><a href="javascript:;" className="page-numbers current">1</a></li>
+                      <li><a href="/favorite-movies?page=2" className="page-numbers">2</a></li>
+                      <li><a href="/favorite-movies?page=3" className="page-numbers">3</a></li>
+                      <li><a href="/favorite-movies?page=4" className="page-numbers">4</a></li>
+                      <li><a href="/favorite-movies?page=5" className="page-numbers">5</a></li>
+                      <li><span className="page-numbers dots">…</span></li>
+                      <li><a href="/favorite-movies?page=12" className="page-numbers">12</a></li>
+                      <li><a href="/favorite-movies?page=2" className="next page-numbers">التالي ›</a></li>
+                    </ul>
+                  </nav>
                 </div>
               </div>
             </div>

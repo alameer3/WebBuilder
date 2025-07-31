@@ -1,6 +1,20 @@
 import { useEffect } from "react";
 import logoWhite from "@/assets/images/logo-white.svg";
 
+// بيانات المستخدم النموذجية
+const userData = {
+  name: "أحمد محمد",
+  email: "ahmed@example.com",
+  joinDate: "2023-10-15",
+  favoriteMovies: 45,
+  watchHistory: 128,
+  recentActivity: [
+    { id: 1, title: "فيلم الأكشن الجديد", type: "movie", date: "منذ ساعتين" },
+    { id: 2, title: "مسلسل الدراما - الحلقة 12", type: "episode", date: "منذ 4 ساعات" },
+    { id: 3, title: "برنامج كوميدي", type: "show", date: "أمس" },
+  ]
+};
+
 export default function Profile() {
   useEffect(() => {
     // تغيير body class لتطابق الأصل
@@ -80,163 +94,138 @@ export default function Profile() {
             </div>
           </div>
           <nav className="social d-flex justify-content-center">
-            <a href="#" className="mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="mx-2"><i className="icon-twitter"></i></a>
-            <a href="#" className="mx-2"><i className="icon-instagram"></i></a>
+            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
+            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
           </nav>
         </div>
       </div>
 
-      {/* site-container مطابق للأصل */}
+      {/* مربع البحث */}
+      <div className="search-box px-xl-5">
+        <div className="container search-container">
+          <form className="search-form" method="get">
+            <label className="d-flex align-items-center h-100 w-100 m-0">
+              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
+              <input type="search" name="q" placeholder="ابحث هنا" />
+            </label>
+          </form>
+        </div>
+      </div>
+
+      {/* موقع الحاوية */}
       <div className="site-container">
-        <div className="main-header-top"></div>
-        
-        {/* الهيدر الرئيسي - مطابق للأصل تماماً */}
+        {/* الهيدر الكامل - مطابق للأصل */}
         <header className="main-header">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-auto">
-              <h2 className="main-logo m-0">
-                <a href="/main" className="d-inline-flex">
-                  <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                </a>
-              </h2>
-            </div>
-            <div className="col-auto menu-toggle-container">
-              <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
-                <span className="icn">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </span>
-                <div className="text font-size-18 mr-3">الأقسام</div>
-              </a>
-            </div>
-            <div className="ml-auto"></div>
-            <div className="col-md-5 col-lg-6 search-container">
-              <div className="search-form">
-                <form action="/search" method="get">
-                  <input type="text" id="headerSearchInput" name="q" />
-                  <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
-                  <button type="submit"><i className="icon-search"></i></button>
-                </form>
-              </div>
-            </div>
-            <div className="col-auto mr-xl-3">
-              <div className="main-categories list-inline-item m-0 d-none d-xl-block">
-                <a href="/recent" className="modern-category">الأحدث</a>
-                <a href="/mix" className="modern-category">منوعات</a>
-                <a href="/shows" className="modern-category">تلفزيون</a>
-                <a href="/series" className="modern-category">مسلسلات</a>
-                <a href="/movies" className="modern-category">أفلام</a>
-              </div>
-            </div>
-            <div className="col-auto">
-              <div className="list-inline-item m-0">
-                <div className="user-account">
-                  <a href="/profile">
-                    <i className="icon-account_circle font-size-30"></i>
+          <div className="container">
+            <div className="row align-items-center py-3">
+              <div className="col-lg-2 col-md-3 col-6">
+                <div className="logo">
+                  <a href="/">
+                    <img src={logoWhite} alt="يمن فليكس" className="img-fluid" />
                   </a>
+                </div>
+              </div>
+              
+              <div className="col-lg-8 col-md-6 d-none d-md-block">
+                <nav className="main-nav">
+                  <ul className="nav-list d-flex justify-content-center align-items-center">
+                    <li className="nav-item">
+                      <a href="/movies" className="nav-link">أفلام</a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/series" className="nav-link">مسلسلات</a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/shows" className="nav-link">تلفزيون</a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/mix" className="nav-link">منوعات</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              
+              <div className="col-lg-2 col-md-3 col-6">
+                <div className="header-actions d-flex justify-content-end align-items-center">
+                  <button className="search-toggle btn-icon mr-3">
+                    <i className="icon-search"></i>
+                  </button>
+                  <button className="menu-toggle btn-icon d-md-none">
+                    <div className="icn">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         </header>
 
-        {/* محتوى الصفحة */}
-        <div className="main-content">
-          <div className="container">
-            <div className="row">
-              <div className="col-12">
-                {/* عنوان الصفحة */}
-                <div className="page-title">
-                  <h1>الملف الشخصي</h1>
-                  <p>إدارة حسابك وتفضيلاتك</p>
-                </div>
+        <div className="main-header-height"></div>
+        
+        {/* Hidden inputs مطابقة للأصل */}
+        <input type="hidden" id="page_app" value="profile" className="not-empty" />
+        <input type="hidden" id="page_id" value="0" className="not-empty" />
 
-                {/* معلومات المستخدم */}
-                <div className="profile-section">
-                  <div className="row">
-                    <div className="col-md-4">
-                      <div className="user-avatar text-center">
-                        <div className="avatar-placeholder">
-                          <i className="icon-account_circle font-size-100"></i>
-                        </div>
-                        <h3 className="user-name mt-3">مستخدم يمني</h3>
-                        <p className="user-email">user@yemenflix.com</p>
-                        <div className="user-stats mt-4">
-                          <div className="stat-item">
-                            <span className="stat-value">25</span>
-                            <span className="stat-label">المفضلة</span>
-                          </div>
-                          <div className="stat-item">
-                            <span className="stat-value">156</span>
-                            <span className="stat-label">تم المشاهدة</span>
-                          </div>
-                        </div>
-                      </div>
+        {/* صفحة الملف الشخصي */}
+        <div className="page page-profile">
+          <div className="profile-cover mb-4" style={{backgroundImage: "url('/assets/images/site-new.webp')"}}>
+            <div className="container">
+              <div className="row pb-3">
+                <div className="col-12 mt-auto">
+                  <div className="profile-header">
+                    <div className="profile-avatar">
+                      <img src="/assets/images/default.jpg" alt="الصورة الشخصية" className="avatar-image" />
                     </div>
-                    <div className="col-md-8">
-                      <div className="profile-content">
-                        <div className="profile-tabs">
-                          <div className="tab-content">
-                            <h4>المعلومات الشخصية</h4>
-                            <form className="profile-form">
-                              <div className="form-group">
-                                <label>اسم المستخدم</label>
-                                <input type="text" className="form-control" defaultValue="مستخدم يمني" />
-                              </div>
-                              <div className="form-group">
-                                <label>البريد الإلكتروني</label>
-                                <input type="email" className="form-control" defaultValue="user@yemenflix.com" />
-                              </div>
-                              <div className="form-group">
-                                <label>كلمة المرور</label>
-                                <input type="password" className="form-control" placeholder="••••••••" />
-                              </div>
-                              <div className="form-group">
-                                <label>تأكيد كلمة المرور</label>
-                                <input type="password" className="form-control" placeholder="••••••••" />
-                              </div>
-                              <button type="submit" className="btn btn-primary">
-                                حفظ التغييرات
-                              </button>
-                            </form>
-                          </div>
-                        </div>
+                    <div className="profile-info">
+                      <h1 className="profile-name">{userData.name}</h1>
+                      <p className="profile-email">{userData.email}</p>
+                      <p className="profile-join-date">عضو منذ {userData.joinDate}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="container">
+            <div className="profile-content">
+              <div className="row">
+                {/* إحصائيات المستخدم */}
+                <div className="col-lg-4 mb-4">
+                  <div className="profile-stats">
+                    <h3 className="stats-title">الإحصائيات</h3>
+                    <div className="stats-items">
+                      <div className="stat-item">
+                        <div className="stat-number">{userData.favoriteMovies}</div>
+                        <div className="stat-label">فيلم في المفضلة</div>
+                      </div>
+                      <div className="stat-item">
+                        <div className="stat-number">{userData.watchHistory}</div>
+                        <div className="stat-label">عمل تمت مشاهدته</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* قائمة المفضلة */}
-                <div className="favorites-section mt-5">
-                  <h4>قائمة المفضلة</h4>
-                  <div className="widget">
-                    <div className="widget-body row flex-wrap">
-                      {Array.from({ length: 12 }).map((_, index) => (
-                        <div key={index} className="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
-                          <div className="entry-box-1 text-center">
-                            <div className="entry-image position-relative">
-                              <a href={`/movie/${index + 1}`}>
-                                <img 
-                                  src="/src/assets/images/default.jpg" 
-                                  alt={`مفضل ${index + 1}`}
-                                  className="img-fluid rounded"
-                                />
-                              </a>
-                              <div className="entry-rating">
-                                <span>8.{index % 10}</span>
-                              </div>
-                            </div>
-                            <div className="entry-body px-3 pb-3 text-center">
-                              <h5 className="entry-title mb-1">
-                                <a href={`/movie/${index + 1}`}>
-                                  {index % 2 === 0 ? `فيلم مفضل ${index + 1}` : `مسلسل مفضل ${index + 1}`}
-                                </a>
-                              </h5>
-                            </div>
+                {/* النشاط الأخير */}
+                <div className="col-lg-8 mb-4">
+                  <div className="profile-activity">
+                    <h3 className="activity-title">النشاط الأخير</h3>
+                    <div className="activity-list">
+                      {userData.recentActivity.map((activity) => (
+                        <div key={activity.id} className="activity-item">
+                          <div className="activity-icon">
+                            <i className={`icon-${activity.type === 'movie' ? 'video-camera' : activity.type === 'episode' ? 'monitor' : 'tv'}`}></i>
+                          </div>
+                          <div className="activity-content">
+                            <h4 className="activity-title">{activity.title}</h4>
+                            <p className="activity-date">{activity.date}</p>
                           </div>
                         </div>
                       ))}
@@ -244,37 +233,55 @@ export default function Profile() {
                   </div>
                 </div>
               </div>
+
+              {/* إعدادات الحساب */}
+              <div className="row mt-4">
+                <div className="col-12">
+                  <div className="profile-settings">
+                    <h3 className="settings-title">إعدادات الحساب</h3>
+                    <div className="settings-actions">
+                      <a href="/favorite-movies" className="btn btn-primary">أفلامي المفضلة</a>
+                      <a href="/recent" className="btn btn-secondary">المشاهدة الأخيرة</a>
+                      <a href="/logout" className="btn btn-outline">تسجيل الخروج</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* الفوتر */}
+        {/* الفوتر الكامل - مطابق للأصل */}
         <footer className="main-footer">
           <div className="container">
             <div className="footer-content">
               <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-8">
                   <div className="footer-links">
-                    <a href="/about">حول الموقع</a>
-                    <a href="/contact">اتصل بنا</a>
-                    <a href="/privacy">سياسة الخصوصية</a>
+                    <a href="/dmca">DMCA</a>
+                    <a href="/ad-policy">سياسة الإعلانات</a>
+                    <a href="/contactus">اتصل بنا</a>
                   </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="social-links">
-                    <a href="#" className="social-link"><i className="icon-facebook"></i></a>
-                    <a href="#" className="social-link"><i className="icon-twitter"></i></a>
-                    <a href="#" className="social-link"><i className="icon-instagram"></i></a>
-                    <a href="#" className="social-link"><i className="icon-youtube"></i></a>
+                <div className="col-md-4">
+                  <div className="footer-social">
+                    <a href="#" className="social-link facebook"><i className="icon-facebook"></i></a>
+                    <a href="#" className="social-link youtube"><i className="icon-youtube"></i></a>
+                    <a href="#" className="social-link app-store"><i className="icon-app-store"></i></a>
                   </div>
                 </div>
               </div>
-              <div className="copyright text-center mt-3">
-                <p>&copy; 2025 يمن فليكس. جميع الحقوق محفوظة.</p>
+              <div className="footer-bottom mt-3">
+                <p className="copyright text-center">
+                  جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
+                </p>
               </div>
             </div>
           </div>
         </footer>
+
+        {/* عنصر نهاية القائمة للـ JavaScript */}
+        <div id="main-categories-list-end"></div>
       </div>
     </>
   );

@@ -1,6 +1,76 @@
 import { useEffect } from "react";
 import logoWhite from "@/assets/images/logo-white.svg";
 
+// بيانات المحتوى المضاف حديثاً
+const recentContent = [
+  {
+    id: 1,
+    title: "فيلم حديث 2024",
+    category: "دراما",
+    year: "2024",
+    rating: 9.1,
+    image: "/assets/images/default.jpg",
+    description: "فيلم درامي جديد",
+    addedDate: "منذ ساعتين",
+    type: "movie"
+  },
+  {
+    id: 2,
+    title: "مسلسل جديد - الحلقة 5",
+    category: "إثارة",
+    year: "2024",
+    rating: 8.9,
+    image: "/assets/images/default.jpg",
+    description: "حلقة جديدة مثيرة",
+    addedDate: "منذ 4 ساعات",
+    type: "episode"
+  },
+  {
+    id: 3,
+    title: "برنامج حواري جديد",
+    category: "منوعات",
+    year: "2024",
+    rating: 8.5,
+    image: "/assets/images/default.jpg",
+    description: "برنامج حواري مميز",
+    addedDate: "منذ 6 ساعات",
+    type: "show"
+  },
+  {
+    id: 4,
+    title: "وثائقي الطبيعة الحديث",
+    category: "وثائقي",
+    year: "2024",
+    rating: 9.3,
+    image: "/assets/images/default.jpg",
+    description: "وثائقي مذهل عن الطبيعة",
+    addedDate: "منذ 8 ساعات",
+    type: "documentary"
+  },
+  {
+    id: 5,
+    title: "كوميديا جديدة",
+    category: "كوميديا",
+    year: "2024",
+    rating: 8.7,
+    image: "/assets/images/default.jpg",
+    description: "فيلم كوميدي مسلي",
+    addedDate: "منذ 12 ساعة",
+    type: "movie"
+  },
+  {
+    id: 6,
+    title: "أكشن مثير جديد",
+    category: "أكشن",
+    year: "2024",
+    rating: 8.8,
+    image: "/assets/images/default.jpg",
+    description: "فيلم أكشن رائع",
+    addedDate: "منذ يوم واحد",
+    type: "movie"
+  }
+];
+
 export default function Recent() {
   useEffect(() => {
     // تغيير body class لتطابق الأصل
@@ -80,166 +150,235 @@ export default function Recent() {
             </div>
           </div>
           <nav className="social d-flex justify-content-center">
-            <a href="#" className="mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="mx-2"><i className="icon-twitter"></i></a>
-            <a href="#" className="mx-2"><i className="icon-instagram"></i></a>
+            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
+            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
           </nav>
         </div>
       </div>
 
-      {/* site-container مطابق للأصل */}
+      {/* مربع البحث */}
+      <div className="search-box px-xl-5">
+        <div className="container search-container">
+          <form className="search-form" method="get">
+            <label className="d-flex align-items-center h-100 w-100 m-0">
+              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
+              <input type="search" name="q" placeholder="ابحث هنا" />
+            </label>
+          </form>
+        </div>
+      </div>
+
+      {/* موقع الحاوية */}
       <div className="site-container">
-        <div className="main-header-top"></div>
-        
-        {/* الهيدر الرئيسي - مطابق للأصل تماماً */}
+        {/* الهيدر الكامل - مطابق للأصل */}
         <header className="main-header">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-auto">
-              <h2 className="main-logo m-0">
-                <a href="/main" className="d-inline-flex">
-                  <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                </a>
-              </h2>
-            </div>
-            <div className="col-auto menu-toggle-container">
-              <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
-                <span className="icn">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </span>
-                <div className="text font-size-18 mr-3">الأقسام</div>
-              </a>
-            </div>
-            <div className="ml-auto"></div>
-            <div className="col-md-5 col-lg-6 search-container">
-              <div className="search-form">
-                <form action="/search" method="get">
-                  <input type="text" id="headerSearchInput" name="q" />
-                  <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
-                  <button type="submit"><i className="icon-search"></i></button>
-                </form>
-              </div>
-            </div>
-            <div className="col-auto mr-xl-3">
-              <div className="main-categories list-inline-item m-0 d-none d-xl-block">
-                <a href="/recent" className="modern-category active">الأحدث</a>
-                <a href="/mix" className="modern-category">منوعات</a>
-                <a href="/shows" className="modern-category">تلفزيون</a>
-                <a href="/series" className="modern-category">مسلسلات</a>
-                <a href="/movies" className="modern-category">أفلام</a>
-              </div>
-            </div>
-            <div className="col-auto">
-              <div className="list-inline-item m-0">
-                <div className="user-account">
-                  <a href="/profile">
-                    <i className="icon-account_circle font-size-30"></i>
+          <div className="container">
+            <div className="row align-items-center py-3">
+              <div className="col-lg-2 col-md-3 col-6">
+                <div className="logo">
+                  <a href="/">
+                    <img src={logoWhite} alt="يمن فليكس" className="img-fluid" />
                   </a>
+                </div>
+              </div>
+              
+              <div className="col-lg-8 col-md-6 d-none d-md-block">
+                <nav className="main-nav">
+                  <ul className="nav-list d-flex justify-content-center align-items-center">
+                    <li className="nav-item">
+                      <a href="/movies" className="nav-link">أفلام</a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/series" className="nav-link">مسلسلات</a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/shows" className="nav-link">تلفزيون</a>
+                    </li>
+                    <li className="nav-item">
+                      <a href="/mix" className="nav-link">منوعات</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              
+              <div className="col-lg-2 col-md-3 col-6">
+                <div className="header-actions d-flex justify-content-end align-items-center">
+                  <button className="search-toggle btn-icon mr-3">
+                    <i className="icon-search"></i>
+                  </button>
+                  <button className="menu-toggle btn-icon d-md-none">
+                    <div className="icn">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         </header>
 
-        {/* محتوى الصفحة */}
-        <div className="main-content">
-          <div className="container">
-            <div className="row">
-              <div className="col-12">
-                {/* عنوان الصفحة */}
-                <div className="page-title">
-                  <h1>الأحدث</h1>
-                  <p>أحدث الأفلام والمسلسلات المضافة حديثاً</p>
-                </div>
+        <div className="main-header-height"></div>
+        
+        {/* Hidden inputs مطابقة للأصل */}
+        <input type="hidden" id="page_app" value="recent" className="not-empty" />
+        <input type="hidden" id="page_id" value="0" className="not-empty" />
 
-                {/* شبكة المحتوى الحديث */}
-                <div className="widget">
-                  <div className="widget-body row flex-wrap">
-                    {/* مثال على المحتوى الحديث */}
-                    {Array.from({ length: 30 }).map((_, index) => (
-                      <div key={index} className="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
-                        <div className="entry-box-1 text-center">
-                          <div className="entry-image position-relative">
-                            <a href={`/recent/${index + 1}`}>
-                              <img 
-                                src="/src/assets/images/default.jpg" 
-                                alt={`جديد ${index + 1}`}
-                                className="img-fluid rounded"
-                              />
+        {/* صفحة الأرشيف - مطابقة للأصل */}
+        <div className="page page-archive">
+          <div className="archive-cover mb-4" style={{backgroundImage: "url('/assets/images/site-new.webp')"}}>
+            <div className="container">
+              <div className="row pb-3">
+                <div className="col-12 mt-auto">
+                  <div className="archive-title">
+                    <h1 className="title">أُضيف حديثاً</h1>
+                    <p className="description">آخر الأفلام والمسلسلات والبرامج المضافة حديثاً للموقع</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* فلاتر المحتوى */}
+          <div className="container mb-4">
+            <div className="page-filters">
+              <div className="row">
+                <div className="col-12">
+                  <div className="filters-wrap">
+                    <div className="filters d-flex flex-wrap">
+                      <div className="filter-item">
+                        <select className="form-control filter-select">
+                          <option value="">جميع الأنواع</option>
+                          <option value="movie">أفلام</option>
+                          <option value="episode">حلقات</option>
+                          <option value="show">برامج</option>
+                          <option value="documentary">وثائقيات</option>
+                        </select>
+                      </div>
+                      <div className="filter-item">
+                        <select className="form-control filter-select">
+                          <option value="">الفئة</option>
+                          <option value="drama">دراما</option>
+                          <option value="action">أكشن</option>
+                          <option value="comedy">كوميديا</option>
+                          <option value="thriller">إثارة</option>
+                        </select>
+                      </div>
+                      <div className="filter-item">
+                        <select className="form-control filter-select">
+                          <option value="">الفترة الزمنية</option>
+                          <option value="today">اليوم</option>
+                          <option value="week">هذا الأسبوع</option>
+                          <option value="month">هذا الشهر</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* شبكة المحتوى الحديث */}
+          <div className="container">
+            <div className="page-content">
+              <div className="archive-content">
+                <div className="widgets-posts row">
+                  {recentContent.map((item) => (
+                    <div key={item.id} className="col-lg-2 col-md-3 col-4 mb-4">
+                      <div className="widget widget-1">
+                        <div className="entry-box">
+                          <div className="entry-image">
+                            <a href={`/${item.type}/${item.id}`}>
+                              <img src={item.image} alt={item.title} className="img-fluid" />
+                              <div className="entry-overlay">
+                                <div className="overlay-content">
+                                  <div className="recent-badge">
+                                    <span className="badge-new">جديد</span>
+                                  </div>
+                                  <div className="rating">
+                                    <span className="rating-star">★</span>
+                                    <span className="rating-value">{item.rating}</span>
+                                  </div>
+                                </div>
+                              </div>
                             </a>
-                            <div className="entry-rating">
-                              <span>8.{index % 10}</span>
-                            </div>
-                            <div className="entry-new-badge">
-                              <span>جديد</span>
-                            </div>
-                            <div className="entry-date">
-                              <span>منذ {Math.floor(Math.random() * 7) + 1} أيام</span>
-                            </div>
                           </div>
-                          <div className="entry-body px-3 pb-3 text-center">
-                            <h5 className="entry-title mb-1">
-                              <a href={`/recent/${index + 1}`}>
-                                {index % 2 === 0 ? `فيلم حديث ${index + 1}` : `مسلسل حديث ${index + 1}`}
-                              </a>
-                            </h5>
-                            <div className="entry-meta text-muted small">
-                              <span>2025</span> • <span>عربي</span>
+                          <div className="entry-content">
+                            <div className="entry-header">
+                              <h3 className="entry-title">
+                                <a href={`/${item.type}/${item.id}`}>
+                                  {item.title}
+                                </a>
+                              </h3>
+                            </div>
+                            <div className="entry-meta">
+                              <span className="entry-category">{item.category}</span>
+                              <span className="entry-year">{item.year}</span>
+                              <span className="entry-added">{item.addedDate}</span>
                             </div>
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
 
                 {/* التنقل بين الصفحات */}
-                <div className="pagination-container text-center mt-4">
-                  <div className="pagination">
-                    <a href="/recent?page=1" className="page-link active">1</a>
-                    <a href="/recent?page=2" className="page-link">2</a>
-                    <a href="/recent?page=3" className="page-link">3</a>
-                    <a href="/recent?page=4" className="page-link">4</a>
-                    <a href="/recent?page=5" className="page-link">5</a>
-                    <span className="page-dots">...</span>
-                    <a href="/recent?page=25" className="page-link">25</a>
-                  </div>
+                <div className="pagination-wrap mt-5">
+                  <nav className="pagination">
+                    <ul className="page-numbers d-flex justify-content-center">
+                      <li><a href="javascript:;" className="page-numbers current">1</a></li>
+                      <li><a href="/recent?page=2" className="page-numbers">2</a></li>
+                      <li><a href="/recent?page=3" className="page-numbers">3</a></li>
+                      <li><a href="/recent?page=4" className="page-numbers">4</a></li>
+                      <li><a href="/recent?page=5" className="page-numbers">5</a></li>
+                      <li><span className="page-numbers dots">…</span></li>
+                      <li><a href="/recent?page=30" className="page-numbers">30</a></li>
+                      <li><a href="/recent?page=2" className="next page-numbers">التالي ›</a></li>
+                    </ul>
+                  </nav>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* الفوتر */}
+        {/* الفوتر الكامل - مطابق للأصل */}
         <footer className="main-footer">
           <div className="container">
             <div className="footer-content">
               <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-8">
                   <div className="footer-links">
-                    <a href="/about">حول الموقع</a>
-                    <a href="/contact">اتصل بنا</a>
-                    <a href="/privacy">سياسة الخصوصية</a>
+                    <a href="/dmca">DMCA</a>
+                    <a href="/ad-policy">سياسة الإعلانات</a>
+                    <a href="/contactus">اتصل بنا</a>
                   </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="social-links">
-                    <a href="#" className="social-link"><i className="icon-facebook"></i></a>
-                    <a href="#" className="social-link"><i className="icon-twitter"></i></a>
-                    <a href="#" className="social-link"><i className="icon-instagram"></i></a>
-                    <a href="#" className="social-link"><i className="icon-youtube"></i></a>
+                <div className="col-md-4">
+                  <div className="footer-social">
+                    <a href="#" className="social-link facebook"><i className="icon-facebook"></i></a>
+                    <a href="#" className="social-link youtube"><i className="icon-youtube"></i></a>
+                    <a href="#" className="social-link app-store"><i className="icon-app-store"></i></a>
                   </div>
                 </div>
               </div>
-              <div className="copyright text-center mt-3">
-                <p>&copy; 2025 يمن فليكس. جميع الحقوق محفوظة.</p>
+              <div className="footer-bottom mt-3">
+                <p className="copyright text-center">
+                  جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
+                </p>
               </div>
             </div>
           </div>
         </footer>
+
+        {/* عنصر نهاية القائمة للـ JavaScript */}
+        <div id="main-categories-list-end"></div>
       </div>
     </>
   );

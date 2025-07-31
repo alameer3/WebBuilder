@@ -28,11 +28,13 @@ import PersonDetail from "@/pages/person-detail";
 import EpisodeDetail from "@/pages/episode-detail";
 import DMCA from "@/pages/dmca";
 import AdPolicy from "@/pages/ad-policy";
+import Ones from "@/pages/ones";
+import FavoriteMovies from "@/pages/favorite-movies";
 
 function Router() {
   const [location] = useLocation();
   const isHomePage = location === "/" || location === "/home" || location === "/main";
-  const isFullLayoutPage = isHomePage || location === "/movies" || location === "/series" || location === "/shows" || location === "/mix" || location === "/recent" || location === "/search" || location === "/login" || location === "/profile" || location === "/contactus" || location === "/dmca" || location === "/ad-policy" || location.startsWith("/movie/") || location.startsWith("/series/") || location.startsWith("/person/") || location.includes("/episode/");
+  const isFullLayoutPage = isHomePage || location === "/movies" || location === "/series" || location === "/shows" || location === "/mix" || location === "/recent" || location === "/search" || location === "/login" || location === "/profile" || location === "/contactus" || location === "/dmca" || location === "/ad-policy" || location === "/ones" || location === "/favorite-movies" || location.startsWith("/movie/") || location.startsWith("/series/") || location.startsWith("/person/") || location.includes("/episode/");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
@@ -59,6 +61,8 @@ function Router() {
             <Route path="/series/:seriesId/episode/:episodeId" component={EpisodeDetail} />
             <Route path="/dmca" component={DMCA} />
             <Route path="/ad-policy" component={AdPolicy} />
+            <Route path="/ones" component={Ones} />
+            <Route path="/favorite-movies" component={FavoriteMovies} />
             <Route path="/favorites" component={Favorites} />
             <Route path="/notifications" component={Notifications} />
             <Route component={NotFound} />
