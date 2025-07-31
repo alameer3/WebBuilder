@@ -19,6 +19,7 @@ import Profile from "@/pages/profile";
 import Login from "@/pages/login";
 import Contact from "@/pages/contact";
 import MovieDetails from "@/pages/movie-details";
+import MovieDetail from "@/pages/movie-detail";
 import SeriesDetail from "@/pages/series-detail";
 import Favorites from "@/pages/favorites";
 import Notifications from "@/pages/notifications";
@@ -48,7 +49,7 @@ function Router() {
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Login} />
             <Route path="/contactus" component={Contact} />
-            <Route path="/movie/:id" component={MovieDetails} />
+            <Route path="/movie/:id" component={MovieDetail} />
             <Route path="/series/:id" component={SeriesDetail} />
             <Route path="/favorites" component={Favorites} />
             <Route path="/notifications" component={Notifications} />
