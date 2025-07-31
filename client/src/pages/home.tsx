@@ -3,6 +3,12 @@ import '../assets/css/plugins.css';
 import '../assets/css/style.css';
 import '../assets/css/home.css';
 
+// استيراد الصور
+import logoWhite from '../assets/images/yemen-flix-logo-white.svg';
+import siteNewBg from '../assets/images/site-new.webp';
+import homeBg from '../assets/images/home-bg.webp';
+import defaultAvatar from '../assets/images/default.jpg';
+
 declare global {
   interface Window {
     Typed: any;
@@ -14,7 +20,7 @@ export default function Home() {
   useEffect(() => {
     // إضافة الخلفية للـ body وكلاسات CSS
     document.body.className = 'header-fixed body-home';
-    document.body.style.background = 'linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(/src/assets/images/home-bg.webp)';
+    document.body.style.background = `linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(${homeBg})`;
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center';
     document.body.style.backgroundAttachment = 'fixed';
@@ -27,13 +33,10 @@ export default function Home() {
       typedScript.src = '/src/assets/js/typed.min.js';
       typedScript.onload = () => {
         if (window.Typed) {
-          // تطبيق Typed.js على مربع البحث الرئيسي
-          new window.Typed('.widget-2 .form label[for="widget2SearchInput"] .label', {
+          // تطبيق Typed.js على مربع البحث الرئيسي (بنفس الطريقة الأصلية)
+          new window.Typed('.widget-2 .form label[for="widget2SearchInput"] span', {
             stringsElement: ".widget-2 .form .label-text",
-            typeSpeed: 30,
-            backSpeed: 20,
-            backDelay: 2000,
-            loop: true
+            typeSpeed: 30
           });
         }
       };
@@ -149,12 +152,12 @@ export default function Home() {
                 <div className="col-auto">
                   <h2 className="main-logo m-0">
                     <a href="/" className="d-inline-flex">
-                      <img src="/src/assets/images/yemen-flix-logo-white.svg" className="img-fluid" alt="يمن فليكس" />
+                      <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
                     </a>
                   </h2>
                 </div>
                 <div className="col-auto menu-toggle-container">
-                  <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
+                  <a href="#" className="menu-toggle d-flex align-items-center text-white" onClick={(e) => e.preventDefault()}>
                     <span className="icn"></span>
                     <div className="text font-size-18 mr-3">الأقسام</div>
                   </a>
@@ -175,20 +178,16 @@ export default function Home() {
                     <span>أضيف حديثا</span>
                   </a>
                 </div>
-                <div className="col-auto search-toggle-container">
-                  <a href="javascript:;" className="search-toggle">
-                    <i className="icon-search"></i>
-                  </a>
-                </div>
+
                 <div className="col-auto user-profile-container">
                   <div className="user-panel">
-                    <a className="user-toggle d-block font-size-20 private hide" href="javascript:;">
+                    <a className="user-toggle d-block font-size-20 private hide" href="#" onClick={(e) => e.preventDefault()}>
                       <i className="icon-user"></i>
                     </a>
                     <div className="login-panel private hide">
                       <div className="user-logged d-flex align-items-center no-gutters p-3">
                         <div className="col-auto">
-                          <img src="/src/assets/images/default.jpg" className="img-fluid rounded-circle" alt="user avatar" />
+                          <img src={defaultAvatar} className="img-fluid rounded-circle" alt="user avatar" />
                         </div>
                         <div className="col pr-2">
                           <div className="username font-size-14 font-weight-normal text-truncate text-white mb-0 mr-1" style={{width: '120px', height: '22px'}}>
@@ -228,7 +227,7 @@ export default function Home() {
                 }}></a>
               </h1>
               <div className="home-site-btn" style={{
-                backgroundImage: 'url(/src/assets/images/site-new.webp)',
+                backgroundImage: `url(${siteNewBg})`,
                 transition: 'background-position 5s'
               }}>
                 <span className="logo">
@@ -310,6 +309,19 @@ export default function Home() {
             <a href="/notifications" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
             <a href="/contact" className="email mx-2"><i className="icon-email"></i></a>
           </nav>
+
+          <nav className="links d-flex justify-content-center mt-3">
+            <a href="/" className="mx-2">يمن فليكس</a>
+            <a href="/old" target="_blank" className="mx-2">الموقع القديم</a>
+            <a href="/dmca" className="mx-2">DMCA</a>
+            <a href="/ad-policy" className="mx-2">AD-P</a>
+            <a href="/news" target="_blank" className="mx-2">يمن فليكس نيوز</a>
+            <a href="/network" target="_blank" className="mx-2">شبكة يمن فليكس</a>
+          </nav>
+
+          <p className="copyright mb-0 font-size-12 text-center mt-3">
+            جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
+          </p>
         </footer>
       </div>
 
