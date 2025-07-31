@@ -10,6 +10,7 @@ import Sidebar from "@/components/Sidebar";
 
 // Pages
 import Home from "@/pages/home";
+import Search from "@/pages/search";
 import Movies from "@/pages/movies";
 import Series from "@/pages/series";
 import Recent from "@/pages/recent";
@@ -37,6 +38,7 @@ function Router() {
             <Route path="/" component={Home} />
             <Route path="/home" component={Home} />
             <Route path="/main" component={Home} />
+            <Route path="/search" component={Search} />
             <Route path="/movies" component={Movies} />
             <Route path="/series" component={Series} />
             <Route path="/recent" component={Recent} />

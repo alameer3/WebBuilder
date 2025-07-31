@@ -26,3 +26,48 @@
 .widget.widget-style-1 .widget-body .text-white{
   word-wrap: break-word;
 }
+
+/* زر الأقسام مع الأسهم الثلاثة - Hamburger Menu */
+.menu-toggle .icn {
+  display: flex;
+  flex-direction: column;
+  width: 24px;
+  height: 18px;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-left: 12px;
+}
+
+.menu-toggle .icn span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: #fff;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+/* تأثيرات التفاعل */
+.menu-toggle:hover .icn span {
+  background: #f3951e;
+}
+
+/* عند فتح القائمة */
+body.main-menu-active .menu-toggle .icn span:first-child {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+body.main-menu-active .menu-toggle .icn span:nth-child(2) {
+  opacity: 0;
+}
+
+body.main-menu-active .menu-toggle .icn span:last-child {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* يمن فليكس - أنماط إضافية مخصصة */
+body, .main-header, .main-logo, .menu-toggle {
+  font-family: 'yemen-flix', 'Noto Sans Arabic', Arial, sans-serif;
+  direction: rtl;
+  text-align: right;
+}
