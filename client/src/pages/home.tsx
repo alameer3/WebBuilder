@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
-import '../assets/css/plugins.css';
-import '../assets/css/style.css';  
-import '../assets/css/yemen-flix.css';
-import '../assets/css/home.css';
+// ملفات CSS متضمنة في index.css
 
 // استيراد الصور
 import logoWhite from '../assets/images/yemen-flix-logo-white.svg';
