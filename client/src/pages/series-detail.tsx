@@ -7,9 +7,10 @@ import { useEffect } from "react";
 // استيراد الصور والأصول المطلوبة
 import logoWhite from "../assets/images/logo-white.svg";
 import defaultAvatar from "../assets/images/default.jpg";
-// استيراد الأيقونات من مجلد الأصول
-const tmdbIcon = "/client/src/assets/images/default.jpg"; // سيتم تحديثها لاحقاً
-const imdbIcon = "/client/src/assets/images/default.jpg"; // سيتم تحديثها لاحقاً
+// استيراد أيقونات TMDB و IMDB
+import tmdbIcon from "../assets/images/tmdb.png";
+import imdbIcon from "../assets/images/imdb.png";
+import icnWHeader from "../assets/images/icn-w-header.png";
 
 interface SeriesDetail {
   id: string;
@@ -400,7 +401,7 @@ export default function SeriesDetail() {
               <div className="header-title font-size-18 font-weight-bold mb-0">
                 <span className="header-link text-white">قصة المسلسل</span>
               </div>
-              <img src="/style/assets/images/icn-w-header.png" alt="icn-w" className="header-img" />
+              <img src={icnWHeader} alt="icn-w" className="header-img" />
             </header>
             <div className="widget-body">
               <div className="text-white font-size-18" style={{lineHeight: 1.7}}>
@@ -427,7 +428,7 @@ export default function SeriesDetail() {
                 <h3 className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">فريق العمل</span>
                 </h3>
-                <img src="/style/assets/images/icn-w-header.png" alt="icn-w" className="header-img" />
+                <img src={icnWHeader} alt="icn-w" className="header-img" />
               </header>
               <div className="widget-body row">
                 {series.cast.map((actor) => (
@@ -454,7 +455,7 @@ export default function SeriesDetail() {
               <div className="header-title font-size-18 font-weight-bold mb-0">
                 <span className="header-link text-white">الحلقات</span>
               </div>
-              <img src="/style/assets/images/icn-w-header.png" alt="icn-w" className="header-img" />
+              <img src={icnWHeader} alt="icn-w" className="header-img" />
             </header>
             <div className="widget-body">
               <div className="row">
