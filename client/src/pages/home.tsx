@@ -23,7 +23,7 @@ export default function Home() {
     document.body.style.backgroundPosition = 'center';
     document.body.style.backgroundAttachment = 'fixed';
 
-    // تحميل jQuery أولاً
+    // تحميل jQuery أولاً من الملف المحدث
     const jqueryScript = document.createElement('script');  
     jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
     jqueryScript.onload = () => {

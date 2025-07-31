@@ -1,9 +1,66 @@
 import { useParams } from "wouter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// استيراد الأيقونات الجديدة من مجلد 2020
+import imdbIcon from "../assets/images/imdb.png";
+import tmdbIcon from "../assets/images/tmdb.png";
+
+declare global {
+  interface Window {
+    $: any;
+    jQuery: any;
+  }
+}
 
 export default function MovieDetail() {
   const { id } = useParams() as { id: string };
   const [showReportModal, setShowReportModal] = useState(false);
+
+  useEffect(() => {
+    // إضافة body classes مطابقة للأصل
+    document.body.className = 'header-fixed header-pages pace-done';
+
+    // تحميل jQuery للتفاعلات
+    const jqueryScript = document.createElement('script');
+    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
+    jqueryScript.onload = () => {
+      setTimeout(() => {
+        if (window.$) {
+          const $ = window.$;
+          
+          // Menu toggle
+          $(".menu-toggle").on("click", function(){
+            $("body").removeClass("search-active").toggleClass("main-menu-active");
+          });
+          
+          // Search toggle
+          $(".search-toggle").on("click", function(){
+            $("body").removeClass("main-menu-active").toggleClass("search-active");
+            setTimeout(function(){
+              $(".search-box form input").focus();
+            }, 200);
+          });
+
+          // Site overlay
+          $(".site-overlay").on("click", function(){
+            $("body").removeClass("main-menu-active search-active");
+          });
+
+          // ESC key
+          $(document).on("keydown", function(e: any){
+            if (e.keyCode === 27) {
+              $("body").removeClass("search-active main-menu-active");
+            }
+          });
+        }
+      }, 100);
+    };
+    document.head.appendChild(jqueryScript);
+
+    return () => {
+      document.body.className = '';
+    };
+  }, []);
 
   // بيانات تجريبية - ستُستبدل ببيانات من قاعدة البيانات
   const movieData = {
@@ -174,11 +231,11 @@ export default function MovieDetail() {
                   {/* Rating Badges */}
                   <div className="rating-badges">
                     <div className="rating-badge imdb">
-                      <img src="/src/assets/images/imdb.png" alt="IMDB" className="rating-icon" />
+                      <img src={imdbIcon} alt="IMDB" className="rating-icon" />
                       <span className="rating-value">{movieData.imdbRating}</span>
                     </div>
                     <div className="rating-badge tmdb">
-                      <img src="/src/assets/images/tmdb.png" alt="TMDB" className="rating-icon" />
+                      <img src={tmdbIcon} alt="TMDB" className="rating-icon" />
                       <span className="rating-value">{movieData.tmdbRating}</span>
                     </div>
                   </div>

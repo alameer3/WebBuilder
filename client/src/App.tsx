@@ -24,11 +24,13 @@ import SeriesDetail from "@/pages/series-detail";
 import Favorites from "@/pages/favorites";
 import Notifications from "@/pages/notifications";
 import NotFound from "@/pages/not-found";
+import PersonDetail from "@/components/PersonDetail";
+import EpisodeDetail from "@/components/EpisodeDetail";
 
 function Router() {
   const [location] = useLocation();
   const isHomePage = location === "/" || location === "/home" || location === "/main";
-  const isFullLayoutPage = isHomePage || location === "/movies" || location === "/series" || location === "/shows" || location === "/mix" || location === "/recent" || location === "/search" || location === "/login" || location === "/profile" || location === "/contactus" || location.startsWith("/movie/") || location.startsWith("/series/");
+  const isFullLayoutPage = isHomePage || location === "/movies" || location === "/series" || location === "/shows" || location === "/mix" || location === "/recent" || location === "/search" || location === "/login" || location === "/profile" || location === "/contactus" || location.startsWith("/movie/") || location.startsWith("/series/") || location.startsWith("/person/") || location.includes("/episode/");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
@@ -51,6 +53,8 @@ function Router() {
             <Route path="/contactus" component={Contact} />
             <Route path="/movie/:id" component={MovieDetail} />
             <Route path="/series/:id" component={SeriesDetail} />
+            <Route path="/person/:id" component={PersonDetail} />
+            <Route path="/series/:seriesId/episode/:episodeId" component={EpisodeDetail} />
             <Route path="/favorites" component={Favorites} />
             <Route path="/notifications" component={Notifications} />
             <Route component={NotFound} />
