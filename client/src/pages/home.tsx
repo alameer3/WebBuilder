@@ -129,10 +129,10 @@ export default function Home() {
 
   return (
     <>
-      {/* Site overlay - يجب أن يكون خارج كل شيء */}
+      {/* Site overlay - مطابق للأصل */}
       <span className="site-overlay"></span>
 
-      {/* القائمة الجانبية */}
+      {/* القائمة الجانبية - مطابقة للأصل */}
       <div className="main-menu">
         <div className="d-flex flex-column">
           <div className="my-auto w-100">
@@ -167,7 +167,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* صندوق البحث */}
+      {/* صندوق البحث - مطابق للأصل */}
       <div className="search-box px-xl-5">
         <div className="container search-container">
           <form action="/search" className="search-form" method="get">
@@ -180,7 +180,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* الحاوي الرئيسي */}
+      {/* الحاوي الرئيسي - مطابق للأصل */}
       <div className="site-container">
         <div className="page-home">
           <div className="main-header-top"></div>
