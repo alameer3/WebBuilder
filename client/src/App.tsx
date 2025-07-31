@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 // Layout components
-import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
 // Pages
@@ -30,7 +29,6 @@ function Router() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      {!isHomePage && <Navbar />}
       <div className={isHomePage ? "" : "flex"}>
         {!isHomePage && <Sidebar />}
         <main className={isHomePage ? "" : "flex-1 lg:mr-64 px-4 py-6"}>
