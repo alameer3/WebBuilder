@@ -1,184 +1,241 @@
-import { useQuery } from "@tanstack/react-query";
-import { Shuffle, Star, Play, Calendar, Film, Tv, PlayCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "wouter";
-import type { Movie } from "@shared/schema";
+import { useEffect } from "react";
+import logoWhite from "@/assets/images/logo-white.svg";
 
 export default function Mix() {
-  const { data: mixedContent, isLoading } = useQuery<Movie[]>({
-    queryKey: ["/api/movies", "mix"],
-    queryFn: async () => {
-      const response = await fetch("/api/movies");
-      if (!response.ok) throw new Error("Failed to fetch mixed content");
-      return response.json();
-    },
-  });
+  useEffect(() => {
+    // تغيير body class لتطابق الأصل
+    document.body.className = 'header-fixed header-pages pace-done';
+    
+    // إضافة jQuery script للتفاعلات
+    const jqueryScript = document.createElement('script');
+    jqueryScript.src = 'https://code.jquery.com/jquery-3.2.1.min.js';
+    jqueryScript.onload = () => {
+      // التفاعلات المطلوبة مطابقة للأصل
+      const $ = (window as any).$;
+      if ($) {
+        $(document).ready(function(){
+          // Menu toggle functions
+          const handleMenuToggle = () => {
+            $("body").removeClass("search-active").toggleClass("main-menu-active");
+          };
+          
+          const handleSearchToggle = () => {
+            $("body").removeClass("main-menu-active").toggleClass("search-active");
+          };
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'movie':
-        return <Film className="h-4 w-4" />;
-      case 'series':
-        return <Tv className="h-4 w-4" />;
-      case 'show':
-        return <PlayCircle className="h-4 w-4" />;
-      default:
-        return <Shuffle className="h-4 w-4" />;
-    }
-  };
+          const handleEscape = (e: any) => {
+            if (e.keyCode === 27) {
+              $("body").removeClass("search-active main-menu-active");
+            }
+          };
 
-  const getCategoryName = (category: string) => {
-    switch (category) {
-      case 'movie':
-        return 'فيلم';
-      case 'series':
-        return 'مسلسل';
-      case 'show':
-        return 'برنامج';
-      default:
-        return 'متنوع';
-    }
-  };
+          $(".menu-toggle").on("click", handleMenuToggle);
+          $(".search-toggle").on("click", handleSearchToggle);
+          $(document).on("keydown", handleEscape);
+        });
+      }
+    };
+    document.head.appendChild(jqueryScript);
 
-  if (isLoading) {
-    return (
-      <div className="container mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">متنوع</h1>
-          <p className="text-gray-400">مجموعة متنوعة من المحتوى</p>
-        </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="animate-pulse">
-              <div className="bg-gray-800 aspect-[2/3] rounded-lg mb-3"></div>
-              <div className="h-4 bg-gray-800 rounded mb-2"></div>
-              <div className="h-3 bg-gray-800 rounded w-2/3"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+    // تنظيف عند الخروج
+    return () => {
+      document.body.className = '';
+    };
+  }, []);
 
   return (
-    <div className="container mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <Shuffle className="h-8 w-8 text-orange-500" />
-          <h1 className="text-3xl font-bold text-white">متنوع</h1>
+    <>
+      {/* Pace Loading Indicator - مطابق للأصل */}
+      <div className="pace pace-inactive">
+        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{transform: 'translate3d(100%, 0px, 0px)'}}>
+          <div className="pace-progress-inner"></div>
         </div>
-        <p className="text-gray-400">مجموعة متنوعة من الأفلام والمسلسلات والبرامج</p>
+        <div className="pace-activity"></div>
       </div>
 
-      {/* Filter Buttons */}
-      <div className="flex flex-wrap gap-3 mb-8">
-        <Button variant="outline" className="bg-orange-500 border-orange-500 text-white hover:bg-orange-600">
-          <Shuffle className="h-4 w-4 mr-2" />
-          جميع المحتوى
-        </Button>
-        <Button variant="outline" className="bg-gray-800 border-gray-700 hover:bg-gray-700">
-          <Film className="h-4 w-4 mr-2" />
-          أفلام
-        </Button>
-        <Button variant="outline" className="bg-gray-800 border-gray-700 hover:bg-gray-700">
-          <Tv className="h-4 w-4 mr-2" />
-          مسلسلات
-        </Button>
-        <Button variant="outline" className="bg-gray-800 border-gray-700 hover:bg-gray-700">
-          <PlayCircle className="h-4 w-4 mr-2" />
-          برامج
-        </Button>
+      {/* طبقة التراكب للقائمة */}
+      <div className="site-overlay"></div>
+
+      {/* القائمة الجانبية - مطابقة للأصل */}
+      <div className="main-menu">
+        <div className="d-flex flex-column">
+          <div className="my-auto w-100">
+            <div className="menu d-flex flex-wrap justify-content-center">
+              <a href="/movies" className="item">
+                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
+                <div className="text">أفلام</div>
+              </a>
+              <a href="/series" className="item">
+                <div className="icn ml-3"><i className="icon-monitor"></i></div>
+                <div className="text">مسلسلات</div>
+              </a>
+              <a href="/shows" className="item">
+                <div className="icn ml-3"><i className="icon-tv"></i></div>
+                <div className="text">تلفزيون</div>
+              </a>
+              <a href="/mix" className="item">
+                <div className="icn ml-3"><i className="icon-mix"></i></div>
+                <div className="text">منوعات</div>
+              </a>
+            </div>
+          </div>
+          <nav className="social d-flex justify-content-center">
+            <a href="#" className="mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" className="mx-2"><i className="icon-twitter"></i></a>
+            <a href="#" className="mx-2"><i className="icon-instagram"></i></a>
+          </nav>
+        </div>
       </div>
 
-      {/* Mixed Content Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {mixedContent?.map((item) => (
-          <Card key={item.id} className="yf-movie-card group">
-            <CardContent className="p-0">
-              <div className="relative">
-                <img
-                  src={item.poster || "/placeholder-movie.jpg"}
-                  alt={item.title}
-                  className="w-full aspect-[2/3] object-cover rounded-t-lg"
-                />
-                
-                {/* Rating Badge */}
-                <div className="yf-rating">
-                  <Star className="h-3 w-3 inline mr-1" />
-                  {item.rating}
+      {/* site-container مطابق للأصل */}
+      <div className="site-container">
+        <div className="main-header-top"></div>
+        
+        {/* الهيدر الرئيسي - مطابق للأصل تماماً */}
+        <header className="main-header">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-auto">
+              <h2 className="main-logo m-0">
+                <a href="/main" className="d-inline-flex">
+                  <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
+                </a>
+              </h2>
+            </div>
+            <div className="col-auto menu-toggle-container">
+              <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
+                <span className="icn"></span>
+                <div className="text font-size-18 mr-3">الأقسام</div>
+              </a>
+            </div>
+            <div className="ml-auto"></div>
+            <div className="col-md-5 col-lg-6 search-container">
+              <div className="search-form">
+                <form action="/search" method="get">
+                  <input type="text" id="headerSearchInput" name="q" />
+                  <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
+                  <button type="submit"><i className="icon-search"></i></button>
+                </form>
+              </div>
+            </div>
+            <div className="col-auto mr-xl-3">
+              <div className="main-categories list-inline-item m-0 d-none d-xl-block">
+                <a href="/recent" className="modern-category">الأحدث</a>
+                <a href="/mix" className="modern-category active">منوعات</a>
+                <a href="/shows" className="modern-category">تلفزيون</a>
+                <a href="/series" className="modern-category">مسلسلات</a>
+                <a href="/movies" className="modern-category">أفلام</a>
+              </div>
+            </div>
+            <div className="col-auto">
+              <div className="list-inline-item m-0">
+                <div className="user-account">
+                  <a href="/profile">
+                    <i className="icon-account_circle font-size-30"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </header>
+
+        {/* محتوى الصفحة */}
+        <div className="main-content">
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                {/* عنوان الصفحة */}
+                <div className="page-title">
+                  <h1>منوعات</h1>
+                  <p>مجموعة متنوعة من الأفلام والمسلسلات والبرامج</p>
                 </div>
 
-                {/* Category Badge */}
-                <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-semibold flex items-center gap-1">
-                  {getCategoryIcon(item.category || 'movie')}
-                  {getCategoryName(item.category || 'movie')}
-                </div>
-
-                {/* New Badge */}
-                {item.isNew && (
-                  <div className="absolute bottom-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold">
-                    جديد
+                {/* شبكة المحتوى المتنوع */}
+                <div className="widget">
+                  <div className="widget-body row flex-wrap">
+                    {/* مثال على المحتوى المتنوع */}
+                    {Array.from({ length: 30 }).map((_, index) => (
+                      <div key={index} className="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+                        <div className="entry-box-1 text-center">
+                          <div className="entry-image position-relative">
+                            <a href={`/item/${index + 1}`}>
+                              <img 
+                                src="/src/assets/images/default.jpg" 
+                                alt={`محتوى ${index + 1}`}
+                                className="img-fluid rounded"
+                              />
+                            </a>
+                            <div className="entry-rating">
+                              <span>7.{index % 10}</span>
+                            </div>
+                            <div className="entry-type">
+                              <span>{index % 3 === 0 ? 'فيلم' : index % 3 === 1 ? 'مسلسل' : 'برنامج'}</span>
+                            </div>
+                          </div>
+                          <div className="entry-body px-3 pb-3 text-center">
+                            <h5 className="entry-title mb-1">
+                              <a href={`/item/${index + 1}`}>
+                                {index % 3 === 0 ? `فيلم منوع ${index + 1}` : 
+                                 index % 3 === 1 ? `مسلسل منوع ${index + 1}` : 
+                                 `برنامج منوع ${index + 1}`}
+                              </a>
+                            </h5>
+                            <div className="entry-meta text-muted small">
+                              <span>2024</span> • <span>عربي</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <Link href={`/movie/${item.id}`}>
-                    <Button className="yf-btn-primary">
-                      <Play className="h-4 w-4 mr-2" />
-                      مشاهدة
-                    </Button>
-                  </Link>
+                {/* التنقل بين الصفحات */}
+                <div className="pagination-container text-center mt-4">
+                  <div className="pagination">
+                    <a href="/mix?page=1" className="page-link active">1</a>
+                    <a href="/mix?page=2" className="page-link">2</a>
+                    <a href="/mix?page=3" className="page-link">3</a>
+                    <a href="/mix?page=4" className="page-link">4</a>
+                    <a href="/mix?page=5" className="page-link">5</a>
+                    <span className="page-dots">...</span>
+                    <a href="/mix?page=20" className="page-link">20</a>
+                  </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div className="p-4">
-                <h3 className="font-semibold text-white mb-2 line-clamp-2">
-                  {item.title}
-                </h3>
-                
-                <div className="flex items-center text-sm text-gray-400 mb-3">
-                  <Calendar className="h-4 w-4 mr-1" />
-                  <span>{item.year}</span>
-                  <span className="mx-2">•</span>
-                  <span>{item.language}</span>
+        {/* الفوتر */}
+        <footer className="main-footer">
+          <div className="container">
+            <div className="footer-content">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="footer-links">
+                    <a href="/about">حول الموقع</a>
+                    <a href="/contact">اتصل بنا</a>
+                    <a href="/privacy">سياسة الخصوصية</a>
+                  </div>
                 </div>
-
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {item.genre.slice(0, 2).map((genre) => (
-                    <Badge key={genre} variant="secondary" className="yf-genre-tag">
-                      {genre}
-                    </Badge>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <Badge className="bg-orange-500/10 text-orange-500 border border-orange-500/20">
-                    {item.quality}
-                  </Badge>
-                  {item.viewCount && item.viewCount > 0 && (
-                    <Badge className="bg-gray-500/10 text-gray-400 border border-gray-500/20">
-                      {item.viewCount} مشاهدة
-                    </Badge>
-                  )}
+                <div className="col-md-6">
+                  <div className="social-links">
+                    <a href="#" className="social-link"><i className="icon-facebook"></i></a>
+                    <a href="#" className="social-link"><i className="icon-twitter"></i></a>
+                    <a href="#" className="social-link"><i className="icon-instagram"></i></a>
+                    <a href="#" className="social-link"><i className="icon-youtube"></i></a>
+                  </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+              <div className="copyright text-center mt-3">
+                <p>&copy; 2025 يمن فليكس. جميع الحقوق محفوظة.</p>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
-
-      {/* Load More */}
-      <div className="text-center mt-12">
-        <Button variant="outline" className="bg-gray-800 border-gray-700 hover:bg-gray-700">
-          <Shuffle className="h-4 w-4 mr-2" />
-          عشوائي - عرض المزيد
-        </Button>
-      </div>
-    </div>
+    </>
   );
 }
