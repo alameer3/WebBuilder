@@ -26,12 +26,13 @@ import NotFound from "@/pages/not-found";
 function Router() {
   const [location] = useLocation();
   const isHomePage = location === "/" || location === "/home" || location === "/main";
+  const isFullLayoutPage = isHomePage || location === "/movies" || location === "/series" || location === "/shows" || location === "/mix" || location === "/recent" || location === "/search" || location === "/login" || location === "/profile" || location === "/contactus" || location.startsWith("/movie/");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      <div className={isHomePage ? "" : "flex"}>
-        {!isHomePage && <Sidebar />}
-        <main className={isHomePage ? "" : "flex-1 lg:mr-64 px-4 py-6"}>
+      <div className={isFullLayoutPage ? "" : "flex"}>
+        {!isFullLayoutPage && <Sidebar />}
+        <main className={isFullLayoutPage ? "" : "flex-1 lg:mr-64 px-4 py-6"}>
           <Switch>
             <Route path="/" component={Home} />
             <Route path="/home" component={Home} />
