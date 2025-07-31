@@ -104,7 +104,11 @@ export default function Mix() {
             </div>
             <div className="col-auto menu-toggle-container">
               <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
-                <span className="icn"></span>
+                <span className="icn">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </span>
                 <div className="text font-size-18 mr-3">الأقسام</div>
               </a>
             </div>
