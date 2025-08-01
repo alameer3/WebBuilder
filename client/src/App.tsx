@@ -18,7 +18,6 @@ import Mix from "@/pages/mix";
 import Profile from "@/pages/profile";
 import Login from "@/pages/login";
 import Contact from "@/pages/contact";
-import MovieDetails from "@/pages/movie-details";
 import MovieDetail from "@/pages/movie-detail";
 import SeriesDetail from "@/pages/series-detail";
 import Favorites from "@/pages/favorites";
