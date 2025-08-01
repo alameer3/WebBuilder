@@ -1,0 +1,326 @@
+/* AKWAM Original Design CSS - مطابق للتصميم الأصلي */
+
+/* Movie Cover Background Blur Effect */
+.movie-cover {
+  position: relative;
+  min-height: 400px;
+  background: linear-gradient(135deg, #161619 0%, #27272c 100%);
+  overflow: hidden;
+}
+
+.movie-cover svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.movie-cover .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Buttons - مطابق للتصميم الأصلي */
+.btn-orange {
+  background-color: #f3951e !important;
+  border-color: #f3951e !important;
+  color: white !important;
+}
+
+.btn-orange:hover {
+  background-color: #e8841a !important;
+  border-color: #e8841a !important;
+}
+
+.btn-info {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+}
+
+.btn-light {
+  background-color: #f8f9fa !important;
+  border-color: #f8f9fa !important;
+  color: #212529 !important;
+}
+
+.btn-pill {
+  border-radius: 50px !important;
+  padding: 12px 24px;
+  font-weight: 500;
+}
+
+/* IMDB & TMDB Icons */
+.movie-info img[alt="IMDB"] {
+  height: 20px;
+  width: auto;
+}
+
+.movie-info img[alt="TMDB"] {
+  height: 20px;
+  width: auto;
+}
+
+/* Rating Stars */
+.icon-star {
+  color: #f3951e !important;
+}
+
+/* Widget Headers */
+.widget-header .header-link {
+  color: #f3951e !important;
+}
+
+.header-decoration {
+  width: 50px;
+  height: 3px;
+  background-color: #f3951e;
+  margin-top: 10px;
+}
+
+/* Server Items */
+.server-item {
+  background-color: #2a2a2e !important;
+  border: 1px solid #3a3a3e;
+  transition: all 0.3s ease;
+}
+
+.server-item:hover {
+  background-color: #3a3a3e !important;
+  border-color: #f3951e;
+}
+
+.link-btn {
+  background-color: #f3951e;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.link-btn:hover {
+  background-color: #e8841a;
+  color: white;
+  text-decoration: none;
+}
+
+.link-download {
+  background-color: #007bff !important;
+}
+
+.link-download:hover {
+  background-color: #0056b3 !important;
+}
+
+/* Cast Images */
+.cast-image {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border: 2px solid #f3951e;
+}
+
+/* Related Movies */
+.entry-box {
+  background-color: #2a2a2e;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.entry-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(243, 149, 30, 0.3);
+}
+
+.entry-image {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+}
+
+.entry-image .image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease;
+}
+
+.entry-box:hover .entry-image .image {
+  transform: scale(1.1);
+}
+
+.entry-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(243,149,30,0.3) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.entry-box:hover .entry-overlay {
+  opacity: 1;
+}
+
+.entry-rating {
+  background-color: rgba(243, 149, 30, 0.9);
+  padding: 5px 10px;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+}
+
+/* Arabic RTL Support */
+body[dir="rtl"] .movie-cover .container {
+  text-align: right;
+}
+
+body[dir="rtl"] .btn-pill {
+  text-align: center;
+}
+
+/* Movie Rating Buttons */
+.movie-rating .like,
+.movie-rating .unlike {
+  background: none;
+  border: none;
+  color: #f3951e;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.movie-rating .like:hover,
+.movie-rating .unlike:hover {
+  color: #e8841a;
+  transform: scale(1.1);
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+}
+
+.breadcrumb-item a {
+  color: #f3951e;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  color: #e8841a;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "›";
+  color: #666;
+}
+
+/* Footer Styling */
+.main-footer {
+  background: linear-gradient(135deg, #161619 0%, #27272c 100%);
+  border-top: 1px solid #3a3a3e;
+  margin-top: 50px;
+}
+
+.footer-social a {
+  color: #f3951e;
+  font-size: 24px;
+  transition: all 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #e8841a;
+  transform: translateY(-3px);
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #f3951e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .movie-cover {
+    min-height: 300px;
+  }
+  
+  .btn-pill {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .entry-image {
+    height: 200px;
+  }
+}
+
+/* Animation Effects */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.widget {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.widget:nth-child(2) { animation-delay: 0.1s; }
+.widget:nth-child(3) { animation-delay: 0.2s; }
+.widget:nth-child(4) { animation-delay: 0.3s; }
+.widget:nth-child(5) { animation-delay: 0.4s; }
+
+/* Share Button Hover Effect */
+.btn-share:hover .menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.btn-share .menu {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.9);
+  padding: 10px;
+  border-radius: 25px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-share .menu button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.btn-share .menu button:hover {
+  color: #f3951e;
+}

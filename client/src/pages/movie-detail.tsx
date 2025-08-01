@@ -1,13 +1,18 @@
 import { useParams } from "wouter";
 import { useState, useEffect } from "react";
 
-// استيراد الأيقونات الجديدة من مجلد 2020
+// استيراد ملفات CSS الأصلية
+import '../assets/css/plugins.css';
+import '../assets/css/style.css';  
+import '../assets/css/yemen-flix.css';
+import '../assets/css/akwam-original.css';
+
+// استيراد الأيقونات الأصلية
+import logoWhite from "../assets/images/logo-white.svg";
 import imdbIcon from "../assets/images/imdb.png";
 import tmdbIcon from "../assets/images/tmdb.png";
-// استيراد المكونات المحسنة
-import ImageGallery from "../components/ImageGallery";
-import { useSweetAlert } from "../components/SweetAlert";
 
+// تعريف jQuery للنافذة
 declare global {
   interface Window {
     $: any;
@@ -18,97 +23,105 @@ declare global {
 export default function MovieDetail() {
   const { id } = useParams() as { id: string };
   const [showReportModal, setShowReportModal] = useState(false);
-  const { showSuccess, showError, showConfirm } = useSweetAlert();
 
   useEffect(() => {
-    // إضافة body classes مطابقة للأصل
-    document.body.className = 'header-fixed header-pages pace-done';
-
-    // تحميل jQuery للتفاعلات
-    const jqueryScript = document.createElement('script');
-    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
-    jqueryScript.onload = () => {
-      setTimeout(() => {
-        if (window.$) {
-          const $ = window.$;
-          
-          // Menu toggle
-          $(".menu-toggle").on("click", function(){
-            $("body").removeClass("search-active").toggleClass("main-menu-active");
-          });
-          
-          // Search toggle
-          $(".search-toggle").on("click", function(){
-            $("body").removeClass("main-menu-active").toggleClass("search-active");
-            setTimeout(function(){
-              $(".search-box form input").focus();
-            }, 200);
-          });
-
-          // Site overlay
-          $(".site-overlay").on("click", function(){
-            $("body").removeClass("main-menu-active search-active");
-          });
-
-          // ESC key
-          $(document).on("keydown", function(e: any){
-            if (e.keyCode === 27) {
-              $("body").removeClass("search-active main-menu-active");
-            }
-          });
-        }
-      }, 100);
+    document.body.className = "header-fixed header-pages pace-done";
+    
+    // تطبيق JavaScript للتفاعلات
+    const handleMenuToggle = () => {
+      document.body.classList.toggle('main-menu-active');
     };
-    document.head.appendChild(jqueryScript);
+
+    const handleSearchToggle = () => {
+      document.body.classList.toggle('search-active');
+    };
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        document.body.classList.remove('main-menu-active', 'search-active');
+      }
+    };
+
+    const menuToggle = document.querySelector('.menu-toggle');
+    const searchToggle = document.querySelector('.search-toggle');
+    
+    menuToggle?.addEventListener('click', handleMenuToggle);
+    searchToggle?.addEventListener('click', handleSearchToggle);
+    document.addEventListener('keydown', handleEscape);
 
     return () => {
-      document.body.className = '';
+      menuToggle?.removeEventListener('click', handleMenuToggle);
+      searchToggle?.removeEventListener('click', handleSearchToggle);
+      document.removeEventListener('keydown', handleEscape);
+      document.body.className = "";
     };
   }, []);
 
-  // بيانات تجريبية - ستُستبدل ببيانات من قاعدة البيانات
+  // بيانات تجريبية مطابقة للأصل
   const movieData = {
-    id: parseInt(id),
-    title: "Miracle in Cell No. 7",
-    titleAr: "معجزة في الزنزانة 7",
-    description: "تتناول قصة الفيلم حكاية رجل أُدِين وسُجِن بالخطأ في جريمة قتل، وقد تمكن من بناء صداقات مع مجرمين خطيرين كانوا معه في نفس الزنزانة، كما ساعده هؤلاء على رؤية ابنته بتهريبهم لها إلى داخل السجن",
-    image: "/src/assets/images/default.jpg",
-    imdbRating: "8.2",
-    tmdbRating: "8.5",
-    year: "2019",
-    quality: "BluRay",
-    duration: "132 دقيقة",
-    country: "تركيا",
-    language: "التركية",
-    genre: ["دراما", "كوميديا", "عائلي"],
-    director: "Mehmet Ada Öztekin",
+    id: id || "28-years-later",
+    title: "28 Years Later",
+    arabicTitle: "بعد 28 عاما",
+    poster: "https://img.downet.net/thumb/260x380/uploads/Gn5bw.webp",
+    backdrop: "https://img.downet.net/thumb/1920x600/uploads/Gn5bw.webp",
+    rating: 7.1,
+    imdbRating: "10 / 7.1",
+    quality: "WEB-DL - 1080p",
+    language: "الإنجليزية",
+    subtitle: "العربية",
+    country: "الولايات المتحدة الأمريكية",
+    year: 2025,
+    duration: "115 دقيقة",
+    certification: "PG13 اشراف عائلي",
+    office: "BOX OFFICE",
+    genres: ["اثارة", "رعب"],
+    description: "مشاهدة و تحميل فيلم 28 Years Later حيث يدور العمل حول بعد ثمانية وعشرين عامًا من هروب فيروس الغضب من مختبر للأسلحة البيولوجية، لا يزال البعض يخضع لحجر صحي قاسٍ، بعد ثمانية وعشرين عامًا من هروب فيروس الغضب من مختبر للأسلحة البيولوجية، لا يزال البعض يخضع لحجر صحي قاسٍ، وقد وجدوا سبلًا للعيش وسط المصابين. تعيش إحدى هذه المجموعات على جزيرة صغيرة متصلة بالبر الرئيسي عبر جسر واحد مُحصّن جيدًا. عندما ينطلق أحد الأعضاء في مهمة إلى قلب البر الرئيسي المظلم، يكتشف أسرارًا وعجائب وأهوالًا حوّلت ليس المصابين فحسب، بل ناجين آخرين أيضًا.",
+    trailer: "https://www.youtube.com/watch?v=mcvLKldPM08",
     cast: [
-      { name: "Aras Bulut İynemli", image: "/src/assets/images/default.jpg" },
-      { name: "Nisa Sofiya Aksongur", image: "/src/assets/images/default.jpg" },
-      { name: "Deniz Baysal", image: "/src/assets/images/default.jpg" },
-      { name: "İlker Aksum", image: "/src/assets/images/default.jpg" }
+      { name: "Jodie Comer", image: "https://img.downet.net/thumb/54x54/uploads/HD9VV.jpeg" },
+      { name: "Aaron Taylor-Johnson", image: "https://img.downet.net/thumb/54x54/uploads/Nf84R.jpg" },
+      { name: "Ralph Fiennes", image: "https://img.downet.net/thumb/54x54/uploads/ZwiTY.jpeg" }
     ],
     gallery: [
-      "/src/assets/images/default.jpg",
-      "/src/assets/images/default.jpg",
-      "/src/assets/images/default.jpg",
-      "/src/assets/images/default.jpg"
+      "https://img.downet.net/thumb/180x100/uploads/JeOy3.jpg",
+      "https://img.downet.net/thumb/180x100/uploads/vud56.jpg",
+      "https://img.downet.net/thumb/180x100/uploads/hG2yM.jpg",
+      "https://img.downet.net/thumb/180x100/uploads/6Sfgr.jpg"
     ],
+    likes: 2,
+    dislikes: 0,
+    addedDate: "الثلاثاء 29 07 2025 - 07:57 مساءاً",
     servers: [
-      { name: "الخادم الأول", url: "#", quality: "1080p" },
-      { name: "الخادم الثاني", url: "#", quality: "720p" },
-      { name: "الخادم الثالث", url: "#", quality: "480p" }
+      { 
+        name: "خادم المشاهدة 1080p", 
+        url: "#", 
+        type: "watch",
+        size: "1.7 GB"
+      },
+      { 
+        name: "خادم التحميل 720p", 
+        url: "#", 
+        type: "download",
+        size: "908.5 MB"
+      }
     ]
   };
 
+  // أفلام مشابهة
+  const relatedMovies = [
+    { id: "1", title: "Escape the Field", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 4.9 },
+    { id: "2", title: "Under the Amalfi Sun", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 5.5 },
+    { id: "3", title: "Bloody Hell", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 6.2 },
+    { id: "4", title: "الحدود", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 7.1 },
+    { id: "5", title: "Iron Man 2", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 7.8 },
+    { id: "6", title: "Mahaveeryar", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 6.5 }
+  ];
+
   return (
-    <div className="site-container">
-      <input type="hidden" name="page_app" value="movie" />
-      <input type="hidden" name="page_id" value={id} />
-      
+    <>
       {/* Pace Loading Indicator */}
       <div className="pace pace-inactive">
-        <div className="pace-progress">
+        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{ transform: 'translate3d(100%, 0px, 0px)' }}>
           <div className="pace-progress-inner"></div>
         </div>
         <div className="pace-activity"></div>
@@ -117,7 +130,7 @@ export default function MovieDetail() {
       {/* Site Overlay */}
       <span className="site-overlay"></span>
 
-      {/* Main Menu - القائمة الجانبية */}
+      {/* Main Menu */}
       <div className="main-menu">
         <div className="d-flex flex-column">
           <div className="my-auto w-100">
@@ -152,311 +165,338 @@ export default function MovieDetail() {
       {/* Search Box */}
       <div className="search-box px-xl-5">
         <div className="container search-container">
-          <form className="search-form" method="get" action="/search">
-            <div className="input-group">
-              <input 
-                type="text" 
-                name="q" 
-                className="form-control search-input" 
-                placeholder="البحث في يمن فليكس ..." 
-                autoComplete="off"
-              />
-              <div className="input-group-append">
-                <button className="btn search-btn" type="submit">
-                  <i className="icon-search"></i>
-                </button>
-              </div>
-            </div>
+          <form action="/search" className="search-form" method="get">
+            <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
+              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
+              <input type="search" name="q" id="searchBoxInput" placeholder="ابحث هنا" />
+            </label>
           </form>
+          <div className="search-toggle"><i className="icon-arrow-back"></i></div>
         </div>
       </div>
 
-      {/* Header */}
-      <header className="header">
-        <div className="container">
-          <div className="d-flex align-items-center justify-content-between">
-            {/* Logo */}
-            <div className="logo">
-              <a href="/">
-                <img src="/src/assets/images/yemen-flix-logo-white.svg" alt="يمن فليكس" className="logo-img" />
-              </a>
-            </div>
-
-            {/* Navigation */}
-            <nav className="navbar">
-              <ul className="navbar-nav d-flex flex-row">
-                <li className="nav-item">
-                  <a href="/movies" className="nav-link">أفلام</a>
-                </li>
-                <li className="nav-item">
-                  <a href="/series" className="nav-link">مسلسلات</a>
-                </li>
-                <li className="nav-item">
-                  <a href="/shows" className="nav-link">تلفزيون</a>
-                </li>
-                <li className="nav-item">
-                  <a href="/mix" className="nav-link">منوعات</a>
-                </li>
-              </ul>
-            </nav>
-
-            {/* Header Actions */}
-            <div className="header-actions d-flex align-items-center">
-              {/* Search Icon */}
-              <button className="btn-search" type="button" aria-label="البحث">
-                <i className="icon-search"></i>
-              </button>
-
-              {/* Menu Toggle */}
-              <button className="menu-toggle" type="button" aria-label="القائمة">
-                <div className="icn">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </button>
-
-              {/* User Menu */}
-              <div className="user-menu">
-                <a href="/profile" className="user-link">
-                  <i className="icon-user"></i>
+      <div className="site-container">
+        <div className="main-header-top"></div>
+        
+        {/* Header */}
+        <header className="main-header">
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-auto">
+                <h2 className="main-logo m-0">
+                  <a href="/" className="d-inline-flex">
+                    <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
+                  </a>
+                </h2>
+              </div>
+              <div className="col-auto menu-toggle-container">
+                <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
+                  <span className="icn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </span>
+                  <div className="text font-size-18 mr-3">الأقسام</div>
                 </a>
               </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="main-content">
-        <div className="container">
-          {/* Movie Info Section */}
-          <div className="movie-info-section">
-            <div className="row">
-              {/* Movie Poster */}
-              <div className="col-lg-4 col-md-5">
-                <div className="movie-poster">
-                  <img src={movieData.image} alt={movieData.title} className="poster-img" />
-                  
-                  {/* Rating Badges */}
-                  <div className="rating-badges">
-                    <div className="rating-badge imdb">
-                      <img src={imdbIcon} alt="IMDB" className="rating-icon" />
-                      <span className="rating-value">{movieData.imdbRating}</span>
-                    </div>
-                    <div className="rating-badge tmdb">
-                      <img src={tmdbIcon} alt="TMDB" className="rating-icon" />
-                      <span className="rating-value">{movieData.tmdbRating}</span>
-                    </div>
-                  </div>
+              <div className="ml-auto"></div>
+              <div className="col-md-5 col-lg-6 search-container">
+                <div className="search-form">
+                  <form action="/search" method="get">
+                    <input type="text" id="headerSearchInput" name="q" />
+                    <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
+                    <button><i className="icon-search"></i></button>
+                  </form>
                 </div>
               </div>
-
-              {/* Movie Details */}
-              <div className="col-lg-8 col-md-7">
-                <div className="movie-details">
-                  <h1 className="movie-title">{movieData.title}</h1>
-                  <h2 className="movie-title-ar">{movieData.titleAr}</h2>
-
-                  {/* Movie Meta */}
-                  <div className="movie-meta">
-                    <span className="year">{movieData.year}</span>
-                    <span className="quality">{movieData.quality}</span>
-                    <span className="duration">{movieData.duration}</span>
-                  </div>
-
-                  {/* Movie Info Grid */}
-                  <div className="movie-info-grid">
-                    <div className="info-item">
-                      <span className="label">البلد:</span>
-                      <span className="value">{movieData.country}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="label">اللغة:</span>
-                      <span className="value">{movieData.language}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="label">النوع:</span>
-                      <span className="value">{movieData.genre.join(", ")}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="label">الإخراج:</span>
-                      <span className="value">{movieData.director}</span>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="action-buttons">
-                    <button 
-                      className="btn btn-primary btn-watch"
-                      onClick={() => showSuccess('جاري التحضير...', 'سيتم تشغيل الفيلم قريباً')}
-                    >
-                      <i className="icon-play"></i>
-                      مشاهدة
-                    </button>
-                    <button 
-                      className="btn btn-secondary btn-trailer"
-                      onClick={() => showSuccess('فتح الإعلان', 'سيتم تشغيل إعلان الفيلم')}
-                    >
-                      <i className="icon-video"></i>
-                      الإعلان
-                    </button>
-                    <button 
-                      className="btn btn-outline btn-download"
-                      onClick={() => showConfirm(
-                        'تأكيد التحميل',
-                        'هل تريد تحميل هذا الفيلم؟',
-                        () => showSuccess('جاري التحميل', 'تم بدء تحميل الفيلم')
-                      )}
-                    >
-                      <i className="icon-download"></i>
-                      تحميل
-                    </button>
-                    <button 
-                      className="btn btn-outline btn-favorite"
-                      onClick={() => showSuccess('تمت الإضافة!', 'تم إضافة الفيلم إلى قائمتك المفضلة')}
-                    >
-                      <i className="icon-heart"></i>
-                      قائمتي
-                    </button>
-                    <button 
-                      className="btn btn-outline btn-report"
-                      onClick={() => showConfirm(
-                        'تبليغ عن مشكلة',
-                        'هل تريد الإبلاغ عن مشكلة في هذا الفيلم؟',
-                        () => showSuccess('تم التبليغ', 'شكراً لك، سنراجع التبليغ قريباً')
-                      )}
-                    >
-                      <i className="icon-flag"></i>
-                      تبليغ
-                    </button>
-                  </div>
+              <div className="col-auto recently-container">
+                <a href="/recent" className="btn-recently">
+                  <i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span>
+                </a>
+              </div>
+              <div className="col-auto user-profile-container">
+                <div className="user-panel">
+                  <a className="user-toggle d-block font-size-20 public" href="/login"><i className="icon-user"></i></a>
                 </div>
               </div>
             </div>
           </div>
+        </header>
 
-          {/* Movie Servers */}
-          <div className="movie-servers-section">
-            <h3 className="section-title">خوادم المشاهدة</h3>
-            <div className="servers-list">
-              {movieData.servers.map((server, index) => (
-                <div key={index} className="server-item">
-                  <a href={server.url} className="server-link">
-                    <span className="server-name">{server.name}</span>
-                    <span className="server-quality">{server.quality}</span>
+        <div className="main-header-height"></div>
+        
+        {/* Hidden Inputs */}
+        <input type="hidden" id="page_app" value="movies" className="not-empty" />
+        <input type="hidden" id="page_id" value={id} className="not-empty" />
+
+        {/* Breadcrumb */}
+        <nav aria-label="breadcrumb" style={{ backgroundColor: '#1c1c20' }}>
+          <div className="container py-3">
+            <ol className="breadcrumb mb-0">
+              <li className="breadcrumb-item"><a href="/"><i className="icon-home ml-2"></i> الرئيسية</a></li>
+              <li className="breadcrumb-item"><a href="/movies"><i className="icon-video-camera ml-2"></i> أفلام</a></li>
+            </ol>
+          </div>
+        </nav>
+
+        {/* SVG Filter */}
+        <svg style={{ opacity: 0, visibility: 'hidden', position: 'absolute', top: '-999px', right: '-999px' }}>
+          <filter id="blur-effect-1">
+            <feGaussianBlur stdDeviation="20"></feGaussianBlur>
+          </filter>
+        </svg>
+
+        {/* Movie Page */}
+        <div className="page page-movie page-film">
+          {/* Movie Cover */}
+          <div className="movie-cover mb-4 without-cover">
+            <svg>
+              <image x="0" y="0" filter="url(#blur-effect-1)" xlinkHref={movieData.backdrop}></image>
+            </svg>
+            <div className="container">
+              <div className="row py-4">
+                {/* Movie Poster */}
+                <div className="col-lg-3 col-md-4 text-center mb-5 mb-md-0">
+                  <a href={movieData.poster.replace('thumb/260x380/', '')} data-fancybox="">
+                    <picture>
+                      <img src={movieData.poster} className="img-fluid" alt={movieData.title} />
+                    </picture>
                   </a>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Movie Description */}
-          <div className="movie-description-section">
-            <h3 className="section-title">القصة</h3>
-            <div className="description-content">
-              <p>{movieData.description}</p>
-            </div>
-          </div>
+                {/* Movie Info */}
+                <div className="col-lg-7 pr-lg-4 col-md-5 col-sm-8 mb-4 mb-sm-0 px-4 px-sm-0 movie-info">
+                  <h1 className="entry-title font-size-28 font-weight-bold text-white mb-0">{movieData.title}</h1>
+                  
+                  <div className="font-size-16 text-white mt-2 d-flex align-items-center">
+                    <a href="https://www.themoviedb.org/movie/1100988-28-years-later" rel="nofollow" className="ml-2" target="_blank">
+                      <img src={tmdbIcon} height="20" alt="TMDB" />
+                    </a>
+                    <a href="https://www.imdb.com/title/tt10548174" rel="nofollow" target="_blank">
+                      <img src={imdbIcon} alt="IMDB" />
+                    </a>
+                    <span className="mx-2">{movieData.imdbRating}</span>
+                    <i className="icon-star text-orange"></i>
+                    <span className="badge badge-pill badge-info font-size-14 mr-3">{movieData.certification}</span>
+                  </div>
 
-          {/* Movie Gallery */}
-          <div className="gallery-section">
-            <h3 className="section-title">معرض الصور</h3>
-            <ImageGallery images={movieData.gallery} title={movieData.title} />
-          </div>
+                  <div className="font-size-16 text-white mt-2"><span>{movieData.office}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>اللغة : {movieData.language}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>الترجمة : {movieData.subtitle}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>جودة الفيلم : {movieData.quality}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>انتاج : {movieData.country}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>السنة : {movieData.year}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>مدة الفيلم : {movieData.duration}</span></div>
 
-          {/* Cast Section */}
-          <div className="cast-section">
-            <h3 className="section-title">فريق العمل</h3>
-            <div className="cast-grid">
-              {movieData.cast.map((actor, index) => (
-                <div key={index} className="cast-item">
-                  <img src={actor.image} alt={actor.name} className="cast-image" />
-                  <span className="cast-name">{actor.name}</span>
+                  <div className="font-size-16 d-flex align-items-center mt-3">
+                    {movieData.genres.map((genre, index) => (
+                      <a key={index} href={`/movies?category=${genre}`} className="badge badge-pill badge-light ml-2">{genre}</a>
+                    ))}
+                  </div>
+
+                  <div className="font-size-14 text-muted mt-3">
+                    <span>تـ الإضافة : {movieData.addedDate}</span>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </main>
 
-      {/* Report Modal */}
-      {showReportModal && (
-        <div className="modal-overlay" onClick={() => setShowReportModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h4 className="modal-title">تبليغ عن خطأ</h4>
-              <button 
-                className="modal-close"
-                onClick={() => setShowReportModal(false)}
-              >
-                <i className="icon-close"></i>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form className="report-form">
-                <div className="form-group">
-                  <label>نوع المشكلة:</label>
-                  <select className="form-control">
-                    <option value="">اختر نوع المشكلة</option>
-                    <option value="video">مشكلة في الفيديو</option>
-                    <option value="audio">مشكلة في الصوت</option>
-                    <option value="subtitle">مشكلة في الترجمة</option>
-                    <option value="quality">مشكلة في الجودة</option>
-                    <option value="other">مشكلة أخرى</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>تفاصيل المشكلة:</label>
-                  <textarea 
-                    className="form-control" 
-                    rows={4}
-                    placeholder="اكتب تفاصيل المشكلة هنا..."
-                  ></textarea>
-                </div>
-                <div className="form-actions">
-                  <button type="submit" className="btn btn-primary">إرسال التبليغ</button>
-                  <button 
-                    type="button" 
-                    className="btn btn-secondary"
-                    onClick={() => setShowReportModal(false)}
-                  >
-                    إلغاء
+                {/* Action Buttons */}
+                <div className="col-lg-2 col-md-3 col-sm-4 d-flex flex-column px-4 px-sm-0">
+                  <a href={movieData.trailer} className="btn btn-light btn-pill d-flex align-items-center" data-fancybox="">
+                    <span className="font-size-18 font-weight-medium">الاعلان</span>
+                    <i className="icon-play2 font-size-20 mr-auto"></i>
+                  </a>
+                  
+                  <a href="#downloads" className="btn btn-orange btn-pill d-flex align-items-center text-white mt-2">
+                    <span className="font-size-18 font-weight-medium">مشاهدة</span>
+                    <i className="icon-play2 font-size-20 mr-auto"></i>
+                  </a>
+                  
+                  <a href="#downloads" className="btn btn-info btn-pill d-flex align-items-center text-white mt-2">
+                    <span className="font-size-18 font-weight-medium">تحميل</span>
+                    <i className="icon-download font-size-20 mr-auto"></i>
+                  </a>
+
+                  <div className="btn btn-share btn-pill d-none d-sm-flex align-items-center text-white hal-container mt-2">
+                    <span className="font-size-18 font-weight-medium">شارك</span>
+                    <i className="icon-share font-size-20 mr-auto"></i>
+                    <div className="menu d-flex align-items-center share">
+                      <button className="facebook ml-2 bg-transparent border-0"><i className="icon-facebook"></i></button>
+                      <button className="twitter ml-2 bg-transparent border-0"><i className="icon-twitter"></i></button>
+                      <button className="messenger ml-2 bg-transparent border-0"><i className="icon-messenger"></i></button>
+                      <button className="whatsapp ml-2 bg-transparent border-0"><i className="icon-whatsapp"></i></button>
+                    </div>
+                  </div>
+
+                  <button className="btn btn-favorite btn-pill d-flex align-items-center text-white mt-2 add-to-fav private hide bg-transparent border-0" data-type="movie" data-id={id}>
+                    <span className="font-size-18 font-weight-medium">قائمتي</span>
+                    <i className="icon-plus icon1 font-size-20 mr-auto"></i>
+                    <i className="icon-check icon2 font-size-20 mr-auto"></i>
                   </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-links">
-              <a href="/contact">اتصل بنا</a>
-              <a href="/privacy">سياسة الخصوصية</a>
-              <a href="/terms">الشروط والأحكام</a>
-              <a href="/dmca">DMCA</a>
+                  <div className="mt-auto pt-3">
+                    <div className="movie-rating d-flex justify-content-center align-items-center">
+                      <span className="text font-size-16 text-white d-none">ما رأيك في هذا الموضوع ؟</span>
+                      <button className="like mx-1 bg-transparent border-0"><i className="icon-like"></i><span className="number">{movieData.likes}</span></button>
+                      <button className="unlike mx-1 bg-transparent border-0"><i className="icon-like1"></i><span className="number">{movieData.dislikes}</span></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="footer-social">
-              <a href="#" className="social-link facebook">
-                <i className="icon-facebook"></i>
-              </a>
-              <a href="#" className="social-link youtube">
-                <i className="icon-youtube"></i>
-              </a>
-              <a href="#" className="social-link twitter">
-                <i className="icon-twitter"></i>
-              </a>
+          </div>
+
+          <div className="container">
+            {/* Movie Description */}
+            <div className="widget widget-style-1 mb-5">
+              <header className="widget-header border-0 mb-4">
+                <h3 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">قصة الفيلم</span>
+                </h3>
+                <div className="header-decoration"></div>
+              </header>
+              <div className="widget-body">
+                <div className="text-white font-size-18" style={{ lineHeight: 1.7 }}>
+                  فيلم {movieData.title} <p>{movieData.description}</p>
+                </div>
+              </div>
             </div>
-            <div className="footer-copyright">
-              <p>جميع الحقوق محفوظة لـ يمن فليكس © 2025</p>
+
+            {/* Cast Section */}
+            <div className="widget widget-style-1 mb-5">
+              <header className="widget-header border-0 mb-4">
+                <h3 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">فريق العمل</span>
+                </h3>
+                <div className="header-decoration"></div>
+              </header>
+              <div className="widget-body">
+                <div className="d-flex justify-content-center">
+                  {movieData.cast.map((actor, index) => (
+                    <div key={index} className="text-center mx-3">
+                      <img src={actor.image} className="cast-image rounded-circle mb-2" width="54" height="54" alt={actor.name} />
+                      <div className="font-size-14 text-white">{actor.name}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Gallery Section */}
+            <div className="widget widget-style-1 mb-5">
+              <header className="widget-header border-0 mb-4">
+                <h3 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">صور من الفيلم</span>
+                </h3>
+                <div className="header-decoration"></div>
+              </header>
+              <div className="widget-body">
+                <div className="d-flex flex-wrap justify-content-center">
+                  {movieData.gallery.map((image, index) => (
+                    <a key={index} href={image} data-fancybox="gallery" className="m-2">
+                      <img src={image} className="img-fluid rounded" alt={`صورة ${index + 1}`} />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Download & Watch Section */}  
+            <div className="widget widget-style-1 mb-5" id="downloads">
+              <header className="widget-header border-0 mb-4">
+                <h2 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">مشاهدة وتحميل</span>
+                </h2>
+                <div className="header-decoration"></div>
+              </header>
+              <div className="widget-body">
+                <div className="servers-list">
+                  {movieData.servers.map((server, index) => (
+                    <div key={index} className="server-item d-flex align-items-center mb-3 p-3 rounded" style={{ backgroundColor: '#2a2a2e' }}>
+                      <div className="server-info flex-grow-1">
+                        <h4 className="server-name text-white mb-1">{server.name}</h4>
+                        <small className="text-muted">الحجم: {server.size}</small>
+                      </div>
+                      <div className="server-actions">
+                        {server.type === 'watch' ? (
+                          <a href={server.url} className="link-btn link-show d-flex align-items-center px-3">
+                            <span className="text">مشاهدة</span><i className="icon-play2 mr-auto"></i>
+                          </a>
+                        ) : (
+                          <a href={server.url} className="link-btn link-download d-flex align-items-center px-3">
+                            <span className="text">تحميل</span><span className="font-size-14 mr-auto">{server.size}</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Related Movies */}
+            <div className="widget widget-style-1 mb-5" data-grid="6">
+              <header className="widget-header border-0 mb-4">
+                <h3 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">شاهد المزيد</span>
+                </h3>
+                <div className="header-decoration"></div>
+              </header>
+              <div className="widget-body row">
+                {relatedMovies.map((movie) => (
+                  <div key={movie.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
+                    <div className="entry-box entry-box-1">
+                      <a href={`/movie/${movie.id}`}>
+                        <div className="entry-image">
+                          <div className="image" style={{ backgroundImage: `url("${movie.poster}")` }}></div>
+                          <div className="entry-overlay">
+                            <div className="overlay-content">
+                              <div className="entry-rating">
+                                <i className="icon-star"></i>
+                                <span>{movie.rating}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="entry-body px-3 pb-3 text-center">
+                          <h3 className="entry-title font-size-14 m-0">
+                            <span className="text-white">{movie.title}</span>
+                          </h3>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </footer>
-    </div>
+
+        {/* Footer */}
+        <footer className="main-footer">
+          <div className="container">
+            <div className="widget-footer text-center border-top pt-4 mt-5">
+              <nav className="footer-social d-flex justify-content-center mb-4">
+                <a href="/" className="home mx-2" title="الرئيسية"><i className="icon-home"></i></a>
+                <a href="https://www.facebook.com/yemenflix" target="_blank" className="facebook mx-2" title="فيسبوك"><i className="icon-facebook"></i></a>
+                <a href="https://www.youtube.com/c/yemenflix" target="_blank" className="youtube mx-2" title="يوتيوب"><i className="icon-youtube"></i></a>
+                <a href="/contactus" className="email mx-2" title="اتصل بنا"><i className="icon-email"></i></a>
+              </nav>
+              <div className="footer-links d-flex justify-content-center flex-wrap mb-3">
+                <a href="/movies" className="mx-2">أفلام</a>
+                <a href="/series" className="mx-2">مسلسلات</a>
+                <a href="/shows" className="mx-2">تلفزيون</a>
+                <a href="/mix" className="mx-2">منوعات</a>
+                <a href="/recent" className="mx-2">أضيف حديثا</a>
+                <a href="/profile" className="mx-2">البروفايل</a>
+                <a href="/contactus" className="mx-2">اتصل بنا</a>
+              </div>
+              <div className="copyright">
+                <p>جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025</p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }
