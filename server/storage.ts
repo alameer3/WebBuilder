@@ -3,9 +3,33 @@ import {
   type Contact, type InsertContact,
   type Movie, type InsertMovie,
   type Favorite, type InsertFavorite,
-  type Notification, type InsertNotification
+  type Notification, type InsertNotification,
+  type Episode, type InsertEpisode,
+  type Category, type InsertCategory,
+  type Tag, type InsertTag,
+  type Person, type InsertPerson,
+  type Comment, type InsertComment
 } from "@shared/schema";
 import { randomUUID } from "crypto";
+
+interface SearchFilters {
+  search?: string;
+  category?: string;
+  genre?: string[];
+  yearMin?: number;
+  yearMax?: number;
+  ratingMin?: number;
+  ratingMax?: number;
+  quality?: string[];
+  language?: string[];
+  section?: string;
+  sortBy?: string;
+  sortOrder?: string;
+  limit?: number;
+  offset?: number;
+  featured?: boolean;
+  recent?: boolean;
+}
 
 export interface IStorage {
   // User methods
@@ -21,8 +45,33 @@ export interface IStorage {
   getFeaturedMovies(): Promise<Movie[]>;
   getNewMovies(): Promise<Movie[]>;
   searchMovies(query: string): Promise<Movie[]>;
+  searchMoviesAdvanced(filters: SearchFilters): Promise<{ movies: Movie[]; total: number }>;
   createMovie(movie: InsertMovie): Promise<Movie>;
   updateMovieViews(id: string): Promise<void>;
+  
+  // Episodes methods
+  getEpisodesBySeriesId(seriesId: string): Promise<Episode[]>;
+  getEpisodeById(id: string): Promise<Episode | undefined>;
+  createEpisode(episode: InsertEpisode): Promise<Episode>;
+  
+  // Categories methods
+  getCategories(type?: string): Promise<Category[]>;
+  createCategory(category: InsertCategory): Promise<Category>;
+  
+  // Tags methods
+  getTags(): Promise<Tag[]>;
+  createTag(tag: InsertTag): Promise<Tag>;
+  
+  // People methods
+  searchPeople(search?: string, profession?: string): Promise<Person[]>;
+  getPersonById(id: string): Promise<Person | undefined>;
+  getPersonMovies(personId: string): Promise<Movie[]>;
+  createPerson(person: InsertPerson): Promise<Person>;
+  
+  // Comments methods
+  getCommentsByMovieId(movieId: string): Promise<Comment[]>;
+  createComment(comment: InsertComment): Promise<Comment>;
+  toggleCommentLike(commentId: string, isLike: boolean): Promise<void>;
   
   // Favorites methods
   getUserFavorites(userId: string): Promise<(Movie & { addedDate: Date })[]>;
@@ -44,6 +93,11 @@ export interface IStorage {
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private movies: Map<string, Movie>;
+  private episodes: Map<string, Episode>;
+  private categories: Map<string, Category>;
+  private tags: Map<string, Tag>;
+  private people: Map<string, Person>;
+  private comments: Map<string, Comment>;
   private favorites: Map<string, Favorite>;
   private contacts: Map<string, Contact>;
   private notifications: Map<string, Notification>;
@@ -51,6 +105,11 @@ export class MemStorage implements IStorage {
   constructor() {
     this.users = new Map();
     this.movies = new Map();
+    this.episodes = new Map();
+    this.categories = new Map();
+    this.tags = new Map();
+    this.people = new Map();
+    this.comments = new Map();
     this.favorites = new Map();
     this.contacts = new Map();
     this.notifications = new Map();
