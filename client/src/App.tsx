@@ -3,9 +3,19 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEffect } from "react";
 
 // Layout components
-import Sidebar from "@/components/Sidebar";
+import Header from "@/components/Header";
+import MainMenu from "@/components/MainMenu";
+import SearchBox from "@/components/SearchBox";
+import Footer from "@/components/Footer";
+
+// Import CSS files
+import "@/assets/css/plugins.css";
+import "@/assets/css/style.css"; 
+import "@/assets/css/akwam-original.css";
+import "@/assets/css/yemen-flix.css";
 
 // Pages
 import Home from "@/pages/home";
@@ -33,13 +43,41 @@ import FavoriteMovies from "@/pages/favorite-movies";
 function Router() {
   const [location] = useLocation();
   const isHomePage = location === "/" || location === "/home" || location === "/main";
-  const isFullLayoutPage = isHomePage || location === "/movies" || location === "/series" || location === "/shows" || location === "/mix" || location === "/recent" || location === "/search" || location === "/login" || location === "/profile" || location === "/contactus" || location === "/dmca" || location === "/ad-policy" || location === "/ones" || location === "/favorite-movies" || location.startsWith("/movie/") || location.startsWith("/series/") || location.startsWith("/person/") || location.includes("/episode/");
+  
+  useEffect(() => {
+    // Add Arabic font and RTL support
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+    document.body.className = 'header-fixed';
+    
+    // Handle keyboard events for ESC key
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        document.body.classList.remove('search-active', 'main-menu-active');
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      <div className={isFullLayoutPage ? "" : "flex"}>
-        {!isFullLayoutPage && <Sidebar />}
-        <main className={isFullLayoutPage ? "" : "flex-1 lg:mr-64 px-4 py-6"}>
+    <>
+      {/* Site overlay */}
+      <span 
+        className="site-overlay" 
+        onClick={() => document.body.classList.remove('main-menu-active', 'search-active')}
+      ></span>
+
+      {/* Main Menu */}
+      <MainMenu />
+
+      {/* Search Box */}
+      <SearchBox />
+
+      {/* Site Container */}
+      <div className="site-container">
+        <main>
           <Switch>
             <Route path="/" component={Home} />
             <Route path="/home" component={Home} />
@@ -67,8 +105,11 @@ function Router() {
             <Route component={NotFound} />
           </Switch>
         </main>
+        
+        {/* Footer */}
+        <Footer />
       </div>
-    </div>
+    </>
   );
 }
 
