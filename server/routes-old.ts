@@ -12,7 +12,7 @@ import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
-  // Movies endpoints
+  // Movies endpoints with advanced search
   app.get("/api/movies", async (req, res) => {
     try {
       const {
@@ -93,51 +93,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Categories endpoint
+  // Categories endpoints
   app.get("/api/categories", async (req, res) => {
     try {
-      const categories = await storage.getCategories();
+      const { type } = req.query;
+      const categories = await storage.getCategories(type as string);
       res.json(categories);
     } catch (error) {
       console.error("Get categories error:", error);
-      // Return hardcoded categories as fallback
-      const fallbackCategories = [
-        { id: "1", name: "أفلام", nameAr: "أفلام", slug: "movies", type: "content" },
-        { id: "2", name: "مسلسلات", nameAr: "مسلسلات", slug: "series", type: "content" },
-        { id: "3", name: "برامج", nameAr: "برامج", slug: "shows", type: "content" },
-        { id: "4", name: "متنوع", nameAr: "متنوع", slug: "mix", type: "content" }
-      ];
-      res.json(fallbackCategories);
+      res.status(500).json({ message: "خطأ في استرجاع التصنيفات" });
     }
   });
 
-  // Tags endpoint
+  // Tags endpoints
   app.get("/api/tags", async (req, res) => {
     try {
       const tags = await storage.getTags();
       res.json(tags);
     } catch (error) {
       console.error("Get tags error:", error);
-      // Return hardcoded tags as fallback
-      const fallbackTags = [
-        { id: "1", name: "أكشن", nameAr: "أكشن", slug: "action" },
-        { id: "2", name: "دراما", nameAr: "دراما", slug: "drama" },
-        { id: "3", name: "كوميديا", nameAr: "كوميديا", slug: "comedy" },
-        { id: "4", name: "رعب", nameAr: "رعب", slug: "horror" },
-        { id: "5", name: "إثارة", nameAr: "إثارة", slug: "thriller" }
-      ];
-      res.json(fallbackTags);
+      res.status(500).json({ message: "خطأ في استرجاع العلامات" });
     }
   });
 
   // Episodes endpoints
-  app.get("/api/series/:seriesId/episodes", async (req, res) => {
+  app.get("/api/episodes", async (req, res) => {
     try {
-      const episodes = await storage.getEpisodesBySeriesId(req.params.seriesId);
+      const { seriesId } = req.query;
+      if (!seriesId) {
+        return res.status(400).json({ message: "معرف المسلسل مطلوب" });
+      }
+      
+      const episodes = await storage.getEpisodesBySeriesId(seriesId as string);
       res.json(episodes);
     } catch (error) {
       console.error("Get episodes error:", error);
-      res.json([]); // Return empty array as fallback
+      res.status(500).json({ message: "خطأ في استرجاع الحلقات" });
     }
   });
 
@@ -147,6 +138,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!episode) {
         return res.status(404).json({ message: "الحلقة غير موجودة" });
       }
+      
       res.json(episode);
     } catch (error) {
       console.error("Get episode error:", error);
@@ -161,8 +153,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const people = await storage.searchPeople(search as string, profession as string);
       res.json(people);
     } catch (error) {
-      console.error("Search people error:", error);
-      res.json([]); // Return empty array as fallback
+      console.error("Get people error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع الأشخاص" });
     }
   });
 
@@ -172,58 +164,104 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!person) {
         return res.status(404).json({ message: "الشخص غير موجود" });
       }
-
-      const movies = await storage.getPersonMovies(req.params.id);
-      res.json({ ...person, movies });
+      
+      const personMovies = await storage.getPersonMovies(req.params.id);
+      res.json({ ...person, movies: personMovies });
     } catch (error) {
       console.error("Get person error:", error);
-      res.status(500).json({ message: "خطأ في استرجاع بيانات الشخص" });
+      res.status(500).json({ message: "خطأ في استرجاع الشخص" });
     }
   });
 
   // Comments endpoints
-  app.get("/api/movies/:movieId/comments", async (req, res) => {
+  app.get("/api/comments", async (req, res) => {
     try {
-      const comments = await storage.getCommentsByMovieId(req.params.movieId);
+      const { movieId } = req.query;
+      if (!movieId) {
+        return res.status(400).json({ message: "معرف الفيلم مطلوب" });
+      }
+      
+      const comments = await storage.getCommentsByMovieId(movieId as string);
       res.json(comments);
     } catch (error) {
       console.error("Get comments error:", error);
-      res.json([]); // Return empty array as fallback
+      res.status(500).json({ message: "خطأ في استرجاع التعليقات" });
     }
   });
 
-  app.post("/api/movies/:movieId/comments", async (req, res) => {
+  app.post("/api/comments", async (req, res) => {
     try {
+      // For now, we'll use a dummy user ID
+      // In a real app, this would come from authentication
+      const userId = "dummy-user-id";
+      
       const commentData = {
         ...req.body,
-        movieId: req.params.movieId
+        userId
       };
+      
       const comment = await storage.createComment(commentData);
       res.json({ success: true, comment });
     } catch (error) {
       console.error("Create comment error:", error);
-      res.status(500).json({ message: "خطأ في إضافة التعليق" });
+      res.status(500).json({ message: "خطأ في إنشاء التعليق" });
     }
   });
 
-  app.patch("/api/comments/:id/like", async (req, res) => {
+  app.post("/api/comments/:id/like", async (req, res) => {
     try {
-      const { isLike } = req.body;
-      await storage.toggleCommentLike(req.params.id, isLike);
+      await storage.toggleCommentLike(req.params.id, true);
       res.json({ success: true });
     } catch (error) {
-      console.error("Toggle comment like error:", error);
-      res.status(500).json({ message: "خطأ في تسجيل الإعجاب" });
+      console.error("Like comment error:", error);
+      res.status(500).json({ message: "خطأ في الإعجاب بالتعليق" });
     }
   });
 
-  app.patch("/api/comments/:id/dislike", async (req, res) => {
+  app.post("/api/comments/:id/unlike", async (req, res) => {
     try {
       await storage.toggleCommentLike(req.params.id, false);
       res.json({ success: true });
     } catch (error) {
-      console.error("Toggle comment dislike error:", error);
-      res.status(500).json({ message: "خطأ في تسجيل عدم الإعجاب" });
+      console.error("Unlike comment error:", error);
+      res.status(500).json({ message: "خطأ في إلغاء الإعجاب بالتعليق" });
+    }
+  });
+
+  // User endpoints
+  app.post("/api/users", async (req, res) => {
+    try {
+      const validatedData = insertUserSchema.parse(req.body);
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByUsername(validatedData.username) || 
+                          await storage.getUserByEmail(validatedData.email);
+      if (existingUser) {
+        return res.status(400).json({ message: "المستخدم موجود بالفعل" });
+      }
+      
+      const user = await storage.createUser(validatedData);
+      res.json({ success: true, user: { id: user.id, username: user.username, email: user.email } });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+      } else {
+        console.error("Create user error:", error);
+        res.status(500).json({ message: "خطأ في إنشاء المستخدم" });
+      }
+    }
+  });
+
+  app.get("/api/users/:id", async (req, res) => {
+    try {
+      const user = await storage.getUser(req.params.id);
+      if (!user) {
+        return res.status(404).json({ message: "المستخدم غير موجود" });
+      }
+      res.json({ id: user.id, username: user.username, email: user.email, avatar: user.avatar });
+    } catch (error) {
+      console.error("Get user error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع المستخدم" });
     }
   });
 
@@ -234,21 +272,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(favorites);
     } catch (error) {
       console.error("Get favorites error:", error);
-      res.json([]);
+      res.status(500).json({ message: "خطأ في استرجاع المفضلة" });
     }
   });
 
   app.post("/api/favorites", async (req, res) => {
     try {
       const validatedData = insertFavoriteSchema.parse(req.body);
+      
+      // Check if already favorited
+      const isFav = await storage.isFavorite(validatedData.userId, validatedData.movieId);
+      if (isFav) {
+        return res.status(400).json({ message: "الفيلم موجود في المفضلة بالفعل" });
+      }
+      
       const favorite = await storage.addToFavorites(validatedData);
       res.json({ success: true, favorite });
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
       } else {
-        console.error("Add to favorites error:", error);
-        res.status(500).json({ message: "خطأ في إضافة إلى المفضلة" });
+        console.error("Add favorite error:", error);
+        res.status(500).json({ message: "خطأ في إضافة للمفضلة" });
       }
     }
   });
@@ -256,10 +301,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/favorites/:userId/:movieId", async (req, res) => {
     try {
       await storage.removeFromFavorites(req.params.userId, req.params.movieId);
-      res.json({ success: true });
+      res.json({ success: true, message: "تم حذف الفيلم من المفضلة" });
     } catch (error) {
-      console.error("Remove from favorites error:", error);
-      res.status(500).json({ message: "خطأ في إزالة من المفضلة" });
+      console.error("Remove favorite error:", error);
+      res.status(500).json({ message: "خطأ في حذف من المفضلة" });
     }
   });
 
@@ -269,47 +314,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ isFavorite });
     } catch (error) {
       console.error("Check favorite error:", error);
-      res.json({ isFavorite: false });
-    }
-  });
-
-  // Contact endpoints
-  app.post("/api/contact", async (req, res) => {
-    try {
-      const validatedData = insertContactSchema.parse(req.body);
-      const contact = await storage.createContact(validatedData);
-      res.json({ success: true, message: "تم إرسال رسالتك بنجاح", contact });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        res.status(400).json({ 
-          success: false, 
-          message: "بيانات غير صحيحة", 
-          errors: error.errors 
-        });
-      } else {
-        console.error("Contact form error:", error);
-        res.status(500).json({ success: false, message: "خطأ في إرسال الرسالة" });
-      }
-    }
-  });
-
-  app.get("/api/contacts", async (req, res) => {
-    try {
-      const contacts = await storage.getAllContacts();
-      res.json(contacts);
-    } catch (error) {
-      console.error("Get contacts error:", error);
-      res.status(500).json({ message: "خطأ في استرجاع الرسائل" });
-    }
-  });
-
-  app.patch("/api/contacts/:id/read", async (req, res) => {
-    try {
-      await storage.markContactAsRead(req.params.id);
-      res.json({ success: true });
-    } catch (error) {
-      console.error("Mark contact as read error:", error);
-      res.status(500).json({ message: "خطأ في تحديث حالة الرسالة" });
+      res.status(500).json({ message: "خطأ في فحص المفضلة" });
     }
   });
 
@@ -320,7 +325,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(notifications);
     } catch (error) {
       console.error("Get notifications error:", error);
-      res.json([]);
+      res.status(500).json({ message: "خطأ في استرجاع الإشعارات" });
     }
   });
 
@@ -342,41 +347,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch("/api/notifications/:id/read", async (req, res) => {
     try {
       await storage.markNotificationAsRead(req.params.id);
-      res.json({ success: true });
+      res.json({ success: true, message: "تم تحديث الإشعار" });
     } catch (error) {
-      console.error("Mark notification as read error:", error);
-      res.status(500).json({ message: "خطأ في تحديث حالة الإشعار" });
+      console.error("Mark notification read error:", error);
+      res.status(500).json({ message: "خطأ في تحديث الإشعار" });
     }
   });
 
-  // User registration endpoint
-  app.post("/api/register", async (req, res) => {
+  // Contact endpoints
+  app.post("/api/contact", async (req, res) => {
     try {
-      const validatedData = insertUserSchema.parse(req.body);
+      const validatedData = insertContactSchema.parse(req.body);
+      const contact = await storage.createContact(validatedData);
       
-      // Check if user already exists
-      const existingUser = await storage.getUserByEmail(validatedData.email);
-      if (existingUser) {
-        return res.status(400).json({ message: "البريد الإلكتروني مستخدم بالفعل" });
-      }
-
-      const user = await storage.createUser(validatedData);
-      res.json({ success: true, user: { id: user.id, username: user.username, email: user.email } });
+      res.json({ 
+        success: true, 
+        message: "تم إرسال رسالتك بنجاح",
+        id: contact.id 
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+        res.status(400).json({ 
+          message: "بيانات غير صحيحة", 
+          errors: error.errors 
+        });
       } else {
-        console.error("Registration error:", error);
-        res.status(500).json({ message: "خطأ في التسجيل" });
+        console.error("Contact form error:", error);
+        res.status(500).json({ 
+          message: "خطأ في الخادم، يرجى المحاولة مرة أخرى" 
+        });
       }
     }
   });
 
-  // Health check endpoint
-  app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", message: "YEMEN_FLIX API is running" });
+  app.get("/api/contacts", async (req, res) => {
+    try {
+      const contacts = await storage.getAllContacts();
+      res.json(contacts);
+    } catch (error) {
+      console.error("Get contacts error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع الرسائل" });
+    }
   });
 
-  const server = createServer(app);
-  return server;
+  app.patch("/api/contacts/:id/read", async (req, res) => {
+    try {
+      await storage.markContactAsRead(req.params.id);
+      res.json({ success: true, message: "تم تحديث الرسالة" });
+    } catch (error) {
+      console.error("Mark contact read error:", error);
+      res.status(500).json({ message: "خطأ في تحديث الرسالة" });
+    }
+  });
+
+  const httpServer = createServer(app);
+  return httpServer;
 }
