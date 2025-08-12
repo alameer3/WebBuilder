@@ -52,16 +52,31 @@ export default function Header({ className = "" }: HeaderProps) {
   };
 
   return (
-    <header className={`main-header ${className}`}>
+    <>
+      {/* AKWAM Original Structure */}
+      <div className="main-header-top d-none d-lg-block">
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-auto">
-              <h2 className="main-logo m-0">
-                <Link href="/" className="d-inline-flex">
-                  <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                </Link>
-              </h2>
+          <div className="row">
+            <div className="col text-center">
+              <span style={{ color: '#999', fontSize: '12px' }}>
+                مرحباً بكم في موقع يمن فليكس - أفضل موقع لمشاهدة الأفلام والمسلسلات العربية والأجنبية
+              </span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <header className={`main-header main-header-height ${className}`}>
+        <div className="site-container">
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-auto">
+                <h2 className="main-logo m-0">
+                  <Link href="/" className="d-inline-flex">
+                    <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
+                  </Link>
+                </h2>
+              </div>
           
           <div className="col-auto menu-toggle-container">
             <button 
@@ -125,8 +140,10 @@ export default function Header({ className = "" }: HeaderProps) {
               </Link>
             </div>
           </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }

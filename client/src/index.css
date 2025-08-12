@@ -1,14 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap');
 
-/* Import YEMEN_FLIX CSS files */
+/* Import Original AKWAM CSS files */
 @import './assets/css/plugins.css';
-/* Import all CSS files first */
-@import './assets/css/fonts.css';
-@import './assets/css/icons.css';
 @import './assets/css/style.css';
-@import './assets/css/home.css';
-@import './assets/css/yemen-flix.css';
+@import './assets/css/akwam.css';
+@import './assets/css/akwam-original.css';
 
 @tailwind base;
 @tailwind components;

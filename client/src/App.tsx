@@ -6,10 +6,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
 
 // Layout components
-import Header from "@/components/Header";
+import AkwamHeader from "@/components/AkwamHeader";
 import MainMenu from "@/components/MainMenu";
 import SearchBox from "@/components/SearchBox";
 import Footer from "@/components/Footer";
+import PaceLoader from "@/components/PaceLoader";
 
 // Import CSS files
 import "@/assets/css/plugins.css";
@@ -81,7 +82,8 @@ function Router() {
         {!isHomePage && (
           <>
             <div className="main-header-top"></div>
-            <Header />
+            <AkwamHeader />
+            <PaceLoader />
             <div className="main-header-height"></div>
           </>
         )}

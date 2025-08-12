@@ -1,439 +1,455 @@
-/* AKWAM Original Design CSS - مطابق للتصميم الأصلي */
+/* AKWAM Original CSS - Exact copy from site folder */
 
-/* Movie Cover Background Blur Effect */
-.movie-cover {
-  position: relative;
-  min-height: 400px;
-  background: linear-gradient(135deg, #161619 0%, #27272c 100%);
-  overflow: hidden;
+/* STC Arabic Font Faces */
+@font-face {
+  font-family: 'akoam';
+  src: url('../fonts/STC-Bold.eot');
+  src: local('?'), url('../fonts/STC-Bold.woff') format('woff'), 
+       url('../fonts/STC-Bold.ttf') format('truetype'), 
+       url('../fonts/STC-Bold.svg') format('svg');
+  font-weight: 700;
+  font-style: normal;
 }
 
-.movie-cover svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+@font-face {
+  font-family: 'akoam';
+  src: url('../fonts/STC-Light.eot');
+  src: local('?'), url('../fonts/STC-Light.woff') format('woff'), 
+       url('../fonts/STC-Light.ttf') format('truetype'), 
+       url('../fonts/STC-Light.svg') format('svg');
+  font-weight: 400;
+  font-style: normal;
 }
 
-.movie-cover .container {
-  position: relative;
-  z-index: 2;
+@font-face {
+  font-family: 'akoam';
+  src: url('../fonts/STC-Regular.eot');
+  src: local('?'), url('../fonts/STC-Regular.woff') format('woff'), 
+       url('../fonts/STC-Regular.ttf') format('truetype'), 
+       url('../fonts/STC-Regular.svg') format('svg');
+  font-weight: 600;
+  font-style: normal;
 }
 
-/* Buttons - مطابق للتصميم الأصلي */
-.btn-orange {
-  background-color: #f3951e !important;
-  border-color: #f3951e !important;
-  color: white !important;
+/* AKWAM Body and Base Styles */
+body {
+  font-family: akoam, Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  background-color: #161619;
+  direction: rtl;
+  text-align: right;
+  color: #161619;
 }
 
-.btn-orange:hover {
-  background-color: #e8841a !important;
-  border-color: #e8841a !important;
+a, body {
+  color: #161619;
 }
 
-.btn-info {
-  background-color: #007bff !important;
-  border-color: #007bff !important;
-}
-
-.btn-light {
-  background-color: #f8f9fa !important;
-  border-color: #f8f9fa !important;
-  color: #212529 !important;
-}
-
-.btn-pill {
-  border-radius: 50px !important;
-  padding: 12px 24px;
-  font-weight: 500;
-}
-
-/* IMDB & TMDB Icons */
-.movie-info img[alt="IMDB"] {
-  height: 20px;
-  width: auto;
-}
-
-.movie-info img[alt="TMDB"] {
-  height: 20px;
-  width: auto;
-}
-
-/* Rating Stars */
-.icon-star {
-  color: #f3951e !important;
-}
-
-/* Widget Headers */
-.widget-header .header-link {
-  color: #f3951e !important;
-}
-
-/* Breadcrumb Navigation - مطابق للأصل */
-.breadcrumb-nav {
-  background-color: #1e1e21;
-  padding: 12px 0;
-  border-bottom: 1px solid #2a2a2e;
-}
-
-.breadcrumb {
-  margin: 0;
-  padding: 0;
-  background: none;
-  list-style: none;
-  display: flex;
-  align-items: center;
-}
-
-.breadcrumb-item {
-  display: flex;
-  align-items: center;
-  color: #888;
-  font-size: 14px;
-}
-
-.breadcrumb-item:not(:last-child)::after {
-  content: "/";
-  margin: 0 8px;
-  color: #555;
-}
-
-.breadcrumb-item a {
-  color: #f3951e;
+a, a:hover {
   text-decoration: none;
 }
 
-.breadcrumb-item a:hover {
-  color: #fff;
+/* AKWAM Color Variables */
+:root {
+  --akwam-dark: #161619;
+  --akwam-gray: #27272c;
+  --akwam-orange: #f3951e;
+  --akwam-white: #ffffff;
+  --akwam-border: #111114;
 }
 
-.breadcrumb-item .active {
-  color: #fff;
-}
-
-/* Pills/Buttons - مطابق للأصل */
-.pill-button,
-.btn-pill {
-  border-radius: 50px !important;
-  padding: 8px 20px;
-  border: 1px solid #333;
-  background: linear-gradient(135deg, #2a2a2e 0%, #1e1e21 100%);
-  color: #fff;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.3s ease;
-}
-
-.pill-button:hover,
-.btn-pill:hover {
-  background: linear-gradient(135deg, #f3951e 0%, #e8841a 100%);
-  border-color: #f3951e;
-  color: #fff;
-  transform: translateY(-1px);
-}
-
-/* Movie Rating Stars */
-.rating-stars {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-}
-
-.rating-stars .icon-star {
-  font-size: 14px;
-  color: #f3951e;
-}
-
-.rating-stars .icon-star.empty {
-  color: #333;
-}
-
-/* Movie Cover Blur Effect - SVG Filter */
-.movie-cover-blur {
-  filter: url(#movie-cover-blur-filter);
-}
-
-/* Header Improvements */
-.main-header .menu-toggle .icn {
-  position: relative;
-  width: 20px;
-  height: 16px;
-  display: inline-block;
-}
-
-.main-header .menu-toggle .icn span {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #fff;
-  transition: all 0.3s ease;
-}
-
-.main-header .menu-toggle .icn span:nth-child(1) {
-  top: 0;
-}
-
-.main-header .menu-toggle .icn span:nth-child(2) {
-  top: 7px;
-}
-
-.main-header .menu-toggle .icn span:nth-child(3) {
-  top: 14px;
-}
-
-.header-decoration {
-  width: 50px;
-  height: 3px;
-  background-color: #f3951e;
-  margin-top: 10px;
-}
-
-/* Server Items */
-.server-item {
-  background-color: #2a2a2e !important;
-  border: 1px solid #3a3a3e;
-  transition: all 0.3s ease;
-}
-
-.server-item:hover {
-  background-color: #3a3a3e !important;
-  border-color: #f3951e;
-}
-
-.link-btn {
-  background-color: #f3951e;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 25px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.link-btn:hover {
-  background-color: #e8841a;
-  color: white;
-  text-decoration: none;
-}
-
-.link-download {
-  background-color: #007bff !important;
-}
-
-.link-download:hover {
-  background-color: #0056b3 !important;
-}
-
-/* Cast Images */
-.cast-image {
-  width: 54px;
-  height: 54px;
-  object-fit: cover;
-  border: 2px solid #f3951e;
-}
-
-/* Related Movies */
-.entry-box {
-  background-color: #2a2a2e;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.entry-box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(243, 149, 30, 0.3);
-}
-
-.entry-image {
-  position: relative;
-  height: 260px;
-  overflow: hidden;
-}
-
-.entry-image .image {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.3s ease;
-}
-
-.entry-box:hover .entry-image .image {
-  transform: scale(1.1);
-}
-
-.entry-overlay {
-  position: absolute;
+/* Main Header Styles */
+.main-header {
+  height: 70px;
+  background-color: var(--akwam-gray);
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(243,149,30,0.3) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  z-index: 50;
+  transition: 0.5s, color 0.2s;
 }
 
-.entry-box:hover .entry-overlay {
+.main-header .main-logo img {
+  height: 40px;
+  transition: 0.5s, color 0.2s;
+}
+
+/* Search Box */
+.search-box {
+  width: 100%;
+  height: 70px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 52;
+  opacity: 0;
+  visibility: hidden;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(22, 22, 25, 0.2);
+  transition: 0.5s, color 0.2s;
+}
+
+.search-box form {
+  min-height: 70px;
+}
+
+.search-box form input {
+  width: 100%;
+  height: 70px;
+  border: none;
+  font-size: 24px;
+  background-color: transparent;
+}
+
+body.search-active .search-box {
+  visibility: visible;
   opacity: 1;
 }
 
-.entry-rating {
-  background-color: rgba(243, 149, 30, 0.9);
-  padding: 5px 10px;
-  border-radius: 15px;
-  color: white;
+/* Main Menu */
+.main-menu {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 45;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--akwam-gray);
+  width: 100%;
+  top: 70px;
+  border-top: 1px solid var(--akwam-border);
+  opacity: 0;
+  visibility: hidden;
+  height: calc(100% - 70px);
+  transition: 0.5s, color 0.2s;
+}
+
+.main-menu .menu .item {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.main-menu .menu .item:hover {
+  color: var(--akwam-orange);
+}
+
+body.main-menu-active .main-menu {
+  opacity: 1;
+  visibility: visible !important;
+}
+
+/* Entry Box Styles */
+.entry-box {
+  border-radius: 3px;
+  transition: 0.5s, color 0.2s;
+}
+
+.entry-box-1 {
+  background-repeat: no-repeat;
+}
+
+.entry-box-3 .entry-title {
+  color: #fff;
+}
+
+/* Widget Styles */
+.widget {
+  margin-bottom: 30px;
+}
+
+.widget-style-1 .widget-header .header-menu {
+  position: relative;
+}
+
+.widget-style-1 .widget-header .header-menu .head:hover {
+  color: var(--akwam-orange);
+}
+
+/* Movie Cards */
+.movie-card {
+  background: var(--akwam-gray);
+  border-radius: 3px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.movie-card .poster {
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-card .poster img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover .poster img {
+  transform: scale(1.05);
+}
+
+.movie-card .info {
+  padding: 15px;
+}
+
+.movie-card .title {
+  color: var(--akwam-white);
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.movie-card .year {
+  color: #999;
+  font-size: 12px;
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--akwam-orange);
+  color: var(--akwam-white);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #e8851a;
+  color: var(--akwam-white);
+  transform: translateY(-1px);
+}
+
+/* Rating System */
+.rating {
+  color: var(--akwam-orange);
   font-weight: bold;
 }
 
-/* Arabic RTL Support */
-body[dir="rtl"] .movie-cover .container {
-  text-align: right;
+/* Breadcrumb */
+.breadcrumb {
+  background: transparent;
+  padding: 15px 0;
+  margin: 0;
 }
 
-body[dir="rtl"] .btn-pill {
+.breadcrumb a {
+  color: #999;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--akwam-orange);
+}
+
+.breadcrumb .active {
+  color: var(--akwam-white);
+}
+
+/* Footer */
+.main-footer {
+  background: var(--akwam-dark);
+  color: var(--akwam-white);
+  padding: 30px 0;
   text-align: center;
 }
 
-/* Movie Rating Buttons */
-.movie-rating .like,
-.movie-rating .unlike {
-  background: none;
-  border: none;
-  color: #f3951e;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.movie-rating .like:hover,
-.movie-rating .unlike:hover {
-  color: #e8841a;
-  transform: scale(1.1);
-}
-
-/* Breadcrumb Styling */
-.breadcrumb {
-  background: transparent;
-  padding: 0;
-}
-
-.breadcrumb-item a {
-  color: #f3951e;
+.main-footer .links a {
+  color: #999;
   text-decoration: none;
+  margin: 0 10px;
 }
 
-.breadcrumb-item a:hover {
-  color: #e8841a;
+.main-footer .links a:hover {
+  color: var(--akwam-white);
 }
 
-.breadcrumb-item + .breadcrumb-item::before {
-  content: "›";
-  color: #666;
-}
-
-/* Footer Styling */
-.main-footer {
-  background: linear-gradient(135deg, #161619 0%, #27272c 100%);
-  border-top: 1px solid #3a3a3e;
-  margin-top: 50px;
-}
-
-.footer-social a {
-  color: #f3951e;
-  font-size: 24px;
-  transition: all 0.3s ease;
-}
-
-.footer-social a:hover {
-  color: #e8841a;
-  transform: translateY(-3px);
-}
-
-.footer-links a {
-  color: #ccc;
-  text-decoration: none;
+.main-footer .social a {
+  color: #777;
+  font-size: 20px;
+  margin: 0 10px;
   transition: color 0.3s ease;
 }
 
-.footer-links a:hover {
-  color: #f3951e;
+.main-footer .social a:hover {
+  color: var(--akwam-white);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a51;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4c4c54;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .movie-cover {
-    min-height: 300px;
+  .main-header {
+    height: 60px;
   }
   
-  .btn-pill {
-    padding: 10px 20px;
-    font-size: 14px;
+  .search-box form input {
+    height: 60px;
+    font-size: 18px;
   }
   
-  .entry-image {
-    height: 200px;
+  .main-menu {
+    top: 60px;
+    height: calc(100% - 60px);
+  }
+  
+  .movie-card .title {
+    font-size: 13px;
   }
 }
 
-/* Animation Effects */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Loading Animation */
+.pace {
+  pointer-events: none;
+  user-select: none;
 }
 
-.widget {
-  animation: fadeInUp 0.6s ease forwards;
+.pace-inactive {
+  display: none;
 }
 
-.widget:nth-child(2) { animation-delay: 0.1s; }
-.widget:nth-child(3) { animation-delay: 0.2s; }
-.widget:nth-child(4) { animation-delay: 0.3s; }
-.widget:nth-child(5) { animation-delay: 0.4s; }
-
-/* Share Button Hover Effect */
-.btn-share:hover .menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+.pace .pace-progress {
+  background: var(--akwam-orange);
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: 2px;
 }
 
-.btn-share .menu {
-  position: absolute;
-  top: -50px;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.9);
-  padding: 10px;
-  border-radius: 25px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
+.pace .pace-activity {
+  display: block;
+  position: fixed;
+  z-index: 2000;
+  top: 15px;
+  right: 15px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid transparent;
+  border-top-color: var(--akwam-orange);
+  border-left-color: var(--akwam-orange);
+  border-radius: 10px;
+  animation: pace-spinner 0.4s linear infinite;
+}
+
+@keyframes pace-spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Site Container */
+.site-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 70px;
+}
+
+/* AKWAM Specific Classes */
+.main-header-top {
+  background: var(--akwam-dark);
+  height: 40px;
+  font-size: 12px;
+}
+
+.main-header-height {
+  height: 70px;
+}
+
+/* Movie Detail Page */
+.movie-cover {
+  position: relative;
+}
+
+.movie-cover .movie-poster {
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.movie-cover .movie-rating {
+  position: relative;
+}
+
+.movie-rating .btn-like,
+.movie-rating .btn-dislike {
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--akwam-white);
+  border: none;
+  padding: 5px 10px;
+  margin: 0 2px;
+  border-radius: 3px;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.btn-share .menu button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  margin: 0 5px;
-  cursor: pointer;
-  transition: color 0.3s ease;
+.movie-rating .btn-like:hover {
+  background: #28a745;
 }
 
-.btn-share .menu button:hover {
-  color: #f3951e;
+.movie-rating .btn-dislike:hover {
+  background: #dc3545;
+}
+
+/* Qualities Section */
+.qualities {
+  margin: 20px 0;
+}
+
+.qualities .link-btn {
+  background: var(--akwam-orange);
+  color: var(--akwam-white);
+  padding: 10px 15px;
+  border-radius: 3px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.qualities .link-btn:hover {
+  background: #e8851a;
+  color: var(--akwam-white);
+  transform: translateY(-1px);
+}
+
+.qualities .link-torrent {
+  background: #17a2b8;
+}
+
+.qualities .link-torrent:hover {
+  background: #138496;
 }
