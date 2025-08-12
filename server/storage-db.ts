@@ -12,7 +12,7 @@ import type {
   Notification, InsertNotification
 } from "@shared/schema";
 
-interface SearchFilters {
+export interface SearchFilters {
   search?: string;
   category?: string;
   genre?: string[];
@@ -90,7 +90,7 @@ export interface IStorage {
   markNotificationAsRead(id: string): Promise<void>;
 }
 
-class DatabaseStorage implements IStorage {
+export class DatabaseStorage implements IStorage {
   private db: ReturnType<typeof drizzle>;
 
   constructor() {
@@ -494,85 +494,3 @@ class DatabaseStorage implements IStorage {
       .where(eq(notifications.id, id));
   }
 }
-
-export const storage = new DatabaseStorage();
-
-// Initialize with sample data
-async function initializeSampleData() {
-  const sampleMovies = [
-    {
-      title: "28 Years Later",
-      description: "الجزء الثالث من سلسلة أفلام الزومبي المثيرة",
-      year: 2025,
-      duration: 115,
-      rating: 7.1,
-      genre: ["إثارة", "رعب"],
-      poster: "https://img.downet.net/thumb/178x260/uploads/Gn5bw.webp",
-      quality: "WEB-DL",
-      language: "إنجليزي",
-      subtitle: ["عربي"],
-      category: "movie",
-      isNew: true,
-      isFeatured: true,
-      isRecommended: false,
-      viewCount: 0,
-      downloadCount: 0,
-      likeCount: 0,
-      dislikeCount: 0
-    },
-    {
-      title: "The Life of Chuck",
-      description: "قصة ملهمة عن رجل يواجه تحديات الحياة بشجاعة",
-      year: 2025,
-      duration: 110,
-      rating: 7.7,
-      genre: ["فانتازيا", "دراما"],
-      poster: "https://img.downet.net/thumb/178x260/uploads/BV1RS.webp",
-      quality: "WEB-DL",
-      language: "إنجليزي",
-      subtitle: ["عربي"],
-      category: "movie",
-      isNew: true,
-      isFeatured: false,
-      isRecommended: true,
-      viewCount: 0,
-      downloadCount: 0,
-      likeCount: 0,
-      dislikeCount: 0
-    },
-    {
-      title: "باب الحارة",
-      description: "من أشهر المسلسلات الشامية التي تحكي قصص الحارة الدمشقية",
-      year: 2006,
-      rating: 8.8,
-      genre: ["دراما", "تاريخي"],
-      poster: "https://img.downet.net/thumb/178x260/uploads/bab-hara.webp",
-      quality: "WEB-DL",
-      language: "عربي",
-      subtitle: [],
-      category: "series",
-      isNew: false,
-      isFeatured: true,
-      isRecommended: true,
-      viewCount: 0,
-      downloadCount: 0,
-      likeCount: 0,
-      dislikeCount: 0
-    }
-  ];
-
-  try {
-    const existingMovies = await storage.getAllMovies();
-    if (existingMovies.length === 0) {
-      for (const movie of sampleMovies) {
-        await storage.createMovie(movie);
-      }
-      console.log("Sample data initialized successfully");
-    }
-  } catch (error) {
-    console.error("Error initializing sample data:", error);
-  }
-}
-
-// Call initialization
-initializeSampleData();
