@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "wouter";
+import Breadcrumb from "../components/Breadcrumb";
 
 // استيراد ملفات CSS المطلوبة
 import '../assets/css/plugins.css';
@@ -100,6 +101,12 @@ export default function Movies() {
       document.body.className = "";
     };
   }, []);
+
+  // إعداد Breadcrumb
+  const breadcrumbItems = [
+    { name: "الرئيسية", href: "/" },
+    { name: "أفلام" }
+  ];
 
   return (
     <>
@@ -227,6 +234,12 @@ export default function Movies() {
         </header>
 
         <div className="main-header-height"></div>
+        
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb items={[
+          { name: "الرئيسية", href: "/" },
+          { name: "أفلام" }
+        ]} />
         
         {/* Hidden Inputs */}
         <input type="hidden" id="page_app" value="movies" className="not-empty" />
@@ -469,9 +482,9 @@ export default function Movies() {
                 <a href="/profile" className="mx-2">البروفايل</a>
                 <a href="/contactus" className="mx-2">اتصل بنا</a>
               </div>
-              <div className="copyright">
-                <p>جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025</p>
-              </div>
+              <p className="copyright mb-0 font-size-12 text-center mt-3">
+                جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
+              </p>
             </div>
           </div>
         </footer>

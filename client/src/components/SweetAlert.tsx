@@ -1,170 +1,174 @@
-import { useEffect } from "react";
+// SweetAlert Replacement Component - مطابق للأصل
+import { useEffect } from 'react';
 
-declare global {
-  interface Window {
-    swal: any;
-  }
-}
-
-interface SweetAlertProps {
-  type: 'success' | 'error' | 'warning' | 'info';
-  title: string;
+interface SweetAlertOptions {
+  title?: string;
   text?: string;
+  icon?: 'success' | 'error' | 'warning' | 'info';
   confirmButtonText?: string;
+  cancelButtonText?: string;
+  showCancelButton?: boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
-  showCancelButton?: boolean;
-  timer?: number;
 }
 
-export default function SweetAlert({
-  type,
-  title,
-  text,
-  confirmButtonText = 'موافق',
-  onConfirm,
-  onCancel,
-  showCancelButton = false,
-  timer
-}: SweetAlertProps) {
-  
-  useEffect(() => {
-    // تحميل SweetAlert
-    const sweetAlertScript = document.createElement('script');
-    sweetAlertScript.src = '/src/assets/js/sweetalert.min.js';
-    sweetAlertScript.onload = () => {
-      if (window.swal) {
-        const options: any = {
-          title,
-          text,
-          type,
-          confirmButtonText,
-          showCancelButton,
-          confirmButtonColor: '#f3951e',
-          cancelButtonColor: '#d33',
-          cancelButtonText: 'إلغاء'
-        };
+export function showAlert(options: SweetAlertOptions) {
+  // إنشاء overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'swal-overlay';
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
 
-        if (timer) {
-          options.timer = timer;
-        }
+  // إنشاء النافذة المنبثقة
+  const modal = document.createElement('div');
+  modal.className = 'swal-modal';
+  modal.style.cssText = `
+    background: #27272c;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  `;
 
-        window.swal(options).then((result: any) => {
-          if (result.value && onConfirm) {
-            onConfirm();
-          } else if (result.dismiss && onCancel) {
-            onCancel();
-          }
-        });
-      }
+  // أيقونة
+  let iconHTML = '';
+  if (options.icon) {
+    const iconColors = {
+      success: '#28a745',
+      error: '#dc3545',
+      warning: '#ffc107',
+      info: '#17a2b8'
     };
-    document.head.appendChild(sweetAlertScript);
+    iconHTML = `<div style="font-size: 48px; color: ${iconColors[options.icon]}; margin-bottom: 20px;">
+      ${options.icon === 'success' ? '✓' : 
+        options.icon === 'error' ? '✗' : 
+        options.icon === 'warning' ? '⚠' : 'ℹ'}
+    </div>`;
+  }
 
-    return () => {
-      // تنظيف
-      if (window.swal) {
-        window.swal.close();
-      }
-    };
-  }, [type, title, text, confirmButtonText, onConfirm, onCancel, showCancelButton, timer]);
+  modal.innerHTML = `
+    ${iconHTML}
+    ${options.title ? `<h3 style="color: #fff; margin-bottom: 15px; font-family: akoam;">${options.title}</h3>` : ''}
+    ${options.text ? `<p style="color: #ccc; margin-bottom: 25px;">${options.text}</p>` : ''}
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button class="swal-confirm" style="
+        background: #f3951e;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: akoam;
+      ">${options.confirmButtonText || 'تأكيد'}</button>
+      ${options.showCancelButton ? `
+        <button class="swal-cancel" style="
+          background: #6c757d;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-family: akoam;
+        ">${options.cancelButtonText || 'إلغاء'}</button>
+      ` : ''}
+    </div>
+  `;
 
-  return null; // SweetAlert لا يحتاج JSX
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  // إضافة الأحداث
+  const confirmBtn = modal.querySelector('.swal-confirm') as HTMLElement;
+  const cancelBtn = modal.querySelector('.swal-cancel') as HTMLElement;
+
+  const closeModal = () => {
+    document.body.removeChild(overlay);
+  };
+
+  confirmBtn?.addEventListener('click', () => {
+    if (options.onConfirm) options.onConfirm();
+    closeModal();
+  });
+
+  cancelBtn?.addEventListener('click', () => {
+    if (options.onCancel) options.onCancel();
+    closeModal();
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  // إضافة animation
+  modal.style.transform = 'scale(0.5)';
+  modal.style.opacity = '0';
+  setTimeout(() => {
+    modal.style.transition = 'all 0.3s ease';
+    modal.style.transform = 'scale(1)';
+    modal.style.opacity = '1';
+  }, 10);
 }
 
-// Hook لاستخدام SweetAlert بسهولة
-export const useSweetAlert = () => {
-  const showAlert = (options: SweetAlertProps) => {
-    const script = document.createElement('script');
-    script.src = '/src/assets/js/sweetalert.min.js';
-    script.onload = () => {
-      if (window.swal) {
-        const swalOptions: any = {
-          title: options.title,
-          text: options.text,
-          type: options.type,
-          confirmButtonText: options.confirmButtonText || 'موافق',
-          showCancelButton: options.showCancelButton || false,
-          confirmButtonColor: '#f3951e',
-          cancelButtonColor: '#d33',
-          cancelButtonText: 'إلغاء'
-        };
+// دالة Success
+export function showSuccess(title: string, text?: string) {
+  showAlert({
+    title,
+    text,
+    icon: 'success',
+    confirmButtonText: 'ممتاز'
+  });
+}
 
-        if (options.timer) {
-          swalOptions.timer = options.timer;
-        }
+// دالة Error
+export function showError(title: string, text?: string) {
+  showAlert({
+    title,
+    text,
+    icon: 'error',
+    confirmButtonText: 'حسناً'
+  });
+}
 
-        window.swal(swalOptions).then((result: any) => {
-          if (result.value && options.onConfirm) {
-            options.onConfirm();
-          } else if (result.dismiss && options.onCancel) {
-            options.onCancel();
-          }
-        });
-      }
-    };
-    document.head.appendChild(script);
-  };
+// دالة Warning
+export function showWarning(title: string, text?: string) {
+  showAlert({
+    title,
+    text,
+    icon: 'warning',
+    confirmButtonText: 'فهمت'
+  });
+}
 
-  const showSuccess = (title: string, text?: string, onConfirm?: () => void) => {
-    showAlert({
-      type: 'success',
-      title,
-      text,
-      onConfirm
-    });
-  };
+// دالة Confirm
+export function showConfirm(title: string, text: string, onConfirm: () => void) {
+  showAlert({
+    title,
+    text,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'نعم',
+    cancelButtonText: 'لا',
+    onConfirm
+  });
+}
 
-  const showError = (title: string, text?: string, onConfirm?: () => void) => {
-    showAlert({
-      type: 'error',
-      title,
-      text,
-      onConfirm
-    });
-  };
-
-  const showWarning = (title: string, text?: string, onConfirm?: () => void) => {
-    showAlert({
-      type: 'warning',
-      title,
-      text,
-      onConfirm,
-      showCancelButton: true
-    });
-  };
-
-  const showInfo = (title: string, text?: string, onConfirm?: () => void) => {
-    showAlert({
-      type: 'info',
-      title,
-      text,
-      onConfirm
-    });
-  };
-
-  const showConfirm = (
-    title: string, 
-    text?: string, 
-    onConfirm?: () => void, 
-    onCancel?: () => void
-  ) => {
-    showAlert({
-      type: 'warning',
-      title,
-      text,
-      onConfirm,
-      onCancel,
-      showCancelButton: true,
-      confirmButtonText: 'نعم، متأكد!'
-    });
-  };
-
-  return {
-    showAlert,
-    showSuccess,
-    showError,
-    showWarning,
-    showInfo,
-    showConfirm
-  };
+export default {
+  showAlert,
+  showSuccess,
+  showError,
+  showWarning,
+  showConfirm
 };

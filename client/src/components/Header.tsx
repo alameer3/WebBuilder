@@ -52,9 +52,7 @@ export default function Header({ className = "" }: HeaderProps) {
   };
 
   return (
-    <>
-      <div className="main-header-top"></div>
-      <header className={`main-header ${className}`}>
+    <header className={`main-header ${className}`}>
         <div className="container">
           <div className="row align-items-center">
             <div className="col-auto">
@@ -129,8 +127,6 @@ export default function Header({ className = "" }: HeaderProps) {
           </div>
         </div>
       </div>
-      </header>
-      <div className="main-header-height"></div>
-    </>
+    </header>
   );
 }

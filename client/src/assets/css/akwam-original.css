@@ -72,6 +72,119 @@
   color: #f3951e !important;
 }
 
+/* Breadcrumb Navigation - مطابق للأصل */
+.breadcrumb-nav {
+  background-color: #1e1e21;
+  padding: 12px 0;
+  border-bottom: 1px solid #2a2a2e;
+}
+
+.breadcrumb {
+  margin: 0;
+  padding: 0;
+  background: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  color: #888;
+  font-size: 14px;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+  content: "/";
+  margin: 0 8px;
+  color: #555;
+}
+
+.breadcrumb-item a {
+  color: #f3951e;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  color: #fff;
+}
+
+.breadcrumb-item .active {
+  color: #fff;
+}
+
+/* Pills/Buttons - مطابق للأصل */
+.pill-button,
+.btn-pill {
+  border-radius: 50px !important;
+  padding: 8px 20px;
+  border: 1px solid #333;
+  background: linear-gradient(135deg, #2a2a2e 0%, #1e1e21 100%);
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.pill-button:hover,
+.btn-pill:hover {
+  background: linear-gradient(135deg, #f3951e 0%, #e8841a 100%);
+  border-color: #f3951e;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Movie Rating Stars */
+.rating-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rating-stars .icon-star {
+  font-size: 14px;
+  color: #f3951e;
+}
+
+.rating-stars .icon-star.empty {
+  color: #333;
+}
+
+/* Movie Cover Blur Effect - SVG Filter */
+.movie-cover-blur {
+  filter: url(#movie-cover-blur-filter);
+}
+
+/* Header Improvements */
+.main-header .menu-toggle .icn {
+  position: relative;
+  width: 20px;
+  height: 16px;
+  display: inline-block;
+}
+
+.main-header .menu-toggle .icn span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.main-header .menu-toggle .icn span:nth-child(1) {
+  top: 0;
+}
+
+.main-header .menu-toggle .icn span:nth-child(2) {
+  top: 7px;
+}
+
+.main-header .menu-toggle .icn span:nth-child(3) {
+  top: 14px;
+}
+
 .header-decoration {
   width: 50px;
   height: 3px;

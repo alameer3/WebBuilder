@@ -75,8 +75,17 @@ function Router() {
       {/* Search Box */}
       <SearchBox />
 
-      {/* Site Container */}
+      {/* Site Container - مطابق للهيكل الأصلي */}
       <div className="site-container">
+        {/* Header - only show on non-home pages with proper structure */}
+        {!isHomePage && (
+          <>
+            <div className="main-header-top"></div>
+            <Header />
+            <div className="main-header-height"></div>
+          </>
+        )}
+
         <main>
           <Switch>
             <Route path="/" component={Home} />
@@ -106,8 +115,8 @@ function Router() {
           </Switch>
         </main>
         
-        {/* Footer */}
-        <Footer />
+        {/* Footer - only show on non-home pages */}
+        {!isHomePage && <Footer />}
       </div>
     </>
   );
