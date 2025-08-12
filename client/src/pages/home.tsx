@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 import Carousel from "../components/Carousel";
+import FeaturedSlider from "../components/FeaturedSlider";
 // ملفات CSS متضمنة في index.css
 
 // استيراد الصور
@@ -340,6 +342,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            {/* سلايدر المحتوى المميز */}
+            <FeaturedSlider />
           </div>
         </div>
       </div>

@@ -1,389 +1,249 @@
-import { useEffect } from "react";
-import logoWhite from "@/assets/images/logo-white.svg";
+// TV Shows Page - مطابق للأصل
+import { useEffect, useState } from 'react';
+import { Link } from 'wouter';
+import Breadcrumb from '../components/Breadcrumb';
 
-// بيانات البرامج التلفزيونية
-const tvShows = [
-  {
-    id: 1,
-    title: "برنامج تلفزيوني مباشر",
-    channel: "القناة الأولى",
-    category: "أخبار",
-    year: "2024",
-    rating: 8.5,
-    image: "/assets/images/default.jpg",
-    isLive: true,
-    description: "برنامج إخباري مباشر"
-  },
-  {
-    id: 2,
-    title: "توك شو عربي",
-    channel: "القناة الثانية",
-    category: "ترفيه",
-    year: "2024",
-    rating: 9.0,
-    image: "/assets/images/default.jpg",
-    isLive: false,
-    description: "برنامج حواري اجتماعي"
-  },
-  {
-    id: 3,
-    title: "برنامج رياضي",
-    channel: "القناة الرياضية",
-    category: "رياضة",
-    year: "2024",
-    rating: 8.8,
-    image: "/assets/images/default.jpg",
-    isLive: true,
-    description: "تغطية رياضية شاملة"
-  },
-  {
-    id: 4,
-    title: "برنامج الطبخ",
-    channel: "قناة المطبخ",
-    category: "طبخ",
-    year: "2024",
-    rating: 8.3,
-    image: "/assets/images/default.jpg",
-    isLive: false,
-    description: "وصفات وتقنيات الطبخ"
-  },
-  {
-    id: 5,
-    title: "برنامج اطفال",
-    channel: "قناة الأطفال",
-    category: "أطفال",
-    year: "2024",
-    rating: 9.2,
-    image: "/assets/images/default.jpg",
-    isLive: false,
-    description: "محتوى تعليمي للأطفال"
-  },
-  {
-    id: 6,
-    title: "الأخبار المسائية",
-    channel: "قناة الإخبارية",
-    category: "أخبار",
-    year: "2024",
-    rating: 8.0,
-    image: "/assets/images/default.jpg",
-    isLive: true,
-    description: "نشرة إخبارية مسائية"
-  }
-];
+interface Show {
+  id: string;
+  title: string;
+  poster: string;
+  year: string;
+  rating: number;
+  genre?: string[];
+  quality?: string;
+  episodes?: number;
+  description?: string;
+}
 
 export default function Shows() {
+  const [filters, setFilters] = useState({
+    category: '0',
+    year: '0'
+  });
+
+  // بيانات تجريبية للبرامج التلفزيونية
+  const showsData: Show[] = [
+    {
+      id: "113",
+      title: "الشرطة الأحساء",
+      poster: "https://img.downet.net/thumb/270x400/uploads/police.jpg",
+      year: "2024",
+      rating: 8.0,
+      genre: ["واقعي", "جريمة"],
+      quality: "HD",
+      episodes: 20
+    },
+    {
+      id: "127",
+      title: "AEW Dynamite",
+      poster: "https://img.downet.net/thumb/270x400/uploads/aew.jpg",
+      year: "2024",
+      rating: 9.2,
+      genre: ["رياضي", "مصارعة"],
+      quality: "HD",
+      episodes: 52
+    },
+    {
+      id: "129",
+      title: "أنت الآن تشاهد أحداثة",
+      poster: "https://img.downet.net/thumb/270x400/uploads/events.jpg",
+      year: "2024",
+      rating: 7.5,
+      genre: ["إخباري", "حالي"],
+      quality: "HD",
+      episodes: 100
+    },
+    {
+      id: "13",
+      title: "حفل جوائز إيمي 71",
+      poster: "https://img.downet.net/thumb/270x400/uploads/emmy.jpg",
+      year: "2024",
+      rating: 8.8,
+      genre: ["حفلات", "جوائز"],
+      quality: "HD",
+      episodes: 1
+    }
+  ];
+
   useEffect(() => {
-    // تغيير body class لتطابق الأصل
-    document.body.className = 'header-fixed header-pages pace-done';
+    document.title = "برامج تلفزيونية - يمن فليكس";
+    document.body.className = 'page-archive archive-shows header-fixed';
     
-    // إضافة jQuery script للتفاعلات
-    const jqueryScript = document.createElement('script');
-    jqueryScript.src = 'https://code.jquery.com/jquery-3.2.1.min.js';
-    jqueryScript.onload = () => {
-      // التفاعلات المطلوبة مطابقة للأصل
-      const $ = (window as any).$;
-      if ($) {
-        $(document).ready(function(){
-          // Menu toggle functions
-          const handleMenuToggle = () => {
-            $("body").removeClass("search-active").toggleClass("main-menu-active");
-          };
-          
-          const handleSearchToggle = () => {
-            $("body").removeClass("main-menu-active").toggleClass("search-active");
-          };
+    // تنظيف الخلفية
+    document.body.style.background = '';
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundSize = '';
+    document.body.style.backgroundPosition = '';
+    document.body.style.backgroundAttachment = '';
 
-          const handleEscape = (e: any) => {
-            if (e.keyCode === 27) {
-              $("body").removeClass("search-active main-menu-active");
-            }
-          };
-
-          $(".menu-toggle").on("click", handleMenuToggle);
-          $(".search-toggle").on("click", handleSearchToggle);
-          $(document).on("keydown", handleEscape);
-        });
-      }
-    };
-    document.head.appendChild(jqueryScript);
-
-    // تنظيف عند الخروج
     return () => {
-      document.body.className = '';
+      document.body.className = "";
     };
   }, []);
 
+  const breadcrumbItems = [
+    { name: "الرئيسية", href: "/" },
+    { name: "تلفزيون" }
+  ];
+
   return (
     <>
-      {/* Pace Loading Indicator - مطابق للأصل */}
+      {/* Pace Loading Indicator */}
       <div className="pace pace-inactive">
-        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{transform: 'translate3d(100%, 0px, 0px)'}}>
+        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{ transform: 'translate3d(100%, 0px, 0px)' }}>
           <div className="pace-progress-inner"></div>
         </div>
         <div className="pace-activity"></div>
       </div>
 
-      {/* طبقة التراكب للقائمة */}
-      <div className="site-overlay"></div>
+      {/* Site Overlay */}
+      <span className="site-overlay"></span>
 
-      {/* القائمة الجانبية - مطابقة للأصل */}
-      <div className="main-menu">
-        <div className="d-flex flex-column">
-          <div className="my-auto w-100">
-            <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
-              </a>
-              <a href="/series" className="item">
-                <div className="icn ml-3"><i className="icon-monitor"></i></div>
-                <div className="text">مسلسلات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
-              </a>
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
-            </div>
-          </div>
-          <nav className="social d-flex justify-content-center">
-            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
-          </nav>
-        </div>
-      </div>
+      {/* Hidden Inputs */}
+      <input type="hidden" id="page_app" value="shows" className="not-empty" />
+      <input type="hidden" id="page_id" value="0" className="not-empty" />
 
-      {/* مربع البحث */}
-      <div className="search-box px-xl-5">
-        <div className="container search-container">
-          <form className="search-form" method="get">
-            <label className="d-flex align-items-center h-100 w-100 m-0">
-              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
-              <input type="search" name="q" placeholder="ابحث هنا" />
-            </label>
-          </form>
-        </div>
-      </div>
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb items={breadcrumbItems} />
 
-      {/* موقع الحاوية */}
-      <div className="site-container">
-        {/* الهيدر الكامل - مطابق للأصل */}
-        <header className="main-header">
+      {/* Page Content */}
+      <div className="page page-archive">
+        {/* Archive Cover */}
+        <div className="archive-cover mb-4" style={{ backgroundImage: 'url("https://img.downet.net/uploads/shows-bg.webp")' }}>
           <div className="container">
-            <div className="row align-items-center py-3">
-              <div className="col-lg-2 col-md-3 col-6">
-                <div className="logo">
-                  <a href="/">
-                    <img src={logoWhite} alt="يمن فليكس" className="img-fluid" />
-                  </a>
-                </div>
-              </div>
-              
-              <div className="col-lg-8 col-md-6 d-none d-md-block">
-                <nav className="main-nav">
-                  <ul className="nav-list d-flex justify-content-center align-items-center">
-                    <li className="nav-item">
-                      <a href="/movies" className="nav-link">أفلام</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/series" className="nav-link">مسلسلات</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/shows" className="nav-link active">تلفزيون</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/mix" className="nav-link">منوعات</a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-              
-              <div className="col-lg-2 col-md-3 col-6">
-                <div className="header-actions d-flex justify-content-end align-items-center">
-                  <button className="search-toggle btn-icon mr-3">
-                    <i className="icon-search"></i>
-                  </button>
-                  <button className="menu-toggle btn-icon d-md-none">
-                    <div className="icn">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div className="main-header-height"></div>
-        
-        {/* Hidden inputs مطابقة للأصل */}
-        <input type="hidden" id="page_app" value="shows" className="not-empty" />
-        <input type="hidden" id="page_id" value="0" className="not-empty" />
-
-        {/* صفحة الأرشيف - مطابقة للأصل */}
-        <div className="page page-archive">
-          <div className="archive-cover mb-4" style={{backgroundImage: "url('/assets/images/site-new.webp')"}}>
-            <div className="container">
-              <div className="row pb-3">
-                <div className="col-12 mt-auto">
-                  <div className="archive-title">
-                    <h1 className="title">تلفزيون</h1>
-                    <p className="description">البرامج التلفزيونية، الأخبار، التوك شو، والقنوات المباشرة</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* فلاتر المحتوى */}
-          <div className="container mb-4">
-            <div className="page-filters">
-              <div className="row">
-                <div className="col-12">
-                  <div className="filters-wrap">
-                    <div className="filters d-flex flex-wrap">
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">جميع الفئات</option>
-                          <option value="news">أخبار</option>
-                          <option value="entertainment">ترفيه</option>
-                          <option value="sports">رياضة</option>
-                          <option value="cooking">طبخ</option>
-                          <option value="kids">أطفال</option>
-                          <option value="live">مباشر</option>
-                        </select>
-                      </div>
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">القناة</option>
-                          <option value="channel1">القناة الأولى</option>
-                          <option value="channel2">القناة الثانية</option>
-                          <option value="sports">الرياضية</option>
-                          <option value="kids">الأطفال</option>
-                        </select>
-                      </div>
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">الترتيب</option>
-                          <option value="live">المباشر أولاً</option>
-                          <option value="newest">الأحدث</option>
-                          <option value="rating">الأعلى تقييماً</option>
-                          <option value="popular">الأشهر</option>
-                        </select>
-                      </div>
+            <div className="row pb-3">
+              <div className="col-12 mt-auto">
+                <div className="row">
+                  <div className="col-md-auto col-12 mb-12 mb-md-0">
+                    <div className="main-category d-flex align-items-center justify-content-center radius p-4 h-100">
+                      <i className="icn icon-tv ml-4"></i>
+                      <h1 className="name font-size-34 font-weight-bold mb-0">تلفزيون</h1>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* شبكة البرامج التلفزيونية */}
-          <div className="container">
-            <div className="page-content">
-              <div className="archive-content">
-                <div className="widgets-posts row">
-                  {tvShows.map((show) => (
-                    <div key={show.id} className="col-lg-2 col-md-3 col-4 mb-4">
-                      <div className="widget widget-1">
-                        <div className="entry-box">
-                          <div className="entry-image">
-                            <a href={`/shows/${show.id}`}>
-                              <img src={show.image} alt={show.title} className="img-fluid" />
-                              <div className="entry-overlay">
-                                <div className="overlay-content">
-                                  {show.isLive && (
-                                    <div className="live-indicator">
-                                      <span className="live-badge">● مباشر</span>
-                                    </div>
-                                  )}
-                                  <div className="rating">
-                                    <span className="rating-star">★</span>
-                                    <span className="rating-value">{show.rating}</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
+                  <div className="col-md">
+                    <form id="filter" method="get">
+                      <div className="row">
+                        <div className="col-lg-3 col-md-6 col-12">
+                          <div className="form-group mb-12">
+                            <select 
+                              className="form-control select2" 
+                              name="category" 
+                              value={filters.category} 
+                              onChange={(e) => setFilters({...filters, category: e.target.value})}
+                            >
+                              <option value="0">التصنيف</option>
+                              <option value="sports">رياضي</option>
+                              <option value="news">إخباري</option>
+                              <option value="entertainment">ترفيهي</option>
+                              <option value="educational">تعليمي</option>
+                              <option value="documentary">وثائقي</option>
+                              <option value="reality">واقعي</option>
+                              <option value="cooking">طبخ</option>
+                              <option value="talk">حواري</option>
+                            </select>
                           </div>
-                          <div className="entry-content">
-                            <div className="entry-header">
-                              <h3 className="entry-title">
-                                <a href={`/shows/${show.id}`}>
-                                  {show.title}
-                                </a>
-                              </h3>
-                            </div>
-                            <div className="entry-meta">
-                              <span className="entry-channel">{show.channel}</span>
-                              <span className="entry-category">{show.category}</span>
-                              <span className="entry-year">{show.year}</span>
-                            </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6 col-12">
+                          <div className="form-group mb-12">
+                            <select 
+                              className="form-control select2" 
+                              name="year" 
+                              value={filters.year} 
+                              onChange={(e) => setFilters({...filters, year: e.target.value})}
+                            >
+                              <option value="0">سنة الإنتاج</option>
+                              <option value="2024">2024</option>
+                              <option value="2023">2023</option>
+                              <option value="2022">2022</option>
+                              <option value="2021">2021</option>
+                              <option value="2020">2020</option>
+                            </select>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* التنقل بين الصفحات */}
-                <div className="pagination-wrap mt-5">
-                  <nav className="pagination">
-                    <ul className="page-numbers d-flex justify-content-center">
-                      <li><a href="javascript:;" className="page-numbers current">1</a></li>
-                      <li><a href="/shows?page=2" className="page-numbers">2</a></li>
-                      <li><a href="/shows?page=3" className="page-numbers">3</a></li>
-                      <li><a href="/shows?page=4" className="page-numbers">4</a></li>
-                      <li><a href="/shows?page=5" className="page-numbers">5</a></li>
-                      <li><span className="page-numbers dots">…</span></li>
-                      <li><a href="/shows?page=20" className="page-numbers">20</a></li>
-                      <li><a href="/shows?page=2" className="next page-numbers">التالي ›</a></li>
-                    </ul>
-                  </nav>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* الفوتر الكامل - مطابق للأصل */}
-        <footer className="main-footer">
-          <div className="container">
-            <div className="footer-content">
-              <div className="row">
-                <div className="col-md-8">
-                  <div className="footer-links">
-                    <a href="/dmca">DMCA</a>
-                    <a href="/ad-policy">سياسة الإعلانات</a>
-                    <a href="/contactus">اتصل بنا</a>
+        {/* Shows Grid */}
+        <div className="container">
+          <div className="archive-entries">
+            <div className="row">
+              {showsData.map((show) => (
+                <div key={show.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
+                  <div className="entry-box entry-box-2">
+                    <div className="entry-image">
+                      <Link href={`/show/${show.id}`}>
+                        <a className="box">
+                          <picture>
+                            <img src={show.poster} alt={show.title} />
+                          </picture>
+                          <div className="entry-overlay">
+                            <div className="entry-actions">
+                              <div className="entry-play">
+                                <i className="icon-play"></i>
+                              </div>
+                              <div className="entry-rating">
+                                <i className="icon-star"></i>
+                                <span>{show.rating}</span>
+                              </div>
+                            </div>
+                            {show.quality && (
+                              <div className="entry-quality">{show.quality}</div>
+                            )}
+                            {show.episodes && (
+                              <div className="entry-episodes">{show.episodes} حلقة</div>
+                            )}
+                          </div>
+                        </a>
+                      </Link>
+                    </div>
+                    <div className="entry-body px-3 pb-3 text-center">
+                      <h2 className="entry-title font-size-14 font-weight-bold mb-1">
+                        <Link href={`/show/${show.id}`}>
+                          <a>{show.title}</a>
+                        </Link>
+                      </h2>
+                      <div className="entry-meta font-size-12 text-muted">
+                        <span>{show.year}</span>
+                        {show.genre && Array.isArray(show.genre) && (
+                          <span> • {show.genre.join(', ')}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="col-md-4">
-                  <div className="footer-social">
-                    <a href="#" className="social-link facebook"><i className="icon-facebook"></i></a>
-                    <a href="#" className="social-link youtube"><i className="icon-youtube"></i></a>
-                    <a href="#" className="social-link app-store"><i className="icon-app-store"></i></a>
-                  </div>
-                </div>
-              </div>
-              <div className="footer-bottom mt-3">
-                <p className="copyright text-center">
-                  جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
-                </p>
-              </div>
+              ))}
             </div>
           </div>
-        </footer>
 
-        {/* عنصر نهاية القائمة للـ JavaScript */}
-        <div id="main-categories-list-end"></div>
+          {/* Pagination */}
+          <div className="widget-pagination">
+            <ul className="pagination justify-content-center" role="navigation">
+              <li className="page-item disabled" aria-disabled="true">
+                <span className="page-link" aria-hidden="true">‹</span>
+              </li>
+              <li className="page-item mx-1 active" aria-current="page">
+                <span className="page-link">1</span>
+              </li>
+              <li className="page-item mx-1">
+                <a className="page-link" href="/shows?page=2">2</a>
+              </li>
+              <li className="page-item mx-1">
+                <a className="page-link" href="/shows?page=3">3</a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="/shows?page=2" rel="next" aria-label="التالي »">›</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div id="main-categories-list-end"></div>
+        </div>
       </div>
     </>
   );

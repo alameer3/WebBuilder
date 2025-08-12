@@ -1,369 +1,255 @@
-import { useEffect } from "react";
-import logoWhite from "@/assets/images/logo-white.svg";
+// Mix/Various Content Page - مطابق للأصل
+import { useEffect, useState } from 'react';
+import { Link } from 'wouter';
+import Breadcrumb from '../components/Breadcrumb';
 
-// بيانات المحتوى المنوع
-const mixContent = [
-  {
-    id: 1,
-    title: "برنامج رامز جلال",
-    category: "برامج كوميدية",
-    year: "2024",
-    rating: 8.5,
-    image: "/assets/images/default.jpg",
-    description: "برنامج كوميدي اجتماعي"
-  },
-  {
-    id: 2,
-    title: "مصارعة WWE",
-    category: "رياضة",
-    year: "2024",
-    rating: 9.0,
-    image: "/assets/images/default.jpg",
-    description: "أحدث عروض المصارعة العالمية"
-  },
-  {
-    id: 3,
-    title: "ألعاب فيديو",
-    category: "ألعاب",
-    year: "2024",
-    rating: 8.0,
-    image: "/assets/images/default.jpg",
-    description: "أحدث الألعاب والمراجعات"
-  },
-  {
-    id: 4,
-    title: "وثائقي الطبيعة",
-    category: "وثائقيات",
-    year: "2024",
-    rating: 9.2,
-    image: "/assets/images/default.jpg",
-    description: "استكشاف عالم الطبيعة"
-  },
-  {
-    id: 5,
-    title: "البرامج التعليمية",
-    category: "تعليم",
-    year: "2024",
-    rating: 8.8,
-    image: "/assets/images/default.jpg",
-    description: "محتوى تعليمي متنوع"
-  },
-  {
-    id: 6,
-    title: "برامج الطبخ",
-    category: "طبخ",
-    year: "2024",
-    rating: 8.3,
-    image: "/assets/images/default.jpg",
-    description: "وصفات وتقنيات الطبخ"
-  }
-];
+interface MixContent {
+  id: string;
+  title: string;
+  poster: string;
+  year: string;
+  rating: number;
+  type: 'game' | 'software' | 'other';
+  size?: string;
+  platform?: string;
+  description?: string;
+}
 
 export default function Mix() {
+  const [filters, setFilters] = useState({
+    type: '0',
+    platform: '0'
+  });
+
+  // بيانات تجريبية للمحتوى المنوع
+  const mixData: MixContent[] = [
+    {
+      id: "508",
+      title: "تطبيقات الأعداد",
+      poster: "https://img.downet.net/thumb/270x400/uploads/apps.jpg",
+      year: "2024",
+      rating: 8.5,
+      type: 'software',
+      size: "250 MB",
+      platform: "Android"
+    },
+    {
+      id: "764",
+      title: "أغنية - يا شار بجاي ياس",
+      poster: "https://img.downet.net/thumb/270x400/uploads/music.jpg",
+      year: "2024",
+      rating: 9.0,
+      type: 'other',
+      size: "15 MB",
+      platform: "Audio"
+    },
+    {
+      id: "781",
+      title: "الأسس إذاع اب الواد",
+      poster: "https://img.downet.net/thumb/270x400/uploads/radio.jpg",
+      year: "2024",
+      rating: 7.8,
+      type: 'other',
+      size: "100 MB",
+      platform: "Audio"
+    },
+    {
+      id: "782",
+      title: "الأسس إذاعة الواة",
+      poster: "https://img.downet.net/thumb/270x400/uploads/broadcast.jpg",
+      year: "2024",
+      rating: 8.2,
+      type: 'other',
+      size: "80 MB",
+      platform: "Audio"
+    }
+  ];
+
   useEffect(() => {
-    // تغيير body class لتطابق الأصل
-    document.body.className = 'header-fixed header-pages pace-done';
+    document.title = "منوعات - يمن فليكس";
+    document.body.className = 'page-archive archive-mix header-fixed';
     
-    // إضافة jQuery script للتفاعلات
-    const jqueryScript = document.createElement('script');
-    jqueryScript.src = 'https://code.jquery.com/jquery-3.2.1.min.js';
-    jqueryScript.onload = () => {
-      // التفاعلات المطلوبة مطابقة للأصل
-      const $ = (window as any).$;
-      if ($) {
-        $(document).ready(function(){
-          // Menu toggle functions
-          const handleMenuToggle = () => {
-            $("body").removeClass("search-active").toggleClass("main-menu-active");
-          };
-          
-          const handleSearchToggle = () => {
-            $("body").removeClass("main-menu-active").toggleClass("search-active");
-          };
+    // تنظيف الخلفية
+    document.body.style.background = '';
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundSize = '';
+    document.body.style.backgroundPosition = '';
+    document.body.style.backgroundAttachment = '';
 
-          const handleEscape = (e: any) => {
-            if (e.keyCode === 27) {
-              $("body").removeClass("search-active main-menu-active");
-            }
-          };
-
-          $(".menu-toggle").on("click", handleMenuToggle);
-          $(".search-toggle").on("click", handleSearchToggle);
-          $(document).on("keydown", handleEscape);
-        });
-      }
-    };
-    document.head.appendChild(jqueryScript);
-
-    // تنظيف عند الخروج
     return () => {
-      document.body.className = '';
+      document.body.className = "";
     };
   }, []);
 
+  const breadcrumbItems = [
+    { name: "الرئيسية", href: "/" },
+    { name: "منوعات" }
+  ];
+
+  const getTypeIcon = (type: string) => {
+    switch(type) {
+      case 'game': return 'icon-game';
+      case 'software': return 'icon-mobile';
+      case 'other': return 'icon-mix';
+      default: return 'icon-mix';
+    }
+  };
+
   return (
     <>
-      {/* Pace Loading Indicator - مطابق للأصل */}
+      {/* Pace Loading Indicator */}
       <div className="pace pace-inactive">
-        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{transform: 'translate3d(100%, 0px, 0px)'}}>
+        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{ transform: 'translate3d(100%, 0px, 0px)' }}>
           <div className="pace-progress-inner"></div>
         </div>
         <div className="pace-activity"></div>
       </div>
 
-      {/* طبقة التراكب للقائمة */}
-      <div className="site-overlay"></div>
+      {/* Site Overlay */}
+      <span className="site-overlay"></span>
 
-      {/* القائمة الجانبية - مطابقة للأصل */}
-      <div className="main-menu">
-        <div className="d-flex flex-column">
-          <div className="my-auto w-100">
-            <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
-              </a>
-              <a href="/series" className="item">
-                <div className="icn ml-3"><i className="icon-monitor"></i></div>
-                <div className="text">مسلسلات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
-              </a>
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
-            </div>
-          </div>
-          <nav className="social d-flex justify-content-center">
-            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
-          </nav>
-        </div>
-      </div>
+      {/* Hidden Inputs */}
+      <input type="hidden" id="page_app" value="mix" className="not-empty" />
+      <input type="hidden" id="page_id" value="0" className="not-empty" />
 
-      {/* مربع البحث */}
-      <div className="search-box px-xl-5">
-        <div className="container search-container">
-          <form className="search-form" method="get">
-            <label className="d-flex align-items-center h-100 w-100 m-0">
-              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
-              <input type="search" name="q" placeholder="ابحث هنا" />
-            </label>
-          </form>
-        </div>
-      </div>
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb items={breadcrumbItems} />
 
-      {/* موقع الحاوية */}
-      <div className="site-container">
-        {/* الهيدر الكامل - مطابق للأصل */}
-        <header className="main-header">
+      {/* Page Content */}
+      <div className="page page-archive">
+        {/* Archive Cover */}
+        <div className="archive-cover mb-4" style={{ backgroundImage: 'url("https://img.downet.net/uploads/mix-bg.webp")' }}>
           <div className="container">
-            <div className="row align-items-center py-3">
-              <div className="col-lg-2 col-md-3 col-6">
-                <div className="logo">
-                  <a href="/">
-                    <img src={logoWhite} alt="يمن فليكس" className="img-fluid" />
-                  </a>
-                </div>
-              </div>
-              
-              <div className="col-lg-8 col-md-6 d-none d-md-block">
-                <nav className="main-nav">
-                  <ul className="nav-list d-flex justify-content-center align-items-center">
-                    <li className="nav-item">
-                      <a href="/movies" className="nav-link">أفلام</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/series" className="nav-link">مسلسلات</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/shows" className="nav-link">تلفزيون</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/mix" className="nav-link active">منوعات</a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-              
-              <div className="col-lg-2 col-md-3 col-6">
-                <div className="header-actions d-flex justify-content-end align-items-center">
-                  <button className="search-toggle btn-icon mr-3">
-                    <i className="icon-search"></i>
-                  </button>
-                  <button className="menu-toggle btn-icon d-md-none">
-                    <div className="icn">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div className="main-header-height"></div>
-        
-        {/* Hidden inputs مطابقة للأصل */}
-        <input type="hidden" id="page_app" value="mix" className="not-empty" />
-        <input type="hidden" id="page_id" value="0" className="not-empty" />
-
-        {/* صفحة الأرشيف - مطابقة للأصل */}
-        <div className="page page-archive">
-          <div className="archive-cover mb-4" style={{backgroundImage: "url('/assets/images/site-new.webp')"}}>
-            <div className="container">
-              <div className="row pb-3">
-                <div className="col-12 mt-auto">
-                  <div className="archive-title">
-                    <h1 className="title">منوعات</h1>
-                    <p className="description">برامج، ألعاب، وثائقيات، مصارعة، وكل ما هو ممتع ومسلي</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* فلاتر المحتوى */}
-          <div className="container mb-4">
-            <div className="page-filters">
-              <div className="row">
-                <div className="col-12">
-                  <div className="filters-wrap">
-                    <div className="filters d-flex flex-wrap">
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">جميع الفئات</option>
-                          <option value="programs">برامج</option>
-                          <option value="games">ألعاب</option>
-                          <option value="documentaries">وثائقيات</option>
-                          <option value="wrestling">مصارعة</option>
-                          <option value="cooking">طبخ</option>
-                          <option value="educational">تعليمي</option>
-                        </select>
-                      </div>
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">السنة</option>
-                          <option value="2024">2024</option>
-                          <option value="2023">2023</option>
-                          <option value="2022">2022</option>
-                        </select>
-                      </div>
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">الترتيب</option>
-                          <option value="newest">الأحدث</option>
-                          <option value="rating">الأعلى تقييماً</option>
-                          <option value="popular">الأشهر</option>
-                        </select>
-                      </div>
+            <div className="row pb-3">
+              <div className="col-12 mt-auto">
+                <div className="row">
+                  <div className="col-md-auto col-12 mb-12 mb-md-0">
+                    <div className="main-category d-flex align-items-center justify-content-center radius p-4 h-100">
+                      <i className="icn icon-mix ml-4"></i>
+                      <h1 className="name font-size-34 font-weight-bold mb-0">منوعات</h1>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* شبكة المحتوى */}
-          <div className="container">
-            <div className="page-content">
-              <div className="archive-content">
-                <div className="widgets-posts row">
-                  {mixContent.map((item) => (
-                    <div key={item.id} className="col-lg-2 col-md-3 col-4 mb-4">
-                      <div className="widget widget-1">
-                        <div className="entry-box">
-                          <div className="entry-image">
-                            <a href={`/mix/${item.id}`}>
-                              <img src={item.image} alt={item.title} className="img-fluid" />
-                              <div className="entry-overlay">
-                                <div className="overlay-content">
-                                  <div className="rating">
-                                    <span className="rating-star">★</span>
-                                    <span className="rating-value">{item.rating}</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
+                  <div className="col-md">
+                    <form id="filter" method="get">
+                      <div className="row">
+                        <div className="col-lg-3 col-md-6 col-12">
+                          <div className="form-group mb-12">
+                            <select 
+                              className="form-control select2" 
+                              name="type" 
+                              value={filters.type} 
+                              onChange={(e) => setFilters({...filters, type: e.target.value})}
+                            >
+                              <option value="0">النوع</option>
+                              <option value="game">ألعاب</option>
+                              <option value="software">برمجيات</option>
+                              <option value="music">موسيقى</option>
+                              <option value="book">كتب</option>
+                              <option value="other">أخرى</option>
+                            </select>
                           </div>
-                          <div className="entry-content">
-                            <div className="entry-header">
-                              <h3 className="entry-title">
-                                <a href={`/mix/${item.id}`}>
-                                  {item.title}
-                                </a>
-                              </h3>
-                            </div>
-                            <div className="entry-meta">
-                              <span className="entry-category">{item.category}</span>
-                              <span className="entry-year">{item.year}</span>
-                            </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6 col-12">
+                          <div className="form-group mb-12">
+                            <select 
+                              className="form-control select2" 
+                              name="platform" 
+                              value={filters.platform} 
+                              onChange={(e) => setFilters({...filters, platform: e.target.value})}
+                            >
+                              <option value="0">المنصة</option>
+                              <option value="pc">حاسوب</option>
+                              <option value="android">أندرويد</option>
+                              <option value="ios">آيفون</option>
+                              <option value="ps">بلايستيشن</option>
+                              <option value="xbox">إكس بوكس</option>
+                            </select>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* التنقل بين الصفحات */}
-                <div className="pagination-wrap mt-5">
-                  <nav className="pagination">
-                    <ul className="page-numbers d-flex justify-content-center">
-                      <li><a href="javascript:;" className="page-numbers current">1</a></li>
-                      <li><a href="/mix?page=2" className="page-numbers">2</a></li>
-                      <li><a href="/mix?page=3" className="page-numbers">3</a></li>
-                      <li><a href="/mix?page=4" className="page-numbers">4</a></li>
-                      <li><a href="/mix?page=5" className="page-numbers">5</a></li>
-                      <li><span className="page-numbers dots">…</span></li>
-                      <li><a href="/mix?page=25" className="page-numbers">25</a></li>
-                      <li><a href="/mix?page=2" className="next page-numbers">التالي ›</a></li>
-                    </ul>
-                  </nav>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* الفوتر الكامل - مطابق للأصل */}
-        <footer className="main-footer">
-          <div className="container">
-            <div className="footer-content">
-              <div className="row">
-                <div className="col-md-8">
-                  <div className="footer-links">
-                    <a href="/dmca">DMCA</a>
-                    <a href="/ad-policy">سياسة الإعلانات</a>
-                    <a href="/contactus">اتصل بنا</a>
+        {/* Mix Content Grid */}
+        <div className="container">
+          <div className="archive-entries">
+            <div className="row">
+              {mixData.map((item) => (
+                <div key={item.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
+                  <div className="entry-box entry-box-2">
+                    <div className="entry-image">
+                      <Link href={`/mix/${item.id}`}>
+                        <a className="box">
+                          <picture>
+                            <img src={item.poster} alt={item.title} />
+                          </picture>
+                          <div className="entry-overlay">
+                            <div className="entry-actions">
+                              <div className="entry-play">
+                                <i className="icon-download"></i>
+                              </div>
+                              <div className="entry-rating">
+                                <i className="icon-star"></i>
+                                <span>{item.rating}</span>
+                              </div>
+                            </div>
+                            {item.size && (
+                              <div className="entry-size">{item.size}</div>
+                            )}
+                            <div className="entry-type">
+                              <i className={getTypeIcon(item.type)}></i>
+                            </div>
+                          </div>
+                        </a>
+                      </Link>
+                    </div>
+                    <div className="entry-body px-3 pb-3 text-center">
+                      <h2 className="entry-title font-size-14 font-weight-bold mb-1">
+                        <Link href={`/mix/${item.id}`}>
+                          <a>{item.title}</a>
+                        </Link>
+                      </h2>
+                      <div className="entry-meta font-size-12 text-muted">
+                        <span>{item.year}</span>
+                        {item.platform && (
+                          <span> • {item.platform}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="col-md-4">
-                  <div className="footer-social">
-                    <a href="#" className="social-link facebook"><i className="icon-facebook"></i></a>
-                    <a href="#" className="social-link youtube"><i className="icon-youtube"></i></a>
-                    <a href="#" className="social-link app-store"><i className="icon-app-store"></i></a>
-                  </div>
-                </div>
-              </div>
-              <div className="footer-bottom mt-3">
-                <p className="copyright text-center">
-                  جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025  
-                </p>
-              </div>
+              ))}
             </div>
           </div>
-        </footer>
 
-        {/* عنصر نهاية القائمة للـ JavaScript */}
-        <div id="main-categories-list-end"></div>
+          {/* Pagination */}
+          <div className="widget-pagination">
+            <ul className="pagination justify-content-center" role="navigation">
+              <li className="page-item disabled" aria-disabled="true">
+                <span className="page-link" aria-hidden="true">‹</span>
+              </li>
+              <li className="page-item mx-1 active" aria-current="page">
+                <span className="page-link">1</span>
+              </li>
+              <li className="page-item mx-1">
+                <a className="page-link" href="/mix?page=2">2</a>
+              </li>
+              <li className="page-item mx-1">
+                <a className="page-link" href="/mix?page=3">3</a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="/mix?page=2" rel="next" aria-label="التالي »">›</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div id="main-categories-list-end"></div>
+        </div>
       </div>
     </>
   );

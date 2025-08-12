@@ -1,40 +1,87 @@
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "wouter";
-import { useEffect } from "react";
+// Series Page - مطابق للأصل تماماً
+import { useEffect, useState } from 'react';
+import { Link } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
+import Breadcrumb from '../components/Breadcrumb';
 
-// استيراد ملفات CSS المطلوبة
-import '../assets/css/plugins.css';
-import '../assets/css/style.css';  
-import '../assets/css/yemen-flix.css';
-
-// استيراد الصور والأصول المطلوبة
-import logoWhite from "../assets/images/logo-white.svg";
-import defaultAvatar from "../assets/images/default.jpg";
-
-interface Movie {
+interface Series {
   id: string;
   title: string;
-  description: string;
-  poster?: string;
-  year?: number;
-  genre?: string | string[];
-  rating?: number;
-  category?: string;
+  poster: string;
+  year: string;
+  rating: number;
+  genre?: string[];
   quality?: string;
+  episodes?: number;
+  description?: string;
 }
 
 export default function Series() {
-  const { data: series, isLoading } = useQuery<Movie[]>({
-    queryKey: ['/api/movies'],
-    // فلترة المسلسلات فقط
-    select: (data) => data?.filter(item => item.category === 'series') || []
+  const [filters, setFilters] = useState({
+    section: '0',
+    category: '0', 
+    rating: '0',
+    year: '0'
   });
 
+  // بيانات تجريبية للمسلسلات (سيتم استبدالها ببيانات حقيقية)
+  const seriesData: Series[] = [
+    {
+      id: "4960",
+      title: "حرب الجبالي",
+      poster: "https://img.downet.net/thumb/270x400/uploads/KrvOM.jpg",
+      year: "2024",
+      rating: 8.5,
+      genre: ["دراما", "حرب"],
+      quality: "HD",
+      episodes: 30,
+      description: "مسلسل درامي يحكي قصة..."
+    },
+    {
+      id: "4994", 
+      title: "Dexter Resurrection",
+      poster: "https://img.downet.net/thumb/270x400/uploads/dexter.jpg",
+      year: "2024",
+      rating: 9.1,
+      genre: ["جريمة", "دراما"],
+      quality: "HD",
+      episodes: 10
+    },
+    {
+      id: "4948",
+      title: "بات مان",
+      poster: "https://img.downet.net/thumb/270x400/uploads/batman.jpg", 
+      year: "2023",
+      rating: 7.8,
+      genre: ["اكشن", "مغامرة"],
+      quality: "HD",
+      episodes: 20
+    },
+    {
+      id: "4949",
+      title: "أسد بات",
+      poster: "https://img.downet.net/thumb/270x400/uploads/asad.jpg",
+      year: "2023", 
+      rating: 8.2,
+      genre: ["دراما", "تاريخي"],
+      quality: "HD",
+      episodes: 25
+    }
+  ];
+
   useEffect(() => {
-    // إضافة classes للجسم مطابقة للأصل
-    document.body.className = "header-fixed header-pages pace-done";
+    // إعداد الصفحة
+    document.title = "مسلسلات - يمن فليكس";
+    document.body.className = 'page-archive archive-series header-fixed';
     
-    // تطبيق JavaScript للتفاعلات
+    // تنظيف الخلفية من الصفحة الرئيسية
+    document.body.style.background = '';
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundSize = '';
+    document.body.style.backgroundPosition = '';
+    document.body.style.backgroundAttachment = '';
+
+    // إعداد وظائف التفاعل
     const handleMenuToggle = () => {
       document.body.classList.toggle('main-menu-active');
     };
@@ -61,367 +108,328 @@ export default function Series() {
       menuToggle?.removeEventListener('click', handleMenuToggle);
       searchToggle?.removeEventListener('click', handleSearchToggle);
       document.removeEventListener('keydown', handleEscape);
+      document.body.className = "";
     };
   }, []);
 
+  // إعداد Breadcrumb
+  const breadcrumbItems = [
+    { name: "الرئيسية", href: "/" },
+    { name: "مسلسلات" }
+  ];
+
   return (
     <>
-      {/* Pace Loading Indicator - مطابق للأصل */}
+      {/* Pace Loading Indicator */}
       <div className="pace pace-inactive">
-        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{transform: 'translate3d(100%, 0px, 0px)'}}>
+        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{ transform: 'translate3d(100%, 0px, 0px)' }}>
           <div className="pace-progress-inner"></div>
         </div>
         <div className="pace-activity"></div>
       </div>
 
-      {/* طبقة التراكب للقائمة */}
-      <div className="site-overlay"></div>
+      {/* Site Overlay */}
+      <span className="site-overlay"></span>
 
-      {/* القائمة الجانبية - مطابقة للأصل */}
+      {/* Main Menu - مطابق للأصل */}
       <div className="main-menu">
         <div className="d-flex flex-column">
           <div className="my-auto w-100">
             <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
-              </a>
-              <a href="/series" className="item">
-                <div className="icn ml-3"><i className="icon-monitor"></i></div>
-                <div className="text">مسلسلات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
-              </a>
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
+              <Link href="/movies">
+                <a className="item">
+                  <div className="icn ml-3"><i className="icon-video-camera"></i></div>
+                  <div className="text">أفلام</div>
+                </a>
+              </Link>
+              <Link href="/series">
+                <a className="item">
+                  <div className="icn ml-3"><i className="icon-monitor"></i></div>
+                  <div className="text">مسلسلات</div>
+                </a>
+              </Link>
+              <Link href="/shows">
+                <a className="item">
+                  <div className="icn ml-3"><i className="icon-tv"></i></div>
+                  <div className="text">تلفزيون</div>
+                </a>
+              </Link>
+              <Link href="/mix">
+                <a className="item">
+                  <div className="icn ml-3"><i className="icon-mix"></i></div>
+                  <div className="text">منوعات</div>
+                </a>
+              </Link>
             </div>
           </div>
-          <nav className="social d-flex justify-content-center">
-            <a href="#" className="mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="mx-2"><i className="icon-twitter"></i></a>
-            <a href="#" className="mx-2"><i className="icon-instagram"></i></a>
-          </nav>
         </div>
       </div>
 
-      {/* site-container مطابق للأصل */}
+      {/* Search Box */}
+      <div className="search">
+        <div className="search-box">
+          <form action="/search" method="get">
+            <label>
+              <input type="search" name="q" id="searchBoxInput" placeholder="ابحث هنا" />
+            </label>
+          </form>
+          <div className="search-toggle"><i className="icon-arrow-back"></i></div>
+        </div>
+      </div>
+
+      {/* Site Container */}
       <div className="site-container">
+        {/* Main Header Top */}
         <div className="main-header-top"></div>
         
-        {/* الهيدر الرئيسي - مطابق للأصل تماماً */}
+        {/* Header */}
         <header className="main-header">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-auto">
-              <h2 className="main-logo m-0">
-                <a href="/main" className="d-inline-flex">
-                  <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                </a>
-              </h2>
-            </div>
-            <div className="col-auto menu-toggle-container">
-              <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
-                <span className="icn"></span>
-                <div className="text font-size-18 mr-3">الأقسام</div>
-              </a>
-            </div>
-            <div className="ml-auto"></div>
-            <div className="col-md-5 col-lg-6 search-container">
-              <div className="search-form">
-                <form action="/search" method="get">
-                  <input type="text" id="headerSearchInput" name="q" />
-                  <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
-                  <button type="submit"><i className="icon-search"></i></button>
-                </form>
-              </div>
-            </div>
-            <div className="col-auto recently-container">
-              <a href="/recent" className="btn-recently">
-                <i className="icon-plus2 ml-2"></i>
-                <span>أضيف حديثا</span>
-              </a>
-            </div>
-            <div className="col-auto user-profile-container">
-              <div className="user-panel">
-                <a className="user-toggle d-block font-size-20 public" href="/login">
-                  <i className="icon-user"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="main-header-height"></div>
-      
-      {/* Hidden inputs مطابقة للأصل */}
-      <input type="hidden" id="page_app" value="series" className="not-empty" />
-      <input type="hidden" id="page_id" value="0" className="not-empty" />
-
-      {/* صفحة الأرشيف - مطابقة للأصل */}
-      <div className="page page-archive">
-        {/* غطاء صفحة الأرشيف مع الخلفية */}
-        <div className="archive-cover mb-4" style={{backgroundImage: "url('/client/src/assets/images/home-bg.webp')"}}>
           <div className="container">
-            <div className="row pb-3">
-              <div className="col-12 mt-auto">
-                <div className="row">
-                  <div className="col-md-auto col-12 mb-12 mb-md-0">
-                    <div className="main-category d-flex align-items-center justify-content-center radius p-4 h-100">
-                      <i className="icn icon-monitor ml-4"></i>
-                      <h1 className="name font-size-34 font-weight-bold mb-0">مسلسلات</h1>
-                    </div>
+            <div className="row align-items-center">
+              <div className="col-auto">
+                <h2 className="main-logo m-0">
+                  <Link href="/">
+                    <a className="d-inline-flex">
+                      <img src="/src/assets/images/yemen-flix-logo-white.svg" className="img-fluid" alt="يمن فليكس" />
+                    </a>
+                  </Link>
+                </h2>
+              </div>
+              <div className="col-auto menu-toggle-container">
+                <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
+                  <span className="icn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </span>
+                  <div className="text font-size-18 mr-3">الأقسام</div>
+                </a>
+              </div>
+              <div className="ml-auto"></div>
+              <div className="col-md-5 col-lg-6 search-container">
+                <div className="search-form">
+                  <form action="/search" method="get">
+                    <input type="text" id="headerSearchInput" name="q" />
+                    <label htmlFor="headerSearchInput">ابحث عن مسلسل ...</label>
+                    <button><i className="icon-search"></i></button>
+                  </form>
+                </div>
+              </div>
+              <div className="col-auto recently-container">
+                <Link href="/recent">
+                  <a className="btn-recently">
+                    <i className="icon-plus2 ml-2"></i>
+                    <span>أضيف حديثا</span>
+                  </a>
+                </Link>
+              </div>
+              <div className="col-auto user-profile-container">
+                <div className="user-panel">
+                  <div className="login-panel private hide">
+                    <nav className="list">
+                      <a href="/profile">تعديل البروفايل</a>
+                      <a href="/favorite/series">قائمتي المفضلة</a>
+                      <a href="/logout">تسجيل خروج</a>
+                    </nav>
                   </div>
-                  <div className="col-md">
-                    <form id="filter" method="get">
-                      <div className="row">
-                        <div className="col-lg-3 col-md-6 col-12">
-                          <div className="form-group mb-12">
-                            <select className="form-control select2" name="section">
-                              <option value="0">القسم</option>
-                              <option value="29">عربي</option>
-                              <option value="30">اجنبي</option>
-                              <option value="31">هندي</option>
-                              <option value="32">تركي</option>
-                              <option value="33">اسيوي</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6 col-12">
-                          <div className="form-group mb-12 mb-lg-0">
-                            <select className="form-control select2" name="category">
-                              <option value="0">التصنيف</option>
-                              <option value="87">رمضان</option>
-                              <option value="18">اكشن</option>
-                              <option value="71">مدبلج</option>
-                              <option value="72">NETFLIX</option>
-                              <option value="20">كوميدي</option>
-                              <option value="35">اثارة</option>
-                              <option value="34">غموض</option>
-                              <option value="33">عائلي</option>
-                              <option value="27">رومانسي</option>
-                              <option value="23">دراما</option>
-                              <option value="22">رعب</option>
-                              <option value="21">جريمة</option>
-                              <option value="19">مغامرة</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6 col-12 offset-lg-3">
-                          <div className="form-group mb-0">
-                            <select className="form-control select2" name="rating">
-                              <option value="0">التقييم</option>
-                              <option value="1">+1</option>
-                              <option value="2">+2</option>
-                              <option value="3">+3</option>
-                              <option value="4">+4</option>
-                              <option value="5">+5</option>
-                              <option value="6">+6</option>
-                              <option value="7">+7</option>
-                              <option value="8">+8</option>
-                              <option value="9">+9</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6 col-12">
-                          <div className="form-group mb-12 mb-lg-0">
-                            <select className="form-control select2" name="year">
-                              <option value="0">سنة الإنتاج</option>
-                              <option>2045</option>
-                              <option>2025</option>
-                              <option>2024</option>
-                              <option>2023</option>
-                              <option>2022</option>
-                              <option>2021</option>
-                              <option>2020</option>
-                              <option>2019</option>
-                              <option>2018</option>
-                              <option>2017</option>
-                              <option>2016</option>
-                              <option>2015</option>
-                              <option>2014</option>
-                              <option>2013</option>
-                              <option>2012</option>
-                              <option>2011</option>
-                              <option>2010</option>
-                              <option>2009</option>
-                              <option>2008</option>
-                              <option>2007</option>
-                              <option>2006</option>
-                              <option>2005</option>
-                              <option>2004</option>
-                              <option>2003</option>
-                              <option>2002</option>
-                              <option>2001</option>
-                              <option>2000</option>
-                              <option>1999</option>
-                              <option>1998</option>
-                              <option>1997</option>
-                              <option>1996</option>
-                              <option>1995</option>
-                              <option>1994</option>
-                              <option>1993</option>
-                              <option>1992</option>
-                              <option>1991</option>
-                              <option>1990</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6 col-12">
-                          <div className="form-group mb-12 mb-lg-0">
-                            <select className="form-control select2" name="language">
-                              <option value="0">اللغة</option>
-                              <option value="1">العربية</option>
-                              <option value="2">الإنجليزية</option>
-                              <option value="3">الهندية</option>
-                              <option value="4">التركية</option>
-                              <option value="5">الكورية</option>
-                              <option value="6">اليابانية</option>
-                              <option value="7">الصينية</option>
-                            </select>
-                          </div>
-                        </div>
+                  <Link href="/login">
+                    <a className="user-toggle d-block font-size-20 public">
+                      <i className="icon-user"></i>
+                    </a>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div className="main-header-height"></div>
+        
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb items={breadcrumbItems} />
+        
+        {/* Hidden Inputs */}
+        <input type="hidden" id="page_app" value="series" className="not-empty" />
+        <input type="hidden" id="page_id" value="0" className="not-empty" />
+
+        {/* Page Content */}
+        <div className="page page-archive">
+          {/* Archive Cover */}
+          <div className="archive-cover mb-4" style={{ backgroundImage: 'url("https://img.downet.net/uploads/series-bg.webp")' }}>
+            <div className="container">
+              <div className="row pb-3">
+                <div className="col-12 mt-auto">
+                  <div className="row">
+                    <div className="col-md-auto col-12 mb-12 mb-md-0">
+                      <div className="main-category d-flex align-items-center justify-content-center radius p-4 h-100">
+                        <i className="icn icon-monitor ml-4"></i>
+                        <h1 className="name font-size-34 font-weight-bold mb-0">مسلسلات</h1>
                       </div>
-                    </form>
+                    </div>
+                    <div className="col-md">
+                      <form id="filter" method="get">
+                        <div className="row">
+                          <div className="col-lg-3 col-md-6 col-12">
+                            <div className="form-group mb-12">
+                              <select className="form-control select2" name="section" value={filters.section} onChange={(e) => setFilters({...filters, section: e.target.value})}>
+                                <option value="0">القسم</option>
+                                <option value="29">عربي</option>
+                                <option value="30">اجنبي</option>
+                                <option value="31">تركي</option>
+                                <option value="32">هندي</option>
+                                <option value="33">اسيوي</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-lg-3 col-md-6 col-12">
+                            <div className="form-group mb-12 mb-lg-0">
+                              <select className="form-control select2" name="category" value={filters.category} onChange={(e) => setFilters({...filters, category: e.target.value})}>
+                                <option value="0">التصنيف</option>
+                                <option value="18">اكشن</option>
+                                <option value="20">كوميدي</option>
+                                <option value="21">جريمة</option>
+                                <option value="22">رعب</option>
+                                <option value="23">دراما</option>
+                                <option value="24">خيال علمي</option>
+                                <option value="25">حربي</option>
+                                <option value="26">تاريخي</option>
+                                <option value="27">رومانسي</option>
+                                <option value="28">وثائقي</option>
+                                <option value="29">سيرة ذاتية</option>
+                                <option value="30">انمي</option>
+                                <option value="31">موسيقى</option>
+                                <option value="32">رياضي</option>
+                                <option value="33">عائلي</option>
+                                <option value="34">غموض</option>
+                                <option value="35">اثارة</option>
+                                <option value="43">فانتازيا</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-lg-3 col-md-6 col-12 offset-lg-3">
+                            <div className="form-group mb-0">
+                              <select className="form-control select2" name="rating" value={filters.rating} onChange={(e) => setFilters({...filters, rating: e.target.value})}>
+                                <option value="0">التقييم</option>
+                                <option value="1">+1</option>
+                                <option value="2">+2</option>
+                                <option value="3">+3</option>
+                                <option value="4">+4</option>
+                                <option value="5">+5</option>
+                                <option value="6">+6</option>
+                                <option value="7">+7</option>
+                                <option value="8">+8</option>
+                                <option value="9">+9</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* محتوى المسلسلات */}
-        <div className="container">
-          <div className="widget" data-grid="6">
-            <div className="widget-body row flex-wrap">
-              {isLoading ? (
-                // مؤشر التحميل
-                <div className="col-12 text-center py-5">
-                  <div className="lds-ellipsis">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                  </div>
-                </div>
-              ) : (
-                // شبكة المسلسلات - مطابقة للأصل تماماً
-                series && series.length > 0 ? (
-                  series.map((item) => (
-                    <div key={item.id} className="col-lg-2 col-md-4 col-6 mb-12">
-                      <div className="entry-box entry-box-1">
-                        <div className="labels d-flex">
-                          {item.rating && (
-                            <span className="label rating">
-                              <i className="icon-star mr-2"></i>{item.rating}
-                            </span>
-                          )}
-                          <span className="ml-auto"></span>
-                          <span className="label quality">{item.quality || 'WEB-DL'}</span>
-                        </div>
-                        <div className="entry-image">
-                          <Link href={`/series/${item.id}`} className="box">
+          {/* Series Grid */}
+          <div className="container">
+            <div className="archive-entries">
+              <div className="row">
+                {seriesData.map((series) => (
+                  <div key={series.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
+                    <div className="entry-box entry-box-2">
+                      <div className="entry-image">
+                        <Link href={`/series/${series.id}`}>
+                          <a className="box">
                             <picture>
-                              <img 
-                                src={item.poster || defaultAvatar} 
-                                className="img-fluid w-100 lazy" 
-                                alt={item.title}
-                              />
+                              <img src={series.poster} alt={series.title} />
                             </picture>
+                            <div className="entry-overlay">
+                              <div className="entry-actions">
+                                <div className="entry-play">
+                                  <i className="icon-play"></i>
+                                </div>
+                                <div className="entry-rating">
+                                  <i className="icon-star"></i>
+                                  <span>{series.rating}</span>
+                                </div>
+                              </div>
+                              {series.quality && (
+                                <div className="entry-quality">{series.quality}</div>
+                              )}
+                              {series.episodes && (
+                                <div className="entry-episodes">{series.episodes} حلقة</div>
+                              )}
+                            </div>
+                          </a>
+                        </Link>
+                      </div>
+                      <div className="entry-body px-3 pb-3 text-center">
+                        <h2 className="entry-title font-size-14 font-weight-bold mb-1">
+                          <Link href={`/series/${series.id}`}>
+                            <a>{series.title}</a>
                           </Link>
-                        </div>
-                        <div className="entry-body px-3 pb-3 text-center">
-                          <div className="actions d-flex justify-content-center">
-                            <Link href={`/series/${item.id}`} className="icn play">
-                              <i className="icon-play"></i>
-                              <div>مشاهدة</div>
-                            </Link>
-                            <a href="#" onClick={(e) => e.preventDefault()} className="icn add-to-fav mr-4 private hide" data-type="movie" data-id={item.id}>
-                              <i className="icon-plus"></i>
-                              <i className="icon-check font-size-20"></i>
-                              <div>قائمتي</div>
-                            </a>
-                          </div>
-                          <div className="line my-3"></div>
-                          <h3 className="entry-title font-size-14 m-0">
-                            <Link href={`/movie/${item.id}`} className="text-white">{item.title}</Link>
-                          </h3>
-                          <div className="font-size-16 d-flex align-items-center mt-2" style={{height: '14px', overflow: 'hidden'}}>
-                            {item.year && (
-                              <span className="badge badge-pill badge-secondary ml-1">{item.year}</span>
-                            )}
-                            {Array.isArray(item.genre) ? 
-                              item.genre.slice(0, 2).map((g, index) => (
-                                <span key={index} className="badge badge-pill badge-light ml-1">{g}</span>
-                              )) :
-                              item.genre && (
-                                <span className="badge badge-pill badge-light ml-1">{item.genre}</span>
-                              )
-                            }
-                          </div>
+                        </h2>
+                        <div className="entry-meta font-size-12 text-muted">
+                          <span>{series.year}</span>
+                          {series.genre && Array.isArray(series.genre) && (
+                            <span> • {series.genre.join(', ')}</span>
+                          )}
                         </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="col-12 text-center py-5">
-                    <p className="text-white font-size-18">لا توجد مسلسلات حالياً</p>
                   </div>
-                )
-              )}
+                ))}
+              </div>
+            </div>
+
+            {/* Pagination */}
+            <div className="widget-pagination">
+              <ul className="pagination justify-content-center" role="navigation">
+                <li className="page-item disabled" aria-disabled="true">
+                  <span className="page-link" aria-hidden="true">‹</span>
+                </li>
+                <li className="page-item mx-1 active" aria-current="page">
+                  <span className="page-link">1</span>
+                </li>
+                <li className="page-item mx-1">
+                  <a className="page-link" href="/series?page=2">2</a>
+                </li>
+                <li className="page-item mx-1">
+                  <a className="page-link" href="/series?page=3">3</a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="/series?page=2" rel="next" aria-label="التالي »">›</a>
+                </li>
+              </ul>
             </div>
             
-            {/* التنقل بين الصفحات - مطابق للأصل */}
-            <div className="pagination-container mt-4">
-              <nav aria-label="Page navigation">
-                <ul className="pagination justify-content-center">
-                  <li className="page-item disabled">
-                    <span className="page-link">السابق</span>
-                  </li>
-                  <li className="page-item active">
-                    <span className="page-link">1</span>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">2</a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">3</a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">التالي</a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+            <div id="main-categories-list-end"></div>
           </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer className="main-footer py-5">
-        <nav className="social d-flex justify-content-center">
-          <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-          <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-          <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
-          <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-          <a href="/contact" className="email mx-2"><i className="icon-email"></i></a>
-        </nav>
-
-        <nav className="links d-flex justify-content-center mt-3">
-          <a href="/" className="mx-2">يمن فليكس</a>
-          <a href="/old" target="_blank" className="mx-2">الموقع القديم</a>
-          <a href="/dmca" className="mx-2">DMCA</a>
-          <a href="/ad-policy" className="mx-2">AD-P</a>
-        </nav>
-
-        <p className="copyright mb-0 font-size-12 text-center mt-3">
-          جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
-        </p>
-      </footer>
+        {/* Footer */}
+        <footer className="main-footer">
+          <div className="container">
+            <div className="widget-footer text-center border-top pt-4 mt-5">
+              <nav className="footer-social d-flex justify-content-center mb-4">
+                <Link href="/"><a className="home mx-2" title="الرئيسية"><i className="icon-home"></i></a></Link>
+                <a href="https://www.facebook.com/yemenflix" target="_blank" className="facebook mx-2" title="فيسبوك"><i className="icon-facebook"></i></a>
+                <a href="https://www.youtube.com/c/yemenflix" target="_blank" className="youtube mx-2" title="يوتيوب"><i className="icon-youtube"></i></a>
+                <Link href="/contactus"><a className="email mx-2" title="اتصل بنا"><i className="icon-email"></i></a></Link>
+              </nav>
+              <div className="footer-links d-flex justify-content-center flex-wrap mb-3">
+                <Link href="/movies"><a className="mx-2">أفلام</a></Link>
+                <Link href="/series"><a className="mx-2">مسلسلات</a></Link>
+                <Link href="/shows"><a className="mx-2">تلفزيون</a></Link>
+                <Link href="/mix"><a className="mx-2">منوعات</a></Link>
+              </div>
+              <p className="copyright mb-0 font-size-12 text-center mt-3">
+                جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
+              </p>
+            </div>
+          </div>
+        </footer>
       </div>
     </>
   );

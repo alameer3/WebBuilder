@@ -19,7 +19,7 @@ export default function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
             <li key={index} className="breadcrumb-item">
               {item.href && index < items.length - 1 ? (
                 <Link href={item.href}>
-                  <a>{item.name}</a>
+                  {item.name}
                 </Link>
               ) : (
                 <span className="active">{item.name}</span>
