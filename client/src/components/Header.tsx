@@ -52,16 +52,18 @@ export default function Header({ className = "" }: HeaderProps) {
   };
 
   return (
-    <header className={`main-header ${className}`}>
-      <div className="container">
-        <div className="row align-items-center">
-          <div className="col-auto">
-            <h2 className="main-logo m-0">
-              <Link href="/" className="d-inline-flex">
-                <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-              </Link>
-            </h2>
-          </div>
+    <>
+      <div className="main-header-top"></div>
+      <header className={`main-header ${className}`}>
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-auto">
+              <h2 className="main-logo m-0">
+                <Link href="/" className="d-inline-flex">
+                  <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
+                </Link>
+              </h2>
+            </div>
           
           <div className="col-auto menu-toggle-container">
             <button 
@@ -127,6 +129,8 @@ export default function Header({ className = "" }: HeaderProps) {
           </div>
         </div>
       </div>
-    </header>
+      </header>
+      <div className="main-header-height"></div>
+    </>
   );
 }
