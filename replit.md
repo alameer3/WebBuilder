@@ -150,11 +150,25 @@ The application follows a monorepo structure with clear separation between clien
 - ❌ XML sitemaps
 - ❌ Advanced meta descriptions
 
+### Critical Design Issues Identified (Jan 2025):
+**HTML Structure Differences:**
+- Missing `site-container`, `main-header-top`, `main-header-height` elements
+- Breadcrumb navigation completely missing
+- Movie cover blur effect (SVG filter) not implemented
+- Button designs don't match original pill-style buttons
+
+**Missing Components:**
+- Like/Dislike rating system
+- Fancybox image gallery integration  
+- Advanced JavaScript libraries (Pace, SweetAlert, Fancybox)
+- Original CSS classes and layout structure
+
 ### Next Phase Roadmap:
-1. **Database Population**: Integrate TMDB/IMDB APIs for real content
-2. **Video System**: Implement advanced player with multi-quality support  
-3. **Interactive Features**: Add rating, comments, and notifications
-4. **Final Polish**: Complete SEO optimization and testing
+1. **Fix Design Structure**: Align HTML structure with original AKWAM layout (CRITICAL)
+2. **Database Population**: Integrate TMDB/IMDB APIs for real content
+3. **Video System**: Implement advanced player with multi-quality support  
+4. **Interactive Features**: Add rating, comments, and notifications
+5. **Final Polish**: Complete SEO optimization and testing
 
 # External Dependencies
 
