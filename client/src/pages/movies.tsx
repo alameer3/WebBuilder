@@ -110,7 +110,7 @@ export default function Movies() {
           });
 
           // User panel toggle
-          $(".user-toggle").click(function() {
+          $(".user-toggle").click(function(this: HTMLElement) {
             $(this).parent().toggleClass("active");
           });
 

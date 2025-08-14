@@ -20,6 +20,27 @@ export default function Home() {
   useEffect(() => {
     // تطبيق كلاسات body الأصلية
     document.body.className = 'header-fixed body-home';
+
+    // إضافة BreadcrumbList JSON-LD Schema
+    const breadcrumbSchema = {
+      "@context": "http://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https://yemen-flix.replit.app/",
+            "name": "يمن فليكس | موقع المشاهدة العربي الاول"
+          }
+        }
+      ]
+    };
+
+    const scriptTag = document.createElement('script');
+    scriptTag.type = 'application/ld+json';
+    scriptTag.textContent = JSON.stringify(breadcrumbSchema);
+    document.head.appendChild(scriptTag);
     
     // تحميل jQuery أولاً
     const jqueryScript = document.createElement('script');
@@ -118,53 +139,14 @@ export default function Home() {
         <div className="close"></div>
       </div>
 
-      {/* Main Menu */}
-      <div className="main-menu">
-        <div className="container h-100">
-          <div className="row h-100">
-            <div className="col-12 d-flex flex-column">
-              <nav className="menu flex-grow-1 d-flex flex-column justify-content-center">
-                <a href="/" className="item py-3">
-                  <div className="icn"><i className="icon-home"></i></div>
-                  <div className="text">الرئيسية</div>
-                </a>
-                <a href="/movies" className="item py-3">
-                  <div className="icn"><i className="icon-video-camera"></i></div>
-                  <div className="text">أفلام</div>
-                </a>
-                <a href="/series" className="item py-3">
-                  <div className="icn"><i className="icon-monitor"></i></div>
-                  <div className="text">مسلسلات</div>
-                </a>
-                <a href="/shows" className="item py-3">
-                  <div className="icn"><i className="icon-tv"></i></div>
-                  <div className="text">تلفزيون</div>
-                </a>
-                <a href="/mix" className="item py-3">
-                  <div className="icn"><i className="icon-mix"></i></div>
-                  <div className="text">منوعات</div>
-                </a>
-              </nav>
-              <nav className="social d-flex justify-content-center">
-                <a href="#" className="home mx-2"><i className="icon-home"></i></a>
-                <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
-                <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
-                <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
-                <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
-                <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
-                <a href="#" className="email mx-2"><i className="icon-email"></i></a>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Search Box */}
       <div className="search-box px-xl-5">
         <div className="container search-container">
           <form action="/search" className="search-form" method="get">
             <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
-              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
+              <button type="submit" className="px-3 ml-2 font-size-30">
+                <i className="icon-search"></i>
+              </button>
               <input type="search" name="q" id="searchBoxInput" placeholder="ابحث هنا" />
             </label>
           </form>
@@ -174,161 +156,177 @@ export default function Home() {
 
       {/* Site Container */}
       <div className="site-container">
-        <div className="page-home">
-          <div className="main-header-top"></div>
-          
-          {/* Main Header */}
-          <header className="main-header">
-            <div className="container">
-              <div className="row align-items-center">
-                <div className="col-auto">
-                  <h2 className="main-logo m-0">
-                    <a href="/" className="d-inline-flex">
-                      <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                    </a>
-                  </h2>
+        {/* Main Header Top */}
+        <div className="main-header-top"></div>
+
+        {/* Main Header */}
+        <header className="main-header">
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-auto">
+                <h2 className="main-logo m-0">
+                  <a href="/main" className="d-inline-flex">
+                    <img src={logoWhite} className="img-fluid" alt="YEMEN_FLIX" />
+                  </a>
+                </h2>
+              </div>
+              <div className="col-auto menu-toggle-container">
+                <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
+                  <span className="icn"></span>
+                  <div className="text font-size-18 mr-3">الأقسام</div>
+                </a>
+              </div>
+              <div className="col search-container">
+                <div className="search-toggle">
+                  <i className="icon-search font-size-20"></i>
                 </div>
-                <div className="col-auto menu-toggle-container">
-                  <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
-                    <span className="icn"></span>
-                    <div className="text font-size-18 mr-3">الأقسام</div>
+              </div>
+              <div className="col-auto">
+                <div className="user-panel">
+                  <div className="login-panel shadow">
+                    <nav className="list-unstyled mb-0">
+                      <a href="/login">تسجيل دخول</a>
+                      <a href="/register">انشاء حساب</a>
+                      <a href="/logout">تسجيل خروج</a>
+                    </nav>
+                  </div>
+                  <a className="user-toggle d-block font-size-20 public" href="/login">
+                    <i className="icon-user"></i>
                   </a>
                 </div>
-                <div className="ml-auto"></div>
-                <div className="col-md-5 col-lg-6 search-container">
-                  <div className="search-form">
-                    <form action="/search" method="get">
-                      <input type="text" id="headerSearchInput" name="q" />
-                      <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
-                      <button type="submit"><i className="icon-search"></i></button>
-                    </form>
-                  </div>
-                </div>
-                <div className="col-auto recently-container">
-                  <a href="/recent" className="btn-recently">
-                    <i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span>
-                  </a>
-                </div>
-                <div className="col-auto user-profile-container">
-                  <div className="user-panel">
-                    <a className="user-toggle d-block font-size-20 public" href="/login">
-                      <i className="icon-user"></i>
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
-          </header>
-          
-          <div className="main-header-height"></div>
-
-          {/* Home Content */}
-          <div className="container py-5 my-5">
-            {/* Home Site Button */}
-            <div className="home-site-btn-container mt-5">
-              <h1>
-                <a href="/" className="link" style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '100%',
-                  height: '100%',
-                  zIndex: 10
-                }}></a>
-              </h1>
-              <div className="home-site-btn" style={{
-                backgroundImage: `url('${siteNewBg}')`,
-                transition: 'background-position 5s'
-              }}>
-                <span className="logo">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
-                    <path fillRule="evenodd" fill="rgb(255, 255, 255)" 
-                          d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z" />
-                  </svg>
-                </span>
-                <span className="text font-size-20 font-weight-medium text-white">الصفحة الرئيسية</span>
-              </div>
-            </div>
-
-            {/* Widget 2 - Search */}
-            <div className="widget-2 widget mb-4">
-              <div className="widget-body row">
-                <div className="col-lg-8 mx-auto">
-                  <form className="form d-flex no-gutters mb-20" action="/search" method="get">
-                    <div className="col pl-12">
-                      <input type="text" className="form-control" id="widget2SearchInput" name="q" />
-                      <label htmlFor="widget2SearchInput" className="m-0">
-                        <span className="label">ابحث عن فيلم او مسلس</span>
-                        <span className="typed-cursor" style={{animationIterationCount: 0}}>|</span>
-                      </label>
-                      <div className="label-text d-none" style={{display: 'none'}}>
-                        <p>ابحث عن فيلم او مسلسل او لعبة او برنامج ...</p>
-                        <p>^200 مثال: الجزيرة</p>
-                        <p>^400 مثال آخر: اسم مؤقت</p>
-                        <p>^600 مثال: FIFA</p>
-                        <p>^800 ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <button type="submit" className="btn btn-orange">بحث</button>
-                    </div>
-                  </form>
-
-                  {/* Main Categories List */}
-                  <div className="main-categories-list">
-                    <div className="row">
-                      <div className="col-lg col-4">
-                        <a href="/movies" className="item d-block text-center text-white py-3 h-100">
-                          <div className="icn"><i className="icon-video-camera"></i></div>
-                          <div className="font-size-16">أفلام</div>
-                        </a>
-                      </div>
-                      <div className="col-lg col-4">
-                        <a href="/series" className="item d-block text-center text-white py-3 h-100">
-                          <div className="icn"><i className="icon-monitor"></i></div>
-                          <div className="font-size-16">مسلسلات</div>
-                        </a>
-                      </div>
-                      <div className="col-lg col-4">
-                        <a href="/shows" className="item d-block text-center text-white py-3 h-100">
-                          <div className="icn"><i className="icon-tv"></i></div>
-                          <div className="font-size-16">تلفزيون</div>
-                        </a>
-                      </div>
-                      <div className="col-lg col-4">
-                        <a href="/mix" className="item d-block text-center text-white py-3 h-100">
-                          <div className="icn"><i className="icon-mix"></i></div>
-                          <div className="font-size-16">منوعات</div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="main-categories-list-end"></div>
           </div>
+        </header>
+
+        {/* Main Header Height */}
+        <div className="main-header-height"></div>
+
+        {/* SVG Filter for blur effects */}
+        <svg style={{opacity: 0, visibility: 'hidden', position: 'absolute', top: '-999px', right: '-999px'}}>
+          <filter id="blur-effect-1">
+            <feGaussianBlur stdDeviation="5"></feGaussianBlur>
+          </filter>
+        </svg>
+
+        {/* Main Menu */}
+        <div className="main-menu">
+          <div className="container h-100">
+            <div className="row h-100">
+              <div className="col-12 d-flex flex-column">
+                <nav className="menu flex-grow-1 d-flex flex-column justify-content-center">
+                  <a href="/" className="item py-3">
+                    <div className="icn"><i className="icon-home"></i></div>
+                    <div className="text">الرئيسية</div>
+                  </a>
+                  <a href="/movies" className="item py-3">
+                    <div className="icn"><i className="icon-video-camera"></i></div>
+                    <div className="text">أفلام</div>
+                  </a>
+                  <a href="/series" className="item py-3">
+                    <div className="icn"><i className="icon-monitor"></i></div>
+                    <div className="text">مسلسلات</div>
+                  </a>
+                  <a href="/shows" className="item py-3">
+                    <div className="icn"><i className="icon-tv"></i></div>
+                    <div className="text">تلفزيون</div>
+                  </a>
+                  <a href="/mix" className="item py-3">
+                    <div className="icn"><i className="icon-mix"></i></div>
+                    <div className="text">منوعات</div>
+                  </a>
+                </nav>
+                <nav className="social d-flex justify-content-center">
+                  <a href="#" className="home mx-2"><i className="icon-home"></i></a>
+                  <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
+                  <a href="#" className="twitter mx-2"><i className="icon-twitter"></i></a>
+                  <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
+                  <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
+                  <a href="#" className="telegram mx-2"><i className="icon-telegram"></i></a>
+                  <a href="#" className="email mx-2"><i className="icon-email"></i></a>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Home Content */}
+        <div style={{marginBottom: "90px"}}></div>
+
+        <div className="container">
+          {/* Widget 2 - Search */}
+          <div className="widget-2 widget mb-4">
+            <div className="widget-body row">
+              <div className="col-lg-8 mx-auto">
+                <form className="form d-flex no-gutters mb-20" action="/search" method="get">
+                  <div className="col pl-12">
+                    <input type="text" className="form-control" id="widget2SearchInput" name="q" />
+                    <label htmlFor="widget2SearchInput" className="m-0">
+                      <span className="label"></span>
+                    </label>
+                    <div className="label-text d-none">
+                      <p>ابحث عن فيلم او مسلسل او لعبة او برنامج ...</p>
+                      <p>^200 مثال: الجزيرة</p>
+                      <p>^400 مثال آخر: اسم مؤقت</p>
+                      <p>^600 مثال: FIFA</p>
+                      <p>^800 ابحث هنا في YEMEN_FLIX باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
+                    </div>
+                  </div>
+                  <div className="col-auto">
+                    <button type="submit" className="btn btn-orange">بحث</button>
+                  </div>
+                </form>
+
+                {/* Main Categories List */}
+                <div className="main-categories-list">
+                  <div className="row">
+                    <div className="col-lg col-4">
+                      <a href="/movies" className="item d-block text-center text-white py-3 h-100">
+                        <div className="icn"><i className="icon-video-camera"></i></div>
+                        <div className="font-size-16">أفلام</div>
+                      </a>
+                    </div>
+                    <div className="col-lg col-4">
+                      <a href="/series" className="item d-block text-center text-white py-3 h-100">
+                        <div className="icn"><i className="icon-monitor"></i></div>
+                        <div className="font-size-16">مسلسلات</div>
+                      </a>
+                    </div>
+                    <div className="col-lg col-4">
+                      <a href="/shows" className="item d-block text-center text-white py-3 h-100">
+                        <div className="icn"><i className="icon-tv"></i></div>
+                        <div className="font-size-16">تلفزيون</div>
+                      </a>
+                    </div>
+                    <div className="col-lg col-4">
+                      <a href="/mix" className="item d-block text-center text-white py-3 h-100">
+                        <div className="icn"><i className="icon-mix"></i></div>
+                        <div className="font-size-16">منوعات</div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="main-categories-list-end"></div>
         </div>
 
         {/* Footer */}
         <footer className="main-footer py-5">
           <nav className="social d-flex justify-content-center">
-            <a href="#" className="home mx-2"><i className="icon-home"></i></a>
             <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="#" className="twitter mx-2"><i className="icon-twitter"></i></a>
+            <a href="#" className="instagram mx-2"><i className="icon-instagram"></i></a>
             <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="#" className="email mx-2"><i className="icon-email"></i></a>
+            <a href="#" className="telegram mx-2"><i className="icon-telegram"></i></a>
           </nav>
 
           <nav className="links d-flex justify-content-center mt-3">
             <a href="/" className="mx-2">يمن فليكس</a>
-            <a href="/old" className="mx-2">الموقع القديم</a>
             <a href="/dmca" className="mx-2">DMCA</a>
             <a href="/ad-policy" className="mx-2">AD-P</a>
-            <a href="#" className="mx-2">يمن فليكس نيوز</a>
-            <a href="#" className="mx-2">شبكة يمن فليكس</a>
+            <a href="/contactus" className="mx-2">اتصل بنا</a>
           </nav>
 
           <p className="copyright mb-0 font-size-12 text-center mt-3">
