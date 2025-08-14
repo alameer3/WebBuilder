@@ -57,30 +57,30 @@ export default function MovieDetail() {
     };
   }, []);
 
-  // بيانات تجريبية مطابقة للأصل
+  // بيانات مطابقة للتصميم الأصلي في site/movie_241_rambo-first-blood-part-ii
   const movieData = {
-    id: id || "28-years-later",
-    title: "28 Years Later",
-    arabicTitle: "بعد 28 عاما",
-    poster: "https://img.downet.net/thumb/260x380/uploads/Gn5bw.webp",
-    backdrop: "https://img.downet.net/thumb/1920x600/uploads/Gn5bw.webp",
-    rating: 7.1,
-    imdbRating: "10 / 7.1",
-    quality: "WEB-DL - 1080p",
+    id: id || "rambo-first-blood-part-ii",
+    title: "Rambo: First Blood Part II",
+    arabicTitle: "رامبو الجزء الثاني",
+    poster: "https://img.downet.net/thumb/260x380/uploads/rambo2.webp",
+    backdrop: "https://img.downet.net/thumb/1920x600/uploads/rambo2-bg.webp",
+    rating: 7.2,
+    imdbRating: "7.2 / 10",
+    quality: "BluRay - 1080p",
     language: "الإنجليزية",
     subtitle: "العربية",
     country: "الولايات المتحدة الأمريكية",
-    year: 2025,
-    duration: "115 دقيقة",
+    year: 1985,
+    duration: "96 دقيقة",
     certification: "PG13 اشراف عائلي",
     office: "BOX OFFICE",
     genres: ["اثارة", "رعب"],
-    description: "مشاهدة و تحميل فيلم 28 Years Later حيث يدور العمل حول بعد ثمانية وعشرين عامًا من هروب فيروس الغضب من مختبر للأسلحة البيولوجية، لا يزال البعض يخضع لحجر صحي قاسٍ، بعد ثمانية وعشرين عامًا من هروب فيروس الغضب من مختبر للأسلحة البيولوجية، لا يزال البعض يخضع لحجر صحي قاسٍ، وقد وجدوا سبلًا للعيش وسط المصابين. تعيش إحدى هذه المجموعات على جزيرة صغيرة متصلة بالبر الرئيسي عبر جسر واحد مُحصّن جيدًا. عندما ينطلق أحد الأعضاء في مهمة إلى قلب البر الرئيسي المظلم، يكتشف أسرارًا وعجائب وأهوالًا حوّلت ليس المصابين فحسب، بل ناجين آخرين أيضًا.",
+    description: "مشاهدة و تحميل فيلم Rambo: First Blood Part II مدبلج. يقع (رامبو) في الأسر في إحدى المهام، ويتمكن من الهرب من معسكر الاعتقال، ويُقاتل من أجل حياته. من بطولة سيلفستر ستالون، وهو الجزء الثاني من سلسلة أفلام رامبو الشهيرة.",
     trailer: "https://www.youtube.com/watch?v=mcvLKldPM08",
     cast: [
-      { name: "Jodie Comer", image: "https://img.downet.net/thumb/54x54/uploads/HD9VV.jpeg" },
-      { name: "Aaron Taylor-Johnson", image: "https://img.downet.net/thumb/54x54/uploads/Nf84R.jpg" },
-      { name: "Ralph Fiennes", image: "https://img.downet.net/thumb/54x54/uploads/ZwiTY.jpeg" }
+      { name: "Sylvester Stallone", image: "https://img.downet.net/thumb/54x54/uploads/stallone.jpg" },
+      { name: "Richard Crenna", image: "https://img.downet.net/thumb/54x54/uploads/crenna.jpg" },
+      { name: "Julia Nickson", image: "https://img.downet.net/thumb/54x54/uploads/nickson.jpg" }
     ],
     gallery: [
       "https://img.downet.net/thumb/180x100/uploads/JeOy3.jpg",

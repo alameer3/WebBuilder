@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap');
 
-/* Import Original AKWAM CSS files */
+/* Import Original Site CSS files - الملفات الأصلية من مجلد site */
 @import './assets/css/plugins.css';
 @import './assets/css/style.css';
 @import './assets/css/akwam.css';
-@import './assets/css/akwam-original.css';
+@import './assets/css/home.css';
 
 @tailwind base;
 @tailwind components;
@@ -13,7 +13,7 @@
 
 :root {
   direction: rtl;
-  font-family: 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'akoam', 'Noto Sans Arabic', 'Inter', Arial, Helvetica, sans-serif;
 }
 
 /* YEMEN_FLIX-like styling */
@@ -81,11 +81,19 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: 'yemen-flix-font', 'Noto Sans Arabic', 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'akoam', 'Noto Sans Arabic', Arial, Helvetica, sans-serif;
     direction: rtl;
     background-color: #161619;
-    color: #ffffff;
+    color: #161619;
     line-height: 1.5;
+  }
+  
+  /* تطبيق نمط home الأصلي */
+  body.body-home {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url('/src/assets/images/home-bg.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
   }
   
   /* Home page background */

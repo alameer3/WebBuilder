@@ -5,7 +5,7 @@ import '../assets/css/style.css';
 import '../assets/css/yemen-flix.css';
 
 // استيراد الصور
-import logoWhite from '../assets/images/yemen-flix-logo-white.svg';
+import logoWhite from '../assets/images/logo-white.svg';
 import defaultAvatar from '../assets/images/default.jpg';
 
 export default function Search() {

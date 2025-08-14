@@ -190,7 +190,7 @@ export default function Series() {
                 <h2 className="main-logo m-0">
                   <Link href="/">
                     <a className="d-inline-flex">
-                      <img src="/src/assets/images/yemen-flix-logo-white.svg" className="img-fluid" alt="يمن فليكس" />
+                      <img src="/src/assets/images/logo-white.svg" className="img-fluid" alt="يمن فليكس" />
                     </a>
                   </Link>
                 </h2>

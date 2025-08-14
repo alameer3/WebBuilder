@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 
 // Import images
-import logoWhite from '../assets/images/yemen-flix-logo-white.svg';
+import logoWhite from '../assets/images/logo-white.svg';
 import defaultAvatar from '../assets/images/default.jpg';
 
 interface HeaderProps {

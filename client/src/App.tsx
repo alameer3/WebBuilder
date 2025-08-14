@@ -20,6 +20,7 @@ import "@/assets/css/yemen-flix.css";
 
 // Pages
 import Home from "@/pages/home";
+import HomeOriginal from "@/pages/home-original";
 import Search from "@/pages/search";
 import Movies from "@/pages/movies";
 import Series from "@/pages/series";
@@ -90,9 +91,10 @@ function Router() {
 
         <main>
           <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/home" component={Home} />
-            <Route path="/main" component={Home} />
+            <Route path="/" component={HomeOriginal} />
+            <Route path="/home" component={HomeOriginal} />
+            <Route path="/main" component={HomeOriginal} />
+            <Route path="/old-home" component={Home} />
             <Route path="/search" component={Search} />
             <Route path="/movies" component={Movies} />
             <Route path="/series" component={Series} />
