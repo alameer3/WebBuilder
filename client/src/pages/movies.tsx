@@ -1,162 +1,193 @@
-import { useEffect } from "react";
-import { Link } from "wouter";
-import Breadcrumb from "../components/Breadcrumb";
-
-// استيراد ملفات CSS المطلوبة
+// Movies Page - مطابق للأصل تماماً
+import { useEffect, useState } from 'react';
+import { Link } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
 import '../assets/css/plugins.css';
 import '../assets/css/style.css';  
-import '../assets/css/yemen-flix.css';
+import '../assets/css/akwam-original.css';
 
-// استيراد الصور والأصول المطلوبة
-import logoWhite from "../assets/images/logo-white.svg";
-import defaultImage from "../assets/images/default.jpg";
+// استيراد الصور
+import logoWhite from '../assets/images/logo-white.svg';
+import defaultAvatar from '../assets/images/default.jpg';
+
+// إعلان jQuery على النافذة
+declare global {
+  interface Window {
+    $: any;
+    jQuery: any;
+  }
+}
 
 interface Movie {
   id: string;
   title: string;
-  description: string;
-  poster?: string;
-  year?: number;
-  genre?: string | string[];
-  rating?: number;
-  category?: string;
+  poster: string;
+  year: string;
+  rating: number;
+  genre?: string[];
   quality?: string;
+  description?: string;
 }
 
-// بيانات الأفلام العربية التجريبية - مطابقة للقطة الشاشة
-const sampleMovies: Movie[] = [
-  // الصف الأول - استخدام الصورة الافتراضية لجميع الأفلام
-  { id: "1", title: "Special Ops: Lioness", description: "مسلسل أكشن أمريكي", year: 2023, genre: ["أكشن", "دراما"], rating: 7.6, quality: "WEB-DL" },
-  { id: "2", title: "Venom: The Last Dance", description: "فيلم أكشن خيال علمي", year: 2024, genre: ["أكشن", "خيال علمي"], rating: 6.2, quality: "CAM" },
-  { id: "3", title: "Beneath Us", description: "فيلم رعب أمريكي", year: 2019, genre: ["رعب", "إثارة"], rating: 5.3, quality: "WEB-DL" },
-  { id: "4", title: "Dogs", description: "فيلم دراما", year: 2024, genre: ["دراما"], rating: 6.8, quality: "WEB-DL" },
-  { id: "5", title: "28 Years Later", description: "فيلم رعب وإثارة", year: 2025, genre: ["رعب", "إثارة"], rating: 7.1, quality: "WEB-DL" },
-  
-  // الصف الثاني
-  { id: "6", title: "Decided", description: "فيلم دراما", year: 2024, genre: ["دراما"], rating: 6.9, quality: "WEB-DL" },
-  { id: "7", title: "Osiris", description: "فيلم خيال علمي", year: 2024, genre: ["خيال علمي"], rating: 5.8, quality: "WEB-DL" },
-  { id: "8", title: "Army of Darkness", description: "فيلم رعب كوميدي كلاسيكي", year: 1992, genre: ["رعب", "كوميدي"], rating: 7.4, quality: "BluRay" },
-  { id: "9", title: "Revolver", description: "فيلم جريمة وإثارة", year: 2005, genre: ["جريمة", "إثارة"], rating: 6.3, quality: "BluRay" },
-  { id: "10", title: "Red Velvet", description: "فيلم رعب", year: 2024, genre: ["رعب"], rating: 5.2, quality: "WEB-DL" },
-  
-  // الصف الثالث
-  { id: "11", title: "Gilmore Girls", description: "مسلسل دراما كوميدي", year: 2000, genre: ["دراما", "كوميدي"], rating: 8.7, quality: "WEB-DL" },
-  { id: "12", title: "The Chronicles of Narnia", description: "فيلم فانتازيا ومغامرة", year: 2005, genre: ["فانتازيا", "مغامرة"], rating: 6.9, quality: "BluRay" },
-  { id: "13", title: "Normal Human", description: "فيلم دراما", year: 2024, genre: ["دراما"], rating: 6.1, quality: "WEB-DL" },
-  { id: "14", title: "The Cleaner", description: "فيلم أكشن", year: 2024, genre: ["أكشن"], rating: 6.5, quality: "WEB-DL" },
-  { id: "15", title: "My Sweet Monster", description: "فيلم رسوم متحركة", year: 2021, genre: ["رسوم متحركة", "عائلي"], rating: 6.8, quality: "WEB-DL" },
-  
-  // إضافة أفلام إضافية لملء الشبكة (30 فيلم كما في الأصل)
-  { id: "16", title: "The Wicked", description: "فيلم رعب", year: 2024, genre: ["رعب"], rating: 5.9, quality: "WEB-DL" },
-  { id: "17", title: "Desert Warrior", description: "فيلم مغامرة", year: 2024, genre: ["مغامرة"], rating: 6.2, quality: "WEB-DL" },
-  { id: "18", title: "Blood Moon", description: "فيلم رعب", year: 2024, genre: ["رعب"], rating: 5.7, quality: "WEB-DL" },
-  { id: "19", title: "City of Lights", description: "فيلم دراما", year: 2024, genre: ["دراما"], rating: 7.1, quality: "WEB-DL" },
-  { id: "20", title: "The Last Stand", description: "فيلم أكشن", year: 2024, genre: ["أكشن"], rating: 6.8, quality: "WEB-DL" },
-  
-  // المزيد من الأفلام لإكمال 30 فيلم
-  { id: "21", title: "Mystery Valley", description: "فيلم غموض", year: 2024, genre: ["غموض"], rating: 6.4, quality: "WEB-DL" },
-  { id: "22", title: "Space Rangers", description: "فيلم خيال علمي", year: 2024, genre: ["خيال علمي"], rating: 6.9, quality: "WEB-DL" },
-  { id: "23", title: "Love Stories", description: "فيلم رومانسي", year: 2024, genre: ["رومانسي"], rating: 7.2, quality: "WEB-DL" },
-  { id: "24", title: "War Heroes", description: "فيلم حربي", year: 2024, genre: ["حربي"], rating: 7.5, quality: "WEB-DL" },
-  { id: "25", title: "Comedy Night", description: "فيلم كوميدي", year: 2024, genre: ["كوميدي"], rating: 6.7, quality: "WEB-DL" },
-  { id: "26", title: "Ancient Secrets", description: "فيلم مغامرة", year: 2024, genre: ["مغامرة"], rating: 6.6, quality: "WEB-DL" },
-  { id: "27", title: "Digital Dreams", description: "فيلم خيال علمي", year: 2024, genre: ["خيال علمي"], rating: 6.3, quality: "WEB-DL" },
-  { id: "28", title: "Family Bonds", description: "فيلم عائلي", year: 2024, genre: ["عائلي"], rating: 7.0, quality: "WEB-DL" },
-  { id: "29", title: "Ocean Deep", description: "فيلم مغامرة", year: 2024, genre: ["مغامرة"], rating: 6.8, quality: "WEB-DL" },
-  { id: "30", title: "Time Traveler", description: "فيلم خيال علمي", year: 2024, genre: ["خيال علمي"], rating: 7.3, quality: "WEB-DL" }
-];
-
 export default function Movies() {
+  const [filters, setFilters] = useState({
+    section: '0',
+    category: '0', 
+    rating: '0',
+    year: '0'
+  });
+
+  // بيانات تجريبية للأفلام (سيتم استبدالها ببيانات حقيقية)
+  const moviesData: Movie[] = [
+    {
+      id: "227",
+      title: "فيلم الأزرق 3",
+      poster: "https://img.downet.net/thumb/270x400/uploads/4f2gT.jpg",
+      year: "2024",
+      rating: 8.2,
+      genre: ["اكشن", "مغامرات"],
+      quality: "HD",
+      description: "فيلم اكشن مثير..."
+    },
+    {
+      id: "228", 
+      title: "فيلم الأزرق 4",
+      poster: "https://img.downet.net/thumb/270x400/uploads/TiYPC.jpg",
+      year: "2024",
+      rating: 7.8,
+      genre: ["اكشن", "مغامرات"], 
+      quality: "HD",
+      description: "تكملة مشوقة..."
+    },
+    {
+      id: "241",
+      title: "Rambo: First Blood Part II",
+      poster: "https://img.downet.net/thumb/270x400/uploads/iQofs.jpg",
+      year: "1985",
+      rating: 8.5,
+      genre: ["اكشن", "حرب"],
+      quality: "HD",
+      description: "فيلم حرب كلاسيكي..."
+    }
+  ];
+
   useEffect(() => {
-    // إضافة classes للجسم مطابقة للأصل
-    document.body.className = "header-fixed header-pages pace-done";
+    // تطبيق كلاسات body الأصلية
+    document.body.className = 'header-fixed header-pages pace-done';
     
-    // تطبيق JavaScript للتفاعلات
-    const handleMenuToggle = () => {
-      document.body.classList.toggle('main-menu-active');
-    };
+    // تحميل jQuery والمكتبات
+    const jqueryScript = document.createElement('script');
+    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
+    jqueryScript.onload = () => {
+      if (window.$) {
+        const $ = window.$;
+        
+        // إعداد التفاعلات الأصلية
+        $(document).ready(() => {
+          // Header background on scroll
+          function handleScroll() {
+            if ($(".main-header").length) {
+              if ($(window).scrollTop()! <= 50) {
+                $("body").removeClass("header-bg");
+              } else {
+                $("body").addClass("header-bg");
+              }
+            }
+          }
+          
+          handleScroll();
+          $(window).scroll(handleScroll);
 
-    const handleSearchToggle = () => {
-      document.body.classList.toggle('search-active');
-    };
+          // Menu toggle
+          $(".menu-toggle").click(function() {
+            $("body").toggleClass("main-menu-active");
+            $("body").removeClass("search-active");
+          });
 
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        document.body.classList.remove('main-menu-active', 'search-active');
+          // Search toggle
+          $(".search-toggle").click(function() {
+            $("body").removeClass("search-active");
+          });
+
+          // User panel toggle
+          $(".user-toggle").click(function() {
+            $(this).parent().toggleClass("active");
+          });
+
+          // إعداد Select2
+          if ($.fn.select2) {
+            $('.select2').select2();
+          }
+
+          // تفعيل lazy loading للصور
+          if ($.fn.lazy) {
+            $('.lazy').lazy();
+          }
+        });
       }
     };
+    document.head.appendChild(jqueryScript);
 
-    // إضافة مستمعي الأحداث
-    const menuToggle = document.querySelector('.menu-toggle');
-    const searchToggle = document.querySelector('.search-toggle');
-    
-    menuToggle?.addEventListener('click', handleMenuToggle);
-    searchToggle?.addEventListener('click', handleSearchToggle);
-    document.addEventListener('keydown', handleEscape);
+    // تحميل مكتبات إضافية
+    const select2Script = document.createElement('script');
+    select2Script.src = '/src/assets/js/select2.full.min.js';
+    document.head.appendChild(select2Script);
+
+    const lazyScript = document.createElement('script');
+    lazyScript.src = '/src/assets/js/jquery.lazy.min.js';
+    document.head.appendChild(lazyScript);
 
     return () => {
-      menuToggle?.removeEventListener('click', handleMenuToggle);
-      searchToggle?.removeEventListener('click', handleSearchToggle);
-      document.removeEventListener('keydown', handleEscape);
-      document.body.className = "";
+      // تنظيف عند إلغاء التحميل
+      document.body.className = '';
     };
   }, []);
 
-  // إعداد Breadcrumb
-  const breadcrumbItems = [
-    { name: "الرئيسية", href: "/" },
-    { name: "أفلام" }
-  ];
-
   return (
     <>
-      {/* Pace Loading Indicator */}
-      <div className="pace pace-inactive">
-        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{ transform: 'translate3d(100%, 0px, 0px)' }}>
-          <div className="pace-progress-inner"></div>
-        </div>
-        <div className="pace-activity"></div>
-      </div>
-
-      {/* Site Overlay */}
       <span className="site-overlay"></span>
-
-      {/* Main Menu */}
+      
+      {/* القائمة الجانبية */}
       <div className="main-menu">
         <div className="d-flex flex-column">
           <div className="my-auto w-100">
             <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
-              </a>
-              <a href="/series" className="item">
-                <div className="icn ml-3"><i className="icon-monitor"></i></div>
-                <div className="text">مسلسلات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
-              </a>
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
+              <Link href="/movies">
+                <a className="item">
+                  <div className="icn ml-3"><i className="icon-video-camera"></i></div>
+                  <div className="text">أفلام</div>
+                </a>
+              </Link>
+              <Link href="/series">
+                <a className="item">
+                  <div className="icn ml-3"><i className="icon-monitor"></i></div>
+                  <div className="text">مسلسلات</div>
+                </a>
+              </Link>
+              <Link href="/shows">
+                <a className="item">
+                  <div className="icn ml-3"><i className="icon-tv"></i></div>
+                  <div className="text">تلفزيون</div>
+                </a>
+              </Link>
+              <Link href="/mix">
+                <a className="item">
+                  <div className="icn ml-3"><i className="icon-mix"></i></div>
+                  <div className="text">منوعات</div>
+                </a>
+              </Link>
             </div>
           </div>
           <nav className="social d-flex justify-content-center">
-            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-            <a href="https://www.facebook.com/yemenflix" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="https://www.facebook.com/groups/yemenflix" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="https://www.youtube.com/c/yemenflix" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
+            <Link href="/"><a className="home mx-2"><i className="icon-home"></i></a></Link>
+            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <Link href="/contact"><a className="email mx-2"><i className="icon-email"></i></a></Link>
           </nav>
         </div>
       </div>
 
-      {/* Search Box */}
+      {/* صندوق البحث */}
       <div className="search-box px-xl-5">
         <div className="container search-container">
           <form action="/search" className="search-form" method="get">
@@ -169,28 +200,26 @@ export default function Movies() {
         </div>
       </div>
 
-      {/* Site Container */}
+      {/* الحاوية الرئيسية */}
       <div className="site-container">
         <div className="main-header-top"></div>
         
-        {/* Header */}
+        {/* الهيدر الرئيسي */}
         <header className="main-header">
           <div className="container">
             <div className="row align-items-center">
               <div className="col-auto">
                 <h2 className="main-logo m-0">
-                  <a href="/" className="d-inline-flex">
-                    <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                  </a>
+                  <Link href="/">
+                    <a className="d-inline-flex">
+                      <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
+                    </a>
+                  </Link>
                 </h2>
               </div>
               <div className="col-auto menu-toggle-container">
                 <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
-                  <span className="icn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </span>
+                  <span className="icn"></span>
                   <div className="text font-size-18 mr-3">الأقسام</div>
                 </a>
               </div>
@@ -205,50 +234,44 @@ export default function Movies() {
                 </div>
               </div>
               <div className="col-auto recently-container">
-                <a href="/recent" className="btn-recently">
-                  <i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span>
-                </a>
+                <Link href="/recent">
+                  <a className="btn-recently"><i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span></a>
+                </Link>
               </div>
               <div className="col-auto user-profile-container">
                 <div className="user-panel">
                   <a className="user-toggle d-block font-size-20 private hide" href="javascript:;"><i className="icon-user"></i></a>
                   <div className="login-panel private hide">
                     <div className="user-logged d-flex align-items-center no-gutters p-3">
-                      <div className="col-auto"><img src="https://img.downet.net/thumb/32x32/default.jpg" className="img-fluid rounded-circle" alt="user avatar" /></div>
+                      <div className="col-auto"><img src={defaultAvatar} className="img-fluid rounded-circle" alt="user avatar" /></div>
                       <div className="col pr-2">
                         <div className="username font-size-14 font-weight-normal text-truncate text-white mb-0 mr-1" style={{width: '120px', height: '22px'}}>مستخدم</div>
                       </div>
                     </div>
                     <nav className="list">
-                      <a href="/profile">تعديل البروفايل</a>
-                      <a href="/favorite/movies">قائمتي المفضلة</a>
+                      <Link href="/profile"><a>تعديل البروفايل</a></Link>
+                      <Link href="/favorites"><a>قائمتي المفضلة</a></Link>
                       <span className="line"></span>
-                      <a href="/logout">تسجيل خروج</a>
+                      <Link href="/logout"><a>تسجيل خروج</a></Link>
                     </nav>
                   </div>
-                  <a className="user-toggle d-block font-size-20 public" href="/login"><i className="icon-user"></i></a>
+                  <Link href="/login">
+                    <a className="user-toggle d-block font-size-20 public"><i className="icon-user"></i></a>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </header>
-
+        
         <div className="main-header-height"></div>
         
-        {/* Breadcrumb Navigation */}
-        <Breadcrumb items={[
-          { name: "الرئيسية", href: "/" },
-          { name: "أفلام" }
-        ]} />
-        
-        {/* Hidden Inputs */}
+        {/* المحتوى الرئيسي */}
         <input type="hidden" id="page_app" value="movies" className="not-empty" />
         <input type="hidden" id="page_id" value="0" className="not-empty" />
-
-        {/* Page Content */}
+        
         <div className="page page-archive">
-          {/* Archive Cover */}
-          <div className="archive-cover mb-4" style={{ backgroundImage: 'url("https://img.downet.net/uploads/xVeQg.webp")' }}>
+          <div className="archive-cover mb-4" style={{backgroundImage: "url('https://img.downet.net/uploads/xVeQg.webp')"}}>
             <div className="container">
               <div className="row pb-3">
                 <div className="col-12 mt-auto">
@@ -264,7 +287,7 @@ export default function Movies() {
                         <div className="row">
                           <div className="col-lg-3 col-md-6 col-12">
                             <div className="form-group mb-12">
-                              <select className="form-control select2" name="section">
+                              <select className="form-control select2" name="section" value={filters.section} onChange={(e) => setFilters({...filters, section: e.target.value})}>
                                 <option value="0">القسم</option>
                                 <option value="29">عربي</option>
                                 <option value="30">اجنبي</option>
@@ -276,7 +299,7 @@ export default function Movies() {
                           </div>
                           <div className="col-lg-3 col-md-6 col-12">
                             <div className="form-group mb-12 mb-lg-0">
-                              <select className="form-control select2" name="category">
+                              <select className="form-control select2" name="category" value={filters.category} onChange={(e) => setFilters({...filters, category: e.target.value})}>
                                 <option value="0">التصنيف</option>
                                 <option value="87">رمضان</option>
                                 <option value="30">انمي</option>
@@ -287,63 +310,30 @@ export default function Movies() {
                                 <option value="35">اثارة</option>
                                 <option value="34">غموض</option>
                                 <option value="33">عائلي</option>
-                                <option value="88">اطفال</option>
-                                <option value="25">حربي</option>
-                                <option value="32">رياضي</option>
-                                <option value="89">قصير</option>
-                                <option value="43">فانتازيا</option>
-                                <option value="24">خيال علمي</option>
-                                <option value="31">موسيقى</option>
-                                <option value="29">سيرة ذاتية</option>
-                                <option value="28">وثائقي</option>
-                                <option value="27">رومانسي</option>
-                                <option value="26">تاريخي</option>
-                                <option value="23">دراما</option>
-                                <option value="22">رعب</option>
-                                <option value="21">جريمة</option>
-                                <option value="19">مغامرة</option>
-                                <option value="91">غربي</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-lg-3 col-md-6 col-12 offset-lg-3">
-                            <div className="form-group mb-0">
-                              <select className="form-control select2" name="rating">
-                                <option value="0">التقييم</option>
-                                <option value="1">+1</option>
-                                <option value="2">+2</option>
-                                <option value="3">+3</option>
-                                <option value="4">+4</option>
-                                <option value="5">+5</option>
-                                <option value="6">+6</option>
-                                <option value="7">+7</option>
-                                <option value="8">+8</option>
-                                <option value="9">+9</option>
                               </select>
                             </div>
                           </div>
                           <div className="col-lg-3 col-md-6 col-12">
                             <div className="form-group mb-12 mb-lg-0">
-                              <select className="form-control select2" name="year">
-                                <option value="0">سنة الإنتاج</option>
-                                <option>2025</option>
-                                <option>2024</option>
-                                <option>2023</option>
-                                <option>2022</option>
-                                <option>2021</option>
-                                <option>2020</option>
-                                <option>2019</option>
-                                <option>2018</option>
-                                <option>2017</option>
-                                <option>2016</option>
-                                <option>2015</option>
-                                <option>2014</option>
-                                <option>2013</option>
-                                <option>2012</option>
-                                <option>2011</option>
-                                <option>2010</option>
-                                <option>2009</option>
-                                <option>2008</option>
+                              <select className="form-control select2" name="rating" value={filters.rating} onChange={(e) => setFilters({...filters, rating: e.target.value})}>
+                                <option value="0">التقييم</option>
+                                <option value="9">9+</option>
+                                <option value="8">8+</option>
+                                <option value="7">7+</option>
+                                <option value="6">6+</option>
+                                <option value="5">5+</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-lg-3 col-md-6 col-12">
+                            <div className="form-group mb-12 mb-lg-0">
+                              <select className="form-control select2" name="year" value={filters.year} onChange={(e) => setFilters({...filters, year: e.target.value})}>
+                                <option value="0">السنة</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
                               </select>
                             </div>
                           </div>
@@ -356,42 +346,50 @@ export default function Movies() {
             </div>
           </div>
 
-          {/* Movies Grid */}
+          {/* قائمة الأفلام */}
           <div className="container">
-            <div className="widget" data-grid="6">
+            <div className="widget">
               <div className="widget-body row flex-wrap">
-                {sampleMovies.map((movie) => (
-                  <div key={movie.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
-                    <div className="entry-box entry-box-1">
-                      <a href={`/movie/${movie.id}`}>
-                        <div className="entry-image">
-                          <div className="image" data-title={movie.title} style={{ backgroundImage: `url("${defaultImage}")` }}>
-                            <img 
-                              src={defaultImage} 
-                              alt={movie.title}
-                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            />
-                          </div>
-                          <div className="entry-overlay">
-                            <div className="overlay-content">
-                              <div className="entry-rating">
-                                <i className="icon-star"></i>
-                                <span>{movie.rating}</span>
+                {moviesData.map((movie) => (
+                  <div key={movie.id} className="col-xl-2 col-lg-3 col-md-4 col-6">
+                    <div className="entry">
+                      <div className="entry-image">
+                        <Link href={`/movie/${movie.id}`}>
+                          <a>
+                            <img src={movie.poster} className="img-fluid lazy" alt={movie.title} />
+                            <div className="entry-image-overlay">
+                              <div className="overlay-top">
+                                <div className="rating">
+                                  <span className="fa fa-star checked"></span>
+                                  <span>{movie.rating}</span>
+                                </div>
+                                {movie.quality && (
+                                  <div className="quality">{movie.quality}</div>
+                                )}
                               </div>
-                              <div className="entry-quality">{movie.quality}</div>
+                              <div className="play-button">
+                                <i className="icon-play"></i>
+                              </div>
                             </div>
-                          </div>
+                          </a>
+                        </Link>
+                      </div>
+                      <div className="entry-body px-3 pb-3 text-center">
+                        <h3 className="entry-title mb-2">
+                          <Link href={`/movie/${movie.id}`}>
+                            <a className="text-white">{movie.title}</a>
+                          </Link>
+                        </h3>
+                        <div className="entry-meta">
+                          <span className="year">{movie.year}</span>
+                          {movie.genre && (
+                            <>
+                              <span className="separator"> • </span>
+                              <span className="genre">{movie.genre.join(', ')}</span>
+                            </>
+                          )}
                         </div>
-                        <div className="entry-body px-3 pb-3 text-center">
-                          <h2 className="entry-title font-size-14 font-weight-bold mb-1">{movie.title}</h2>
-                          <div className="entry-meta font-size-12 text-muted">
-                            <span>{movie.year}</span>
-                            {movie.genre && Array.isArray(movie.genre) && (
-                              <span> • {movie.genre.join(', ')}</span>
-                            )}
-                          </div>
-                        </div>
-                      </a>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -399,95 +397,29 @@ export default function Movies() {
             </div>
 
             {/* Pagination */}
-            <div className="widget-pagination">
-              <ul className="pagination justify-content-center" role="navigation">
-                <li className="page-item disabled" aria-disabled="true">
-                  <span className="page-link" aria-hidden="true">‹</span>
-                </li>
-                <li className="page-item mx-1 active" aria-current="page">
-                  <span className="page-link">1</span>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=2">2</a>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=3">3</a>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=4">4</a>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=5">5</a>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=6">6</a>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=7">7</a>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=8">8</a>
-                </li>
-                <li className="page-item mx-1 disabled" aria-disabled="true">
-                  <span className="page-link">...</span>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=316">316</a>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/movies?page=317">317</a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/movies?page=2" rel="next" aria-label="التالي »">›</a>
-                </li>
-              </ul>
+            <div className="pagination-wrapper text-center mt-4">
+              <nav aria-label="Page navigation">
+                <ul className="pagination justify-content-center">
+                  <li className="page-item disabled">
+                    <a className="page-link" href="#" tabIndex={-1} aria-disabled="true">السابق</a>
+                  </li>
+                  <li className="page-item active">
+                    <a className="page-link" href="#">1</a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">2</a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">3</a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">التالي</a>
+                  </li>
+                </ul>
+              </nav>
             </div>
-
-            {/* Mobile Pagination */}
-            <div className="widget-pagination d-block d-sm-none">
-              <ul className="pagination d-flex justify-content-center" role="navigation">
-                <li className="page-item disabled" aria-disabled="true">
-                  <span className="page-link">« السابق</span>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/movies?page=2" rel="next">التالي »</a>
-                </li>
-              </ul>
-            </div>
-            
-            {/* End element for main-categories-list */}
-            <div id="main-categories-list-end"></div>
           </div>
         </div>
-
-        {/* Footer */}
-        <footer className="main-footer">
-          <div className="container">
-            <div className="widget-footer text-center border-top pt-4 mt-5">
-              <nav className="footer-social d-flex justify-content-center mb-4">
-                <a href="/" className="home mx-2" title="الرئيسية"><i className="icon-home"></i></a>
-                <a href="https://www.facebook.com/yemenflix" target="_blank" className="facebook mx-2" title="فيسبوك"><i className="icon-facebook"></i></a>
-                <a href="https://www.facebook.com/groups/yemenflix" target="_blank" className="facebook mx-2" title="مجموعة فيسبوك"><i className="icon-facebook"></i></a>
-                <a href="#" target="_blank" className="app-store mx-2" title="التطبيق"><i className="icon-app-store"></i></a>
-                <a href="https://www.youtube.com/c/yemenflix" target="_blank" className="youtube mx-2" title="يوتيوب"><i className="icon-youtube"></i></a>
-                <a href="#" target="_blank" className="app-store mx-2" title="الإشعارات"><i className="icon-app-store"></i></a>
-                <a href="/contactus" className="email mx-2" title="اتصل بنا"><i className="icon-email"></i></a>
-              </nav>
-              <div className="footer-links d-flex justify-content-center flex-wrap mb-3">
-                <a href="/movies" className="mx-2">أفلام</a>
-                <a href="/series" className="mx-2">مسلسلات</a>
-                <a href="/shows" className="mx-2">تلفزيون</a>
-                <a href="/mix" className="mx-2">منوعات</a>
-                <a href="/recent" className="mx-2">أضيف حديثا</a>
-                <a href="/profile" className="mx-2">البروفايل</a>
-                <a href="/contactus" className="mx-2">اتصل بنا</a>
-              </div>
-              <p className="copyright mb-0 font-size-12 text-center mt-3">
-                جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
-              </p>
-            </div>
-          </div>
-        </footer>
       </div>
     </>
   );

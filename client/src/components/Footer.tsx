@@ -1,115 +1,79 @@
-import { Rocket, Send } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
-const quickLinks = [
-  { label: "الرئيسية", href: "#home" },
-  { label: "عن الموقع", href: "#about" },
-  { label: "الخدمات", href: "#services" },
-  { label: "الأعمال", href: "#portfolio" },
-];
-
-const services = [
-  { label: "تطوير المواقع", href: "#" },
-  { label: "تطبيقات الجوال", href: "#" },
-  { label: "التصميم الجرافيكي", href: "#" },
-  { label: "التسويق الرقمي", href: "#" },
-];
+// Footer Component - مطابق للأصل
+import { Link } from 'wouter';
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement newsletter subscription
-    console.log("Newsletter subscription:", email);
-    setEmail("");
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId.replace("#", ""));
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <footer className="bg-slate-800 text-white py-12">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div>
-            <div className="flex items-center space-x-reverse space-x-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <Rocket className="text-white h-5 w-5" />
-              </div>
-              <span className="text-xl font-bold">موقعي</span>
-            </div>
-            <p className="text-slate-400 leading-relaxed">
-              نحن شركة رائدة في مجال تطوير المواقع والتطبيقات بأحدث التقنيات والمعايير العالمية
+    <footer className="site-footer bg-dark text-white py-5 mt-5">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-4 mb-4">
+            <h5 className="mb-3">يمن فليكس</h5>
+            <p className="text-muted">
+              موقع يمن فليكس لمشاهدة الأفلام والمسلسلات العربية والأجنبية بجودة عالية
             </p>
+            <div className="social-links">
+              <a href="#" className="text-white me-3" target="_blank">
+                <i className="icon-facebook"></i>
+              </a>
+              <a href="#" className="text-white me-3" target="_blank">
+                <i className="icon-youtube"></i>
+              </a>
+              <a href="#" className="text-white" target="_blank">
+                <i className="icon-twitter"></i>
+              </a>
+            </div>
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">روابط سريعة</h3>
-            <ul className="space-y-2">
-              {quickLinks.map((link, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => scrollToSection(link.href)}
-                    className="text-slate-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </button>
-                </li>
-              ))}
+          
+          <div className="col-md-2 mb-4">
+            <h6 className="mb-3">الأقسام</h6>
+            <ul className="list-unstyled">
+              <li><Link href="/movies"><a className="text-muted">أفلام</a></Link></li>
+              <li><Link href="/series"><a className="text-muted">مسلسلات</a></Link></li>
+              <li><Link href="/shows"><a className="text-muted">تلفزيون</a></Link></li>
+              <li><Link href="/mix"><a className="text-muted">منوعات</a></Link></li>
             </ul>
           </div>
-
-          {/* Services */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">خدماتنا</h3>
-            <ul className="space-y-2">
-              {services.map((service, index) => (
-                <li key={index}>
-                  <a href={service.href} className="text-slate-400 hover:text-white transition-colors">
-                    {service.label}
-                  </a>
-                </li>
-              ))}
+          
+          <div className="col-md-2 mb-4">
+            <h6 className="mb-3">روابط مفيدة</h6>
+            <ul className="list-unstyled">
+              <li><Link href="/recent"><a className="text-muted">أضيف حديثا</a></Link></li>
+              <li><Link href="/favorites"><a className="text-muted">المفضلة</a></Link></li>
+              <li><Link href="/profile"><a className="text-muted">البروفايل</a></Link></li>
             </ul>
           </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">النشرة الإخبارية</h3>
-            <p className="text-slate-400 mb-4">اشترك ليصلك كل جديد</p>
-            <form onSubmit={handleNewsletterSubmit} className="flex">
-              <Input
-                type="email"
-                placeholder="بريدك الإلكتروني"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-4 py-2 rounded-r-lg border-0 text-slate-900"
-                required
-              />
-              <Button
-                type="submit"
-                className="bg-blue-500 px-4 py-2 rounded-l-lg hover:bg-blue-600 transition-colors"
-              >
-                <Send className="h-4 w-4" />
-              </Button>
-            </form>
+          
+          <div className="col-md-2 mb-4">
+            <h6 className="mb-3">المساعدة</h6>
+            <ul className="list-unstyled">
+              <li><Link href="/contactus"><a className="text-muted">اتصل بنا</a></Link></li>
+              <li><Link href="/dmca"><a className="text-muted">DMCA</a></Link></li>
+              <li><Link href="/ad-policy"><a className="text-muted">سياسة الإعلانات</a></Link></li>
+            </ul>
+          </div>
+          
+          <div className="col-md-2 mb-4">
+            <h6 className="mb-3">حسابي</h6>
+            <ul className="list-unstyled">
+              <li><Link href="/login"><a className="text-muted">تسجيل دخول</a></Link></li>
+              <li><Link href="/profile"><a className="text-muted">إنشاء حساب</a></Link></li>
+            </ul>
           </div>
         </div>
-
-        {/* Footer Bottom */}
-        <div className="border-t border-slate-700 mt-8 pt-8 text-center">
-          <p className="text-slate-400">
-            &copy; 2024 موقعي. جميع الحقوق محفوظة. تم التطوير بأحدث التقنيات
-          </p>
+        
+        <hr className="my-4" />
+        
+        <div className="row align-items-center">
+          <div className="col-md-6">
+            <p className="mb-0 text-muted">
+              &copy; 2024 يمن فليكس. جميع الحقوق محفوظة.
+            </p>
+          </div>
+          <div className="col-md-6 text-md-end">
+            <p className="mb-0 text-muted">
+              Made with ❤️ in Yemen
+            </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,8 +1,21 @@
 // Series Page - مطابق للأصل تماماً
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { useQuery } from '@tanstack/react-query';
-import Breadcrumb from '../components/Breadcrumb';
+import '../assets/css/plugins.css';
+import '../assets/css/style.css';  
+import '../assets/css/akwam-original.css';
+
+// استيراد الصور
+import logoWhite from '../assets/images/logo-white.svg';
+import defaultAvatar from '../assets/images/default.jpg';
+
+// إعلان jQuery على النافذة
+declare global {
+  interface Window {
+    $: any;
+    jQuery: any;
+  }
+}
 
 interface Series {
   id: string;
@@ -38,100 +51,104 @@ export default function Series() {
       description: "مسلسل درامي يحكي قصة..."
     },
     {
-      id: "4994", 
-      title: "Dexter Resurrection",
-      poster: "https://img.downet.net/thumb/270x400/uploads/dexter.jpg",
+      id: "5010", 
+      title: "فندق الاحلام مدبلج",
+      poster: "https://img.downet.net/thumb/270x400/uploads/EexJn.jpg",
       year: "2024",
       rating: 9.1,
-      genre: ["جريمة", "دراما"],
+      genre: ["كوميدي", "دراما"],
       quality: "HD",
-      episodes: 10
+      episodes: 38
     },
     {
       id: "4948",
       title: "بات مان",
-      poster: "https://img.downet.net/thumb/270x400/uploads/batman.jpg", 
+      poster: "https://img.downet.net/thumb/270x400/uploads/JJsFz.jpg", 
       year: "2023",
       rating: 7.8,
       genre: ["اكشن", "مغامرة"],
       quality: "HD",
       episodes: 20
-    },
-    {
-      id: "4949",
-      title: "أسد بات",
-      poster: "https://img.downet.net/thumb/270x400/uploads/asad.jpg",
-      year: "2023", 
-      rating: 8.2,
-      genre: ["دراما", "تاريخي"],
-      quality: "HD",
-      episodes: 25
     }
   ];
 
   useEffect(() => {
-    // إعداد الصفحة
-    document.title = "مسلسلات - يمن فليكس";
-    document.body.className = 'page-archive archive-series header-fixed';
+    // تطبيق كلاسات body الأصلية
+    document.body.className = 'header-fixed header-pages pace-done';
     
-    // تنظيف الخلفية من الصفحة الرئيسية
-    document.body.style.background = '';
-    document.body.style.backgroundImage = '';
-    document.body.style.backgroundSize = '';
-    document.body.style.backgroundPosition = '';
-    document.body.style.backgroundAttachment = '';
+    // تحميل jQuery والمكتبات
+    const jqueryScript = document.createElement('script');
+    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
+    jqueryScript.onload = () => {
+      if (window.$) {
+        const $ = window.$;
+        
+        // إعداد التفاعلات الأصلية
+        $(document).ready(() => {
+          // Header background on scroll
+          function handleScroll() {
+            if ($(".main-header").length) {
+              if ($(window).scrollTop()! <= 50) {
+                $("body").removeClass("header-bg");
+              } else {
+                $("body").addClass("header-bg");
+              }
+            }
+          }
+          
+          handleScroll();
+          $(window).scroll(handleScroll);
 
-    // إعداد وظائف التفاعل
-    const handleMenuToggle = () => {
-      document.body.classList.toggle('main-menu-active');
-    };
+          // Menu toggle
+          $(".menu-toggle").click(function() {
+            $("body").toggleClass("main-menu-active");
+            $("body").removeClass("search-active");
+          });
 
-    const handleSearchToggle = () => {
-      document.body.classList.toggle('search-active');
-    };
+          // Search toggle
+          $(".search-toggle").click(function() {
+            $("body").removeClass("search-active");
+          });
 
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        document.body.classList.remove('main-menu-active', 'search-active');
+          // User panel toggle
+          $(".user-toggle").click(function() {
+            $(this).parent().toggleClass("active");
+          });
+
+          // إعداد Select2
+          if ($.fn.select2) {
+            $('.select2').select2();
+          }
+
+          // تفعيل lazy loading للصور
+          if ($.fn.lazy) {
+            $('.lazy').lazy();
+          }
+        });
       }
     };
+    document.head.appendChild(jqueryScript);
 
-    // إضافة مستمعي الأحداث
-    const menuToggle = document.querySelector('.menu-toggle');
-    const searchToggle = document.querySelector('.search-toggle');
-    
-    menuToggle?.addEventListener('click', handleMenuToggle);
-    searchToggle?.addEventListener('click', handleSearchToggle);
-    document.addEventListener('keydown', handleEscape);
+    // تحميل مكتبات إضافية
+    const select2Script = document.createElement('script');
+    select2Script.src = '/src/assets/js/select2.full.min.js';
+    document.head.appendChild(select2Script);
+
+    const lazyScript = document.createElement('script');
+    lazyScript.src = '/src/assets/js/jquery.lazy.min.js';
+    document.head.appendChild(lazyScript);
 
     return () => {
-      menuToggle?.removeEventListener('click', handleMenuToggle);
-      searchToggle?.removeEventListener('click', handleSearchToggle);
-      document.removeEventListener('keydown', handleEscape);
-      document.body.className = "";
+      // تنظيف عند إلغاء التحميل
+      document.body.className = '';
     };
   }, []);
 
-  // إعداد Breadcrumb
-  const breadcrumbItems = [
-    { name: "الرئيسية", href: "/" },
-    { name: "مسلسلات" }
-  ];
-
   return (
     <>
-      {/* Pace Loading Indicator */}
-      <div className="pace pace-inactive">
-        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{ transform: 'translate3d(100%, 0px, 0px)' }}>
-          <div className="pace-progress-inner"></div>
-        </div>
-        <div className="pace-activity"></div>
-      </div>
-
-      {/* Site Overlay */}
       <span className="site-overlay"></span>
-
-      {/* Main Menu - مطابق للأصل */}
+      
+      {/* القائمة الجانبية */}
       <div className="main-menu">
         <div className="d-flex flex-column">
           <div className="my-auto w-100">
@@ -162,14 +179,21 @@ export default function Series() {
               </Link>
             </div>
           </div>
+          <nav className="social d-flex justify-content-center">
+            <Link href="/"><a className="home mx-2"><i className="icon-home"></i></a></Link>
+            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <Link href="/contact"><a className="email mx-2"><i className="icon-email"></i></a></Link>
+          </nav>
         </div>
       </div>
 
-      {/* Search Box */}
-      <div className="search">
-        <div className="search-box">
-          <form action="/search" method="get">
-            <label>
+      {/* صندوق البحث */}
+      <div className="search-box px-xl-5">
+        <div className="container search-container">
+          <form action="/search" className="search-form" method="get">
+            <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
+              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
               <input type="search" name="q" id="searchBoxInput" placeholder="ابحث هنا" />
             </label>
           </form>
@@ -177,12 +201,11 @@ export default function Series() {
         </div>
       </div>
 
-      {/* Site Container */}
+      {/* الحاوية الرئيسية */}
       <div className="site-container">
-        {/* Main Header Top */}
         <div className="main-header-top"></div>
         
-        {/* Header */}
+        {/* الهيدر الرئيسي */}
         <header className="main-header">
           <div className="container">
             <div className="row align-items-center">
@@ -190,18 +213,14 @@ export default function Series() {
                 <h2 className="main-logo m-0">
                   <Link href="/">
                     <a className="d-inline-flex">
-                      <img src="/src/assets/images/logo-white.svg" className="img-fluid" alt="يمن فليكس" />
+                      <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
                     </a>
                   </Link>
                 </h2>
               </div>
               <div className="col-auto menu-toggle-container">
-                <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
-                  <span className="icn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </span>
+                <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
+                  <span className="icn"></span>
                   <div className="text font-size-18 mr-3">الأقسام</div>
                 </a>
               </div>
@@ -210,52 +229,50 @@ export default function Series() {
                 <div className="search-form">
                   <form action="/search" method="get">
                     <input type="text" id="headerSearchInput" name="q" />
-                    <label htmlFor="headerSearchInput">ابحث عن مسلسل ...</label>
+                    <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
                     <button><i className="icon-search"></i></button>
                   </form>
                 </div>
               </div>
               <div className="col-auto recently-container">
                 <Link href="/recent">
-                  <a className="btn-recently">
-                    <i className="icon-plus2 ml-2"></i>
-                    <span>أضيف حديثا</span>
-                  </a>
+                  <a className="btn-recently"><i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span></a>
                 </Link>
               </div>
               <div className="col-auto user-profile-container">
                 <div className="user-panel">
+                  <a className="user-toggle d-block font-size-20 private hide" href="javascript:;"><i className="icon-user"></i></a>
                   <div className="login-panel private hide">
+                    <div className="user-logged d-flex align-items-center no-gutters p-3">
+                      <div className="col-auto"><img src={defaultAvatar} className="img-fluid rounded-circle" alt="user avatar" /></div>
+                      <div className="col pr-2">
+                        <div className="username font-size-14 font-weight-normal text-truncate text-white mb-0 mr-1" style={{width: '120px', height: '22px'}}>مستخدم</div>
+                      </div>
+                    </div>
                     <nav className="list">
-                      <a href="/profile">تعديل البروفايل</a>
-                      <a href="/favorite/series">قائمتي المفضلة</a>
-                      <a href="/logout">تسجيل خروج</a>
+                      <Link href="/profile"><a>تعديل البروفايل</a></Link>
+                      <Link href="/favorites"><a>قائمتي المفضلة</a></Link>
+                      <span className="line"></span>
+                      <Link href="/logout"><a>تسجيل خروج</a></Link>
                     </nav>
                   </div>
                   <Link href="/login">
-                    <a className="user-toggle d-block font-size-20 public">
-                      <i className="icon-user"></i>
-                    </a>
+                    <a className="user-toggle d-block font-size-20 public"><i className="icon-user"></i></a>
                   </Link>
                 </div>
               </div>
             </div>
           </div>
         </header>
-
+        
         <div className="main-header-height"></div>
         
-        {/* Breadcrumb Navigation */}
-        <Breadcrumb items={breadcrumbItems} />
-        
-        {/* Hidden Inputs */}
+        {/* المحتوى الرئيسي */}
         <input type="hidden" id="page_app" value="series" className="not-empty" />
         <input type="hidden" id="page_id" value="0" className="not-empty" />
-
-        {/* Page Content */}
+        
         <div className="page page-archive">
-          {/* Archive Cover */}
-          <div className="archive-cover mb-4" style={{ backgroundImage: 'url("https://img.downet.net/uploads/series-bg.webp")' }}>
+          <div className="archive-cover mb-4" style={{backgroundImage: "url('https://img.downet.net/uploads/USfXq.webp')"}}>
             <div className="container">
               <div className="row pb-3">
                 <div className="col-12 mt-auto">
@@ -275,8 +292,8 @@ export default function Series() {
                                 <option value="0">القسم</option>
                                 <option value="29">عربي</option>
                                 <option value="30">اجنبي</option>
-                                <option value="31">تركي</option>
-                                <option value="32">هندي</option>
+                                <option value="31">هندي</option>
+                                <option value="32">تركي</option>
                                 <option value="33">اسيوي</option>
                               </select>
                             </div>
@@ -285,24 +302,15 @@ export default function Series() {
                             <div className="form-group mb-12 mb-lg-0">
                               <select className="form-control select2" name="category" value={filters.category} onChange={(e) => setFilters({...filters, category: e.target.value})}>
                                 <option value="0">التصنيف</option>
-                                <option value="18">اكشن</option>
-                                <option value="20">كوميدي</option>
-                                <option value="21">جريمة</option>
-                                <option value="22">رعب</option>
-                                <option value="23">دراما</option>
-                                <option value="24">خيال علمي</option>
-                                <option value="25">حربي</option>
-                                <option value="26">تاريخي</option>
-                                <option value="27">رومانسي</option>
-                                <option value="28">وثائقي</option>
-                                <option value="29">سيرة ذاتية</option>
+                                <option value="87">رمضان</option>
                                 <option value="30">انمي</option>
-                                <option value="31">موسيقى</option>
-                                <option value="32">رياضي</option>
-                                <option value="33">عائلي</option>
-                                <option value="34">غموض</option>
+                                <option value="18">اكشن</option>
+                                <option value="71">مدبلج</option>
+                                <option value="72">NETFLIX</option>
+                                <option value="20">كوميدي</option>
                                 <option value="35">اثارة</option>
-                                <option value="43">فانتازيا</option>
+                                <option value="34">غموض</option>
+                                <option value="33">عائلي</option>
                               </select>
                             </div>
                           </div>
@@ -310,15 +318,23 @@ export default function Series() {
                             <div className="form-group mb-0">
                               <select className="form-control select2" name="rating" value={filters.rating} onChange={(e) => setFilters({...filters, rating: e.target.value})}>
                                 <option value="0">التقييم</option>
-                                <option value="1">+1</option>
-                                <option value="2">+2</option>
-                                <option value="3">+3</option>
-                                <option value="4">+4</option>
-                                <option value="5">+5</option>
-                                <option value="6">+6</option>
-                                <option value="7">+7</option>
-                                <option value="8">+8</option>
-                                <option value="9">+9</option>
+                                <option value="9">9+</option>
+                                <option value="8">8+</option>
+                                <option value="7">7+</option>
+                                <option value="6">6+</option>
+                                <option value="5">5+</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-lg-3 col-md-6 col-12">
+                            <div className="form-group mb-12 mb-lg-0">
+                              <select className="form-control select2" name="year" value={filters.year} onChange={(e) => setFilters({...filters, year: e.target.value})}>
+                                <option value="0">سنة الإنتاج</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
                               </select>
                             </div>
                           </div>
@@ -331,49 +347,47 @@ export default function Series() {
             </div>
           </div>
 
-          {/* Series Grid */}
+          {/* قائمة المسلسلات */}
           <div className="container">
-            <div className="archive-entries">
-              <div className="row">
+            <div className="widget">
+              <div className="widget-body row flex-wrap">
                 {seriesData.map((series) => (
-                  <div key={series.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
-                    <div className="entry-box entry-box-2">
+                  <div key={series.id} className="col-xl-2 col-lg-3 col-md-4 col-6">
+                    <div className="entry">
                       <div className="entry-image">
                         <Link href={`/series/${series.id}`}>
-                          <a className="box">
-                            <picture>
-                              <img src={series.poster} alt={series.title} />
-                            </picture>
-                            <div className="entry-overlay">
-                              <div className="entry-actions">
-                                <div className="entry-play">
-                                  <i className="icon-play"></i>
-                                </div>
-                                <div className="entry-rating">
-                                  <i className="icon-star"></i>
+                          <a>
+                            <img src={series.poster} className="img-fluid lazy" alt={series.title} />
+                            <div className="entry-image-overlay">
+                              <div className="overlay-top">
+                                <div className="rating">
+                                  <span className="fa fa-star checked"></span>
                                   <span>{series.rating}</span>
                                 </div>
+                                {series.episodes && (
+                                  <span className="label series"><i className="icon-play mr-1"></i>{series.episodes}</span>
+                                )}
                               </div>
-                              {series.quality && (
-                                <div className="entry-quality">{series.quality}</div>
-                              )}
-                              {series.episodes && (
-                                <div className="entry-episodes">{series.episodes} حلقة</div>
-                              )}
+                              <div className="play-button">
+                                <i className="icon-play"></i>
+                              </div>
                             </div>
                           </a>
                         </Link>
                       </div>
                       <div className="entry-body px-3 pb-3 text-center">
-                        <h2 className="entry-title font-size-14 font-weight-bold mb-1">
+                        <h3 className="entry-title mb-2">
                           <Link href={`/series/${series.id}`}>
-                            <a>{series.title}</a>
+                            <a className="text-white">{series.title}</a>
                           </Link>
-                        </h2>
-                        <div className="entry-meta font-size-12 text-muted">
-                          <span>{series.year}</span>
-                          {series.genre && Array.isArray(series.genre) && (
-                            <span> • {series.genre.join(', ')}</span>
+                        </h3>
+                        <div className="entry-meta">
+                          <span className="year">{series.year}</span>
+                          {series.genre && (
+                            <>
+                              <span className="separator"> • </span>
+                              <span className="genre">{series.genre.join(', ')}</span>
+                            </>
                           )}
                         </div>
                       </div>
@@ -384,52 +398,29 @@ export default function Series() {
             </div>
 
             {/* Pagination */}
-            <div className="widget-pagination">
-              <ul className="pagination justify-content-center" role="navigation">
-                <li className="page-item disabled" aria-disabled="true">
-                  <span className="page-link" aria-hidden="true">‹</span>
-                </li>
-                <li className="page-item mx-1 active" aria-current="page">
-                  <span className="page-link">1</span>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/series?page=2">2</a>
-                </li>
-                <li className="page-item mx-1">
-                  <a className="page-link" href="/series?page=3">3</a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/series?page=2" rel="next" aria-label="التالي »">›</a>
-                </li>
-              </ul>
+            <div className="pagination-wrapper text-center mt-4">
+              <nav aria-label="Page navigation">
+                <ul className="pagination justify-content-center">
+                  <li className="page-item disabled">
+                    <a className="page-link" href="#" tabIndex={-1} aria-disabled="true">السابق</a>
+                  </li>
+                  <li className="page-item active">
+                    <a className="page-link" href="#">1</a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">2</a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">3</a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">التالي</a>
+                  </li>
+                </ul>
+              </nav>
             </div>
-            
-            <div id="main-categories-list-end"></div>
           </div>
         </div>
-
-        {/* Footer */}
-        <footer className="main-footer">
-          <div className="container">
-            <div className="widget-footer text-center border-top pt-4 mt-5">
-              <nav className="footer-social d-flex justify-content-center mb-4">
-                <Link href="/"><a className="home mx-2" title="الرئيسية"><i className="icon-home"></i></a></Link>
-                <a href="https://www.facebook.com/yemenflix" target="_blank" className="facebook mx-2" title="فيسبوك"><i className="icon-facebook"></i></a>
-                <a href="https://www.youtube.com/c/yemenflix" target="_blank" className="youtube mx-2" title="يوتيوب"><i className="icon-youtube"></i></a>
-                <Link href="/contactus"><a className="email mx-2" title="اتصل بنا"><i className="icon-email"></i></a></Link>
-              </nav>
-              <div className="footer-links d-flex justify-content-center flex-wrap mb-3">
-                <Link href="/movies"><a className="mx-2">أفلام</a></Link>
-                <Link href="/series"><a className="mx-2">مسلسلات</a></Link>
-                <Link href="/shows"><a className="mx-2">تلفزيون</a></Link>
-                <Link href="/mix"><a className="mx-2">منوعات</a></Link>
-              </div>
-              <p className="copyright mb-0 font-size-12 text-center mt-3">
-                جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
-              </p>
-            </div>
-          </div>
-        </footer>
       </div>
     </>
   );
