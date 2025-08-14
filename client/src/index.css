@@ -1,3 +1,8 @@
+/* Import Original Site CSS files - MUST be at top */
+@import './assets/css/plugins.css';
+@import './assets/css/style.css'; 
+@import './assets/css/akwam.css';
+@import './assets/css/home.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap');
 
@@ -31,12 +36,6 @@
   font-weight: 600;
   font-style: normal;
 }
-
-/* Import Original Site CSS files - الملفات الأصلية من مجلد site */
-@import './assets/css/plugins.css';
-@import './assets/css/style.css';
-@import './assets/css/akwam.css';
-@import './assets/css/home.css';
 
 @tailwind base;
 @tailwind components;
@@ -77,6 +76,52 @@ body.body-home {
 
 .main-header-height {
   height: 85px;
+}
+
+/* Home Site Button - اللوجو الدائري */
+.home-site-btn-container {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.home-site-btn {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-attachment: fixed;
+  filter: url(#blur-effect-1);
+}
+
+.home-site-btn:hover {
+  transform: scale(1.05);
+  border-color: rgba(243, 149, 30, 0.8);
+  box-shadow: 0 0 50px rgba(243, 149, 30, 0.5);
+}
+
+.home-site-btn .logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.home-site-btn .text {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
 /* Search Box Toggle */

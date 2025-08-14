@@ -171,7 +171,7 @@ export default function Home() {
                 </h2>
               </div>
               <div className="col-auto menu-toggle-container">
-                <button type="button" className="menu-toggle d-flex align-items-center text-white">
+                <button type="button" onClick={() => {}} className="menu-toggle d-flex align-items-center text-white">
                   <span className="icn"></span>
                   <div className="text font-size-18 mr-3">الأقسام</div>
                 </button>
