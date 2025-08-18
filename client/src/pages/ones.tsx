@@ -1,276 +1,192 @@
-import { useEffect } from "react";
-import logoWhite from "@/assets/images/logo-white.svg";
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import AkwamHeader from '../components/AkwamHeader';
+import '../assets/css/plugins.css';
+import '../assets/css/style.css';
+import '../assets/css/akwam.css';
 
-// بيانات الأعمال الأولى المميزة
-const onesContent = [
-  {
-    id: 1,
-    title: "فيلم الحفل الأول",
-    category: "دراما",
-    year: "2024",
-    rating: 9.5,
-    image: "/assets/images/default.jpg",
-    description: "العرض الأول الحصري",
-    isExclusive: true
-  },
-  {
-    id: 2,
-    title: "مسلسل البداية",
-    category: "إثارة",
-    year: "2024",
-    rating: 9.2,
-    image: "/assets/images/default.jpg",
-    description: "أول حلقة من الموسم الجديد",
-    isExclusive: true
-  },
-  {
-    id: 3,
-    title: "برنامج الإنطلاق",
-    category: "منوعات",
-    year: "2024",
-    rating: 8.8,
-    image: "/assets/images/default.jpg",
-    description: "أول عرض مباشر",
-    isExclusive: false
-  },
-  {
-    id: 4,
-    title: "وثائقي الأوائل",
-    category: "وثائقي",
-    year: "2024",
-    rating: 9.0,
-    image: "/assets/images/default.jpg",
-    description: "الوثائقي الحصري الأول",
-    isExclusive: true
-  },
-  {
-    id: 5,
-    title: "مسرحية الافتتاح",
-    category: "مسرح",
-    year: "2024",
-    rating: 8.7,
-    image: "/assets/images/default.jpg",
-    description: "العرض المسرحي الأول",
-    isExclusive: false
-  },
-  {
-    id: 6,
-    title: "برنامج كوميدي أول",
-    category: "كوميديا",
-    year: "2024",
-    rating: 8.9,
-    image: "/assets/images/default.jpg",
-    description: "أول عرض كوميدي حصري",
-    isExclusive: true
-  }
-];
+interface OnesItem {
+  id: string;
+  title: string;
+  poster: string;
+  year: string;
+  rating: number;
+  type: 'movie' | 'series' | 'documentary';
+  genre?: string[];
+  quality?: string;
+  duration?: string;
+  description?: string;
+  featured?: boolean;
+}
 
 export default function Ones() {
+  const [filter, setFilter] = useState('all');
+
+  const onesData: OnesItem[] = [
+    {
+      id: "ones1",
+      title: "فيلم المليون",
+      poster: "https://img.downet.net/thumb/270x400/uploads/ones1.jpg",
+      year: "2024",
+      rating: 9.2,
+      type: "movie",
+      genre: ["دراما", "رومانسي"],
+      quality: "4K",
+      duration: "2:15:00",
+      description: "قصة استثنائية عن الحب والتضحية",
+      featured: true
+    },
+    {
+      id: "ones2",
+      title: "مسلسل الواحد",
+      poster: "https://img.downet.net/thumb/270x400/uploads/ones2.jpg",
+      year: "2024",
+      rating: 9.5,
+      type: "series",
+      genre: ["دراما", "تشويق"],
+      quality: "HD",
+      description: "مسلسل درامي مليء بالإثارة والتشويق",
+      featured: true
+    },
+    {
+      id: "ones3",
+      title: "وثائقي: رحلة الألف ميل",
+      poster: "https://img.downet.net/thumb/270x400/uploads/ones3.jpg",
+      year: "2023",
+      rating: 8.8,
+      type: "documentary",
+      genre: ["وثائقي", "مغامرات"],
+      quality: "4K",
+      duration: "1:30:00",
+      description: "رحلة استكشافية مذهلة عبر التاريخ والثقافة",
+      featured: false
+    },
+    {
+      id: "ones4",
+      title: "فيلم الواحد الأوحد",
+      poster: "https://img.downet.net/thumb/270x400/uploads/ones4.jpg",
+      year: "2024",
+      rating: 9.0,
+      type: "movie",
+      genre: ["أكشن", "دراما"],
+      quality: "4K",
+      duration: "2:30:00",
+      description: "ملحمة سينمائية لا تُنسى",
+      featured: true
+    }
+  ];
+
+  const { data: onesItems = onesData, isLoading } = useQuery({
+    queryKey: ['/api/ones'],
+    queryFn: () => fetch('/api/ones').then(res => res.json()).catch(() => onesData)
+  });
+
   useEffect(() => {
-    // تغيير body class لتطابق الأصل
-    document.body.className = 'header-fixed header-pages pace-done';
+    document.body.className = 'header-fixed body-main';
+    document.title = 'الواحد - يمن فليكس';
     
-    // إضافة jQuery script للتفاعلات
-    const jqueryScript = document.createElement('script');
-    jqueryScript.src = 'https://code.jquery.com/jquery-3.2.1.min.js';
-    jqueryScript.onload = () => {
-      // التفاعلات المطلوبة مطابقة للأصل
-      const $ = (window as any).$;
-      if ($) {
-        $(document).ready(function(){
-          // Menu toggle functions
-          const handleMenuToggle = () => {
-            $("body").removeClass("search-active").toggleClass("main-menu-active");
-          };
-          
-          const handleSearchToggle = () => {
-            $("body").removeClass("main-menu-active").toggleClass("search-active");
-          };
-
-          const handleEscape = (e: any) => {
-            if (e.keyCode === 27) {
-              $("body").removeClass("search-active main-menu-active");
-            }
-          };
-
-          $(".menu-toggle").on("click", handleMenuToggle);
-          $(".search-toggle").on("click", handleSearchToggle);
-          $(document).on("keydown", handleEscape);
-        });
-      }
+    const breadcrumbSchema = {
+      "@context": "http://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https://yemen-flix.replit.app/",
+            "name": "يمن فليكس"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "https://yemen-flix.replit.app/ones",
+            "name": "الواحد"
+          }
+        }
+      ]
     };
-    document.head.appendChild(jqueryScript);
 
-    // تنظيف عند الخروج
+    const scriptTag = document.createElement('script');
+    scriptTag.type = 'application/ld+json';
+    scriptTag.textContent = JSON.stringify(breadcrumbSchema);
+    document.head.appendChild(scriptTag);
+
     return () => {
       document.body.className = '';
     };
   }, []);
 
+  const filteredItems = Array.isArray(onesItems) ? onesItems.filter((item: OnesItem) => {
+    if (filter === 'all') return true;
+    if (filter === 'featured') return item.featured;
+    return item.type === filter;
+  }) : [];
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'movie': return 'فيلم';
+      case 'series': return 'مسلسل';
+      case 'documentary': return 'وثائقي';
+      default: return type;
+    }
+  };
+
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'movie': return 'icon-video-camera';
+      case 'series': return 'icon-monitor';
+      case 'documentary': return 'icon-book';
+      default: return 'icon-file';
+    }
+  };
+
   return (
     <>
-      {/* Pace Loading Indicator - مطابق للأصل */}
-      <div className="pace pace-inactive">
-        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{transform: 'translate3d(100%, 0px, 0px)'}}>
-          <div className="pace-progress-inner"></div>
-        </div>
-        <div className="pace-activity"></div>
-      </div>
-
-      {/* طبقة التراكب للقائمة */}
-      <div className="site-overlay"></div>
-
-      {/* القائمة الجانبية - مطابقة للأصل */}
-      <div className="main-menu">
-        <div className="d-flex flex-column">
-          <div className="my-auto w-100">
-            <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
-              </a>
-              <a href="/series" className="item">
-                <div className="icn ml-3"><i className="icon-monitor"></i></div>
-                <div className="text">مسلسلات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
-              </a>
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
-            </div>
-          </div>
-          <nav className="social d-flex justify-content-center">
-            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
-          </nav>
-        </div>
-      </div>
-
-      {/* مربع البحث */}
-      <div className="search-box px-xl-5">
-        <div className="container search-container">
-          <form className="search-form" method="get">
-            <label className="d-flex align-items-center h-100 w-100 m-0">
-              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
-              <input type="search" name="q" placeholder="ابحث هنا" />
-            </label>
-          </form>
-        </div>
-      </div>
-
-      {/* موقع الحاوية */}
       <div className="site-container">
-        {/* الهيدر الكامل - مطابق للأصل */}
-        <header className="main-header">
-          <div className="container">
-            <div className="row align-items-center py-3">
-              <div className="col-lg-2 col-md-3 col-6">
-                <div className="logo">
-                  <a href="/">
-                    <img src={logoWhite} alt="يمن فليكس" className="img-fluid" />
-                  </a>
-                </div>
-              </div>
-              
-              <div className="col-lg-8 col-md-6 d-none d-md-block">
-                <nav className="main-nav">
-                  <ul className="nav-list d-flex justify-content-center align-items-center">
-                    <li className="nav-item">
-                      <a href="/movies" className="nav-link">أفلام</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/series" className="nav-link">مسلسلات</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/shows" className="nav-link">تلفزيون</a>
-                    </li>
-                    <li className="nav-item">
-                      <a href="/mix" className="nav-link">منوعات</a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-              
-              <div className="col-lg-2 col-md-3 col-6">
-                <div className="header-actions d-flex justify-content-end align-items-center">
-                  <button className="search-toggle btn-icon mr-3">
-                    <i className="icon-search"></i>
-                  </button>
-                  <button className="menu-toggle btn-icon d-md-none">
-                    <div className="icn">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
+        <div className="main-header-top"></div>
+        <AkwamHeader />
         <div className="main-header-height"></div>
-        
-        {/* Hidden inputs مطابقة للأصل */}
-        <input type="hidden" id="page_app" value="ones" className="not-empty" />
-        <input type="hidden" id="page_id" value="0" className="not-empty" />
 
-        {/* صفحة الأرشيف - مطابقة للأصل */}
-        <div className="page page-archive">
-          <div className="archive-cover mb-4" style={{backgroundImage: "url('/assets/images/site-new.webp')"}}>
-            <div className="container">
-              <div className="row pb-3">
-                <div className="col-12 mt-auto">
-                  <div className="archive-title">
-                    <h1 className="title">الأوائل</h1>
-                    <p className="description">أول الأعمال، العروض الحصرية، والإصدارات المميزة</p>
+        <div className="page page-ones">
+          <div className="ones-header-section">
+            <div className="ones-hero bg-gradient" style={{ 
+              background: 'linear-gradient(135deg, #f3951e 0%, #161619 100%)',
+              padding: '60px 0'
+            }}>
+              <div className="container">
+                <div className="row align-items-center">
+                  <div className="col-md-8">
+                    <div className="ones-hero-content">
+                      <h1 className="ones-title display-4 font-weight-bold text-white mb-3">
+                        <i className="icon-star mr-3"></i>
+                        الواحد
+                      </h1>
+                      <p className="ones-subtitle h5 text-light mb-4">
+                        مجموعة مختارة من أفضل الأعمال الفنية والسينمائية العربية والعالمية
+                      </p>
+                      <div className="ones-stats d-flex flex-wrap">
+                        <div className="stat-item mr-4 mb-2">
+                          <span className="stat-number text-warning h4">{onesItems.length}</span>
+                          <span className="stat-label text-light mr-2">عمل مميز</span>
+                        </div>
+                        <div className="stat-item mr-4 mb-2">
+                          <span className="stat-number text-warning h4">
+                            {onesItems.filter((item: OnesItem) => item.featured).length}
+                          </span>
+                          <span className="stat-label text-light mr-2">عمل مُفضل</span>
+                        </div>
+                        <div className="stat-item mb-2">
+                          <span className="stat-number text-warning h4">9.2</span>
+                          <span className="stat-label text-light mr-2">متوسط التقييم</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* فلاتر المحتوى */}
-          <div className="container mb-4">
-            <div className="page-filters">
-              <div className="row">
-                <div className="col-12">
-                  <div className="filters-wrap">
-                    <div className="filters d-flex flex-wrap">
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">جميع الفئات</option>
-                          <option value="exclusive">حصرية</option>
-                          <option value="premiere">عروض أولى</option>
-                          <option value="series">مسلسلات</option>
-                          <option value="movies">أفلام</option>
-                          <option value="documentaries">وثائقيات</option>
-                        </select>
-                      </div>
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">النوع</option>
-                          <option value="drama">دراما</option>
-                          <option value="comedy">كوميديا</option>
-                          <option value="action">أكشن</option>
-                          <option value="thriller">إثارة</option>
-                        </select>
-                      </div>
-                      <div className="filter-item">
-                        <select className="form-control filter-select">
-                          <option value="">الترتيب</option>
-                          <option value="newest">الأحدث</option>
-                          <option value="rating">الأعلى تقييماً</option>
-                          <option value="exclusive">الحصري أولاً</option>
-                        </select>
-                      </div>
+                  <div className="col-md-4 text-center">
+                    <div className="ones-icon">
+                      <i className="icon-award" style={{ fontSize: '120px', color: 'rgba(255,255,255,0.2)' }}></i>
                     </div>
                   </div>
                 </div>
@@ -278,103 +194,131 @@ export default function Ones() {
             </div>
           </div>
 
-          {/* شبكة المحتوى */}
-          <div className="container">
-            <div className="page-content">
-              <div className="archive-content">
-                <div className="widgets-posts row">
-                  {onesContent.map((item) => (
-                    <div key={item.id} className="col-lg-2 col-md-3 col-4 mb-4">
-                      <div className="widget widget-1">
-                        <div className="entry-box">
-                          <div className="entry-image">
-                            <a href={`/ones/${item.id}`}>
-                              <img src={item.image} alt={item.title} className="img-fluid" />
-                              <div className="entry-overlay">
-                                <div className="overlay-content">
-                                  {item.isExclusive && (
-                                    <div className="exclusive-badge">
-                                      <span className="badge-text">حصري</span>
+          <div className="container mt-4">
+            <div className="ones-filters mb-4">
+              <div className="filter-tabs d-flex flex-wrap justify-content-center">
+                <button 
+                  className={`filter-tab btn ${filter === 'all' ? 'active' : ''}`}
+                  onClick={() => setFilter('all')}
+                  data-testid="filter-all"
+                >
+                  <i className="icon-grid mr-2"></i>الكل
+                </button>
+                <button 
+                  className={`filter-tab btn ${filter === 'featured' ? 'active' : ''}`}
+                  onClick={() => setFilter('featured')}
+                  data-testid="filter-featured"
+                >
+                  <i className="icon-star mr-2"></i>المميز
+                </button>
+                <button 
+                  className={`filter-tab btn ${filter === 'movie' ? 'active' : ''}`}
+                  onClick={() => setFilter('movie')}
+                  data-testid="filter-movies"
+                >
+                  <i className="icon-video-camera mr-2"></i>أفلام
+                </button>
+                <button 
+                  className={`filter-tab btn ${filter === 'series' ? 'active' : ''}`}
+                  onClick={() => setFilter('series')}
+                  data-testid="filter-series"
+                >
+                  <i className="icon-monitor mr-2"></i>مسلسلات
+                </button>
+                <button 
+                  className={`filter-tab btn ${filter === 'documentary' ? 'active' : ''}`}
+                  onClick={() => setFilter('documentary')}
+                  data-testid="filter-documentaries"
+                >
+                  <i className="icon-book mr-2"></i>وثائقيات
+                </button>
+              </div>
+            </div>
+
+            {isLoading ? (
+              <div className="text-center py-5">
+                <div className="spinner-border text-warning" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <div className="ones-content">
+                <div className="widget widget-style-1 mb-4" data-grid="6">
+                  <div className="widget-body">
+                    <div className="row" data-testid="ones-results">
+                      {filteredItems.map((item) => (
+                        <div key={item.id} className="col-6 col-lg-3 col-md-4 col-xl-3 mb-4">
+                          <div className={`entry-box entry-box-1 ones-entry ${item.featured ? 'featured' : ''}`}>
+                            {item.featured && (
+                              <div className="featured-badge">
+                                <i className="icon-star"></i>
+                                <span>مميز</span>
+                              </div>
+                            )}
+                            
+                            <div className="labels d-flex">
+                              <span className="label rating">
+                                <i className="icon-star mr-2"></i>{item.rating}
+                              </span>
+                              <span className="label type ml-2">
+                                <i className={`${getTypeIcon(item.type)} mr-1`}></i>
+                                {getTypeLabel(item.type)}
+                              </span>
+                              {item.quality && (
+                                <span className="label quality ml-2">{item.quality}</span>
+                              )}
+                              <span className="ml-auto"></span>
+                            </div>
+                            
+                            <a href={`/${item.type}/${item.id}`} data-testid={`ones-link-${item.id}`}>
+                              <div className="entry-image">
+                                <div 
+                                  className="image"
+                                  style={{
+                                    backgroundImage: `url("${item.poster}")`,
+                                    height: '400px',
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center'
+                                  }}
+                                ></div>
+                                <div className="entry-overlay">
+                                  <div className="overlay-content">
+                                    <div className="entry-title" data-testid={`ones-title-${item.id}`}>
+                                      {item.title}
                                     </div>
-                                  )}
-                                  <div className="rating">
-                                    <span className="rating-star">★</span>
-                                    <span className="rating-value">{item.rating}</span>
+                                    <div className="entry-year">{item.year}</div>
+                                    <div className="entry-type">{getTypeLabel(item.type)}</div>
+                                    {item.duration && (
+                                      <div className="entry-duration">{item.duration}</div>
+                                    )}
+                                    {item.genre && item.genre.length > 0 && (
+                                      <div className="entry-genre">{item.genre.join(', ')}</div>
+                                    )}
+                                    {item.description && (
+                                      <div className="entry-description">{item.description}</div>
+                                    )}
                                   </div>
                                 </div>
                               </div>
                             </a>
                           </div>
-                          <div className="entry-content">
-                            <div className="entry-header">
-                              <h3 className="entry-title">
-                                <a href={`/ones/${item.id}`}>
-                                  {item.title}
-                                </a>
-                              </h3>
-                            </div>
-                            <div className="entry-meta">
-                              <span className="entry-category">{item.category}</span>
-                              <span className="entry-year">{item.year}</span>
-                            </div>
-                          </div>
                         </div>
-                      </div>
+                      ))}
+                      
+                      {filteredItems.length === 0 && (
+                        <div className="col-12 text-center py-5">
+                          <i className="icon-search-outline font-size-48 text-muted mb-3"></i>
+                          <h3>لا توجد أعمال</h3>
+                          <p className="text-muted">لا توجد أعمال مطابقة للتصنيف المحدد</p>
+                        </div>
+                      )}
                     </div>
-                  ))}
-                </div>
-
-                {/* التنقل بين الصفحات */}
-                <div className="pagination-wrap mt-5">
-                  <nav className="pagination">
-                    <ul className="page-numbers d-flex justify-content-center">
-                      <li><a href="javascript:;" className="page-numbers current">1</a></li>
-                      <li><a href="/ones?page=2" className="page-numbers">2</a></li>
-                      <li><a href="/ones?page=3" className="page-numbers">3</a></li>
-                      <li><a href="/ones?page=4" className="page-numbers">4</a></li>
-                      <li><a href="/ones?page=5" className="page-numbers">5</a></li>
-                      <li><span className="page-numbers dots">…</span></li>
-                      <li><a href="/ones?page=15" className="page-numbers">15</a></li>
-                      <li><a href="/ones?page=2" className="next page-numbers">التالي ›</a></li>
-                    </ul>
-                  </nav>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
-
-        {/* الفوتر الكامل - مطابق للأصل */}
-        <footer className="main-footer">
-          <div className="container">
-            <div className="footer-content">
-              <div className="row">
-                <div className="col-md-8">
-                  <div className="footer-links">
-                    <a href="/dmca">DMCA</a>
-                    <a href="/ad-policy">سياسة الإعلانات</a>
-                    <a href="/contactus">اتصل بنا</a>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="footer-social">
-                    <a href="#" className="social-link facebook"><i className="icon-facebook"></i></a>
-                    <a href="#" className="social-link youtube"><i className="icon-youtube"></i></a>
-                    <a href="#" className="social-link app-store"><i className="icon-app-store"></i></a>
-                  </div>
-                </div>
-              </div>
-              <div className="footer-bottom mt-3">
-                <p className="copyright text-center">
-                  جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
-
-        {/* عنصر نهاية القائمة للـ JavaScript */}
-        <div id="main-categories-list-end"></div>
       </div>
     </>
   );

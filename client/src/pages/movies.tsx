@@ -1,14 +1,13 @@
 // Movies Page - مطابق للأصل تماماً
 import { useEffect, useState } from 'react';
-import { Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import '../assets/css/plugins.css';
 import '../assets/css/style.css';  
-import '../assets/css/akwam-original.css';
+import '../assets/css/akwam.css';
 
-// استيراد الصور
-import logoWhite from '../assets/images/logo-white.svg';
-import defaultAvatar from '../assets/images/default.jpg';
+// استيراد المكونات
+import AkwamHeader from '../components/AkwamHeader';
+import MovieCard from '../components/MovieCard';
 
 // إعلان jQuery على النافذة
 declare global {
@@ -68,210 +67,103 @@ export default function Movies() {
       genre: ["اكشن", "حرب"],
       quality: "HD",
       description: "فيلم حرب كلاسيكي..."
+    },
+    {
+      id: "243",
+      title: "Rambo",
+      poster: "https://img.downet.net/thumb/270x400/uploads/R8cXw.jpg", 
+      year: "2008",
+      rating: 7.0,
+      genre: ["اكشن", "حرب"],
+      quality: "HD",
+      description: "عودة رامبو بقوة..."
+    },
+    {
+      id: "245",
+      title: "Maleficent",
+      poster: "https://img.downet.net/thumb/270x400/uploads/v1234.jpg",
+      year: "2014", 
+      rating: 6.9,
+      genre: ["فانتازيا", "عائلي"],
+      quality: "HD",
+      description: "قصة الساحرة الشريرة..."
+    },
+    {
+      id: "247",
+      title: "يا أنا يا خالتي",
+      poster: "https://img.downet.net/thumb/270x400/uploads/q5678.jpg",
+      year: "2005",
+      rating: 7.5,
+      genre: ["كوميدي", "مصري"],
+      quality: "HD", 
+      description: "كوميديا مصرية رائعة..."
     }
   ];
 
+  const { data: movies = moviesData, isLoading } = useQuery({
+    queryKey: ['/api/movies'],
+    queryFn: () => fetch('/api/movies').then(res => res.json()).catch(() => moviesData)
+  });
+
   useEffect(() => {
-    // تطبيق كلاسات body الأصلية
-    document.body.className = 'header-fixed header-pages pace-done';
+    // تطبيق كلاسات body الأصلية للصفحة
+    document.body.className = 'header-fixed body-main';
     
-    // تحميل jQuery والمكتبات
-    const jqueryScript = document.createElement('script');
-    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
-    jqueryScript.onload = () => {
-      if (window.$) {
-        const $ = window.$;
-        
-        // إعداد التفاعلات الأصلية
-        $(document).ready(() => {
-          // Header background on scroll
-          function handleScroll() {
-            if ($(".main-header").length) {
-              if ($(window).scrollTop()! <= 50) {
-                $("body").removeClass("header-bg");
-              } else {
-                $("body").addClass("header-bg");
-              }
-            }
+    // إضافة BreadcrumbList JSON-LD Schema
+    const breadcrumbSchema = {
+      "@context": "http://schema.org",
+      "@type": "BreadcrumbList", 
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https://yemen-flix.replit.app/",
+            "name": "يمن فليكس"
           }
-          
-          handleScroll();
-          $(window).scroll(handleScroll);
-
-          // Menu toggle
-          $(".menu-toggle").click(function() {
-            $("body").toggleClass("main-menu-active");
-            $("body").removeClass("search-active");
-          });
-
-          // Search toggle
-          $(".search-toggle").click(function() {
-            $("body").removeClass("search-active");
-          });
-
-          // User panel toggle
-          $(".user-toggle").click(function(this: HTMLElement) {
-            $(this).parent().toggleClass("active");
-          });
-
-          // إعداد Select2
-          if ($.fn.select2) {
-            $('.select2').select2();
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "https://yemen-flix.replit.app/movies",
+            "name": "أفلام"
           }
-
-          // تفعيل lazy loading للصور
-          if ($.fn.lazy) {
-            $('.lazy').lazy();
-          }
-        });
-      }
+        }
+      ]
     };
-    document.head.appendChild(jqueryScript);
 
-    // تحميل مكتبات إضافية
-    const select2Script = document.createElement('script');
-    select2Script.src = '/src/assets/js/select2.full.min.js';
-    document.head.appendChild(select2Script);
-
-    const lazyScript = document.createElement('script');
-    lazyScript.src = '/src/assets/js/jquery.lazy.min.js';
-    document.head.appendChild(lazyScript);
+    const scriptTag = document.createElement('script');
+    scriptTag.type = 'application/ld+json';
+    scriptTag.textContent = JSON.stringify(breadcrumbSchema);
+    document.head.appendChild(scriptTag);
 
     return () => {
-      // تنظيف عند إلغاء التحميل
       document.body.className = '';
     };
   }, []);
 
+  const filteredMovies = Array.isArray(movies) ? movies.filter((movie: Movie) => {
+    if (filters.year !== '0' && movie.year !== filters.year) return false;
+    if (filters.rating !== '0' && movie.rating < parseInt(filters.rating)) return false;
+    return true;
+  }) : [];
+
   return (
     <>
-      <span className="site-overlay"></span>
-      
-      {/* القائمة الجانبية */}
-      <div className="main-menu">
-        <div className="d-flex flex-column">
-          <div className="my-auto w-100">
-            <div className="menu d-flex flex-wrap justify-content-center">
-              <Link href="/movies">
-                <a className="item">
-                  <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                  <div className="text">أفلام</div>
-                </a>
-              </Link>
-              <Link href="/series">
-                <a className="item">
-                  <div className="icn ml-3"><i className="icon-monitor"></i></div>
-                  <div className="text">مسلسلات</div>
-                </a>
-              </Link>
-              <Link href="/shows">
-                <a className="item">
-                  <div className="icn ml-3"><i className="icon-tv"></i></div>
-                  <div className="text">تلفزيون</div>
-                </a>
-              </Link>
-              <Link href="/mix">
-                <a className="item">
-                  <div className="icn ml-3"><i className="icon-mix"></i></div>
-                  <div className="text">منوعات</div>
-                </a>
-              </Link>
-            </div>
-          </div>
-          <nav className="social d-flex justify-content-center">
-            <Link href="/"><a className="home mx-2"><i className="icon-home"></i></a></Link>
-            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <Link href="/contact"><a className="email mx-2"><i className="icon-email"></i></a></Link>
-          </nav>
-        </div>
-      </div>
-
-      {/* صندوق البحث */}
-      <div className="search-box px-xl-5">
-        <div className="container search-container">
-          <form action="/search" className="search-form" method="get">
-            <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
-              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
-              <input type="search" name="q" id="searchBoxInput" placeholder="ابحث هنا" />
-            </label>
-          </form>
-          <div className="search-toggle"><i className="icon-arrow-back"></i></div>
-        </div>
-      </div>
-
-      {/* الحاوية الرئيسية */}
+      {/* Site Container */}
       <div className="site-container">
         <div className="main-header-top"></div>
         
-        {/* الهيدر الرئيسي */}
-        <header className="main-header">
-          <div className="container">
-            <div className="row align-items-center">
-              <div className="col-auto">
-                <h2 className="main-logo m-0">
-                  <Link href="/">
-                    <a className="d-inline-flex">
-                      <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                    </a>
-                  </Link>
-                </h2>
-              </div>
-              <div className="col-auto menu-toggle-container">
-                <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
-                  <span className="icn"></span>
-                  <div className="text font-size-18 mr-3">الأقسام</div>
-                </a>
-              </div>
-              <div className="ml-auto"></div>
-              <div className="col-md-5 col-lg-6 search-container">
-                <div className="search-form">
-                  <form action="/search" method="get">
-                    <input type="text" id="headerSearchInput" name="q" />
-                    <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
-                    <button><i className="icon-search"></i></button>
-                  </form>
-                </div>
-              </div>
-              <div className="col-auto recently-container">
-                <Link href="/recent">
-                  <a className="btn-recently"><i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span></a>
-                </Link>
-              </div>
-              <div className="col-auto user-profile-container">
-                <div className="user-panel">
-                  <a className="user-toggle d-block font-size-20 private hide" href="javascript:;"><i className="icon-user"></i></a>
-                  <div className="login-panel private hide">
-                    <div className="user-logged d-flex align-items-center no-gutters p-3">
-                      <div className="col-auto"><img src={defaultAvatar} className="img-fluid rounded-circle" alt="user avatar" /></div>
-                      <div className="col pr-2">
-                        <div className="username font-size-14 font-weight-normal text-truncate text-white mb-0 mr-1" style={{width: '120px', height: '22px'}}>مستخدم</div>
-                      </div>
-                    </div>
-                    <nav className="list">
-                      <Link href="/profile"><a>تعديل البروفايل</a></Link>
-                      <Link href="/favorites"><a>قائمتي المفضلة</a></Link>
-                      <span className="line"></span>
-                      <Link href="/logout"><a>تسجيل خروج</a></Link>
-                    </nav>
-                  </div>
-                  <Link href="/login">
-                    <a className="user-toggle d-block font-size-20 public"><i className="icon-user"></i></a>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
+        {/* Header Component */}
+        <AkwamHeader />
         
         <div className="main-header-height"></div>
-        
-        {/* المحتوى الرئيسي */}
-        <input type="hidden" id="page_app" value="movies" className="not-empty" />
-        <input type="hidden" id="page_id" value="0" className="not-empty" />
-        
+
+        {/* Page Content */}
         <div className="page page-archive">
-          <div className="archive-cover mb-4" style={{backgroundImage: "url('https://img.downet.net/uploads/xVeQg.webp')"}}>
+          {/* Archive Cover with Filters */}
+          <div className="archive-cover mb-4" style={{ backgroundImage: `url('https://img.downet.net/uploads/xVeQg.webp')` }}>
             <div className="container">
               <div className="row pb-3">
                 <div className="col-12 mt-auto">
@@ -282,12 +174,20 @@ export default function Movies() {
                         <h1 className="name font-size-34 font-weight-bold mb-0">أفلام</h1>
                       </div>
                     </div>
+                    
+                    {/* Filters Section */}
                     <div className="col-md">
                       <form id="filter" method="get">
                         <div className="row">
                           <div className="col-lg-3 col-md-6 col-12">
                             <div className="form-group mb-12">
-                              <select className="form-control select2" name="section" value={filters.section} onChange={(e) => setFilters({...filters, section: e.target.value})}>
+                              <select 
+                                className="form-control" 
+                                name="section" 
+                                value={filters.section}
+                                onChange={(e) => setFilters(prev => ({ ...prev, section: e.target.value }))}
+                                data-testid="section-filter"
+                              >
                                 <option value="0">القسم</option>
                                 <option value="29">عربي</option>
                                 <option value="30">اجنبي</option>
@@ -297,43 +197,64 @@ export default function Movies() {
                               </select>
                             </div>
                           </div>
+                          
                           <div className="col-lg-3 col-md-6 col-12">
                             <div className="form-group mb-12 mb-lg-0">
-                              <select className="form-control select2" name="category" value={filters.category} onChange={(e) => setFilters({...filters, category: e.target.value})}>
+                              <select 
+                                className="form-control" 
+                                name="category" 
+                                value={filters.category}
+                                onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+                                data-testid="category-filter"
+                              >
                                 <option value="0">التصنيف</option>
-                                <option value="87">رمضان</option>
-                                <option value="30">انمي</option>
                                 <option value="18">اكشن</option>
-                                <option value="71">مدبلج</option>
-                                <option value="72">NETFLIX</option>
                                 <option value="20">كوميدي</option>
+                                <option value="23">دراما</option>
+                                <option value="22">رعب</option>
+                                <option value="27">رومانسي</option>
+                                <option value="24">خيال علمي</option>
+                                <option value="19">مغامرة</option>
+                                <option value="21">جريمة</option>
                                 <option value="35">اثارة</option>
-                                <option value="34">غموض</option>
-                                <option value="33">عائلي</option>
                               </select>
                             </div>
                           </div>
+                          
                           <div className="col-lg-3 col-md-6 col-12">
                             <div className="form-group mb-12 mb-lg-0">
-                              <select className="form-control select2" name="rating" value={filters.rating} onChange={(e) => setFilters({...filters, rating: e.target.value})}>
-                                <option value="0">التقييم</option>
-                                <option value="9">9+</option>
-                                <option value="8">8+</option>
-                                <option value="7">7+</option>
-                                <option value="6">6+</option>
-                                <option value="5">5+</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-lg-3 col-md-6 col-12">
-                            <div className="form-group mb-12 mb-lg-0">
-                              <select className="form-control select2" name="year" value={filters.year} onChange={(e) => setFilters({...filters, year: e.target.value})}>
-                                <option value="0">السنة</option>
+                              <select 
+                                className="form-control" 
+                                name="year" 
+                                value={filters.year}
+                                onChange={(e) => setFilters(prev => ({ ...prev, year: e.target.value }))}
+                                data-testid="year-filter"
+                              >
+                                <option value="0">سنة الإنتاج</option>
+                                <option value="2025">2025</option>
                                 <option value="2024">2024</option>
                                 <option value="2023">2023</option>
                                 <option value="2022">2022</option>
                                 <option value="2021">2021</option>
                                 <option value="2020">2020</option>
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div className="col-lg-3 col-md-6 col-12">
+                            <div className="form-group mb-0">
+                              <select 
+                                className="form-control" 
+                                name="rating" 
+                                value={filters.rating}
+                                onChange={(e) => setFilters(prev => ({ ...prev, rating: e.target.value }))}
+                                data-testid="rating-filter"
+                              >
+                                <option value="0">التقييم</option>
+                                <option value="8">+8</option>
+                                <option value="7">+7</option>
+                                <option value="6">+6</option>
+                                <option value="5">+5</option>
                               </select>
                             </div>
                           </div>
@@ -346,78 +267,31 @@ export default function Movies() {
             </div>
           </div>
 
-          {/* قائمة الأفلام */}
+          {/* Movies Grid */}
           <div className="container">
-            <div className="widget">
-              <div className="widget-body row flex-wrap">
-                {moviesData.map((movie) => (
-                  <div key={movie.id} className="col-xl-2 col-lg-3 col-md-4 col-6">
-                    <div className="entry">
-                      <div className="entry-image">
-                        <Link href={`/movie/${movie.id}`}>
-                          <a>
-                            <img src={movie.poster} className="img-fluid lazy" alt={movie.title} />
-                            <div className="entry-image-overlay">
-                              <div className="overlay-top">
-                                <div className="rating">
-                                  <span className="fa fa-star checked"></span>
-                                  <span>{movie.rating}</span>
-                                </div>
-                                {movie.quality && (
-                                  <div className="quality">{movie.quality}</div>
-                                )}
-                              </div>
-                              <div className="play-button">
-                                <i className="icon-play"></i>
-                              </div>
-                            </div>
-                          </a>
-                        </Link>
-                      </div>
-                      <div className="entry-body px-3 pb-3 text-center">
-                        <h3 className="entry-title mb-2">
-                          <Link href={`/movie/${movie.id}`}>
-                            <a className="text-white">{movie.title}</a>
-                          </Link>
-                        </h3>
-                        <div className="entry-meta">
-                          <span className="year">{movie.year}</span>
-                          {movie.genre && (
-                            <>
-                              <span className="separator"> • </span>
-                              <span className="genre">{movie.genre.join(', ')}</span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            {isLoading ? (
+              <div className="text-center py-5">
+                <div className="spinner-border text-warning" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
               </div>
-            </div>
-
-            {/* Pagination */}
-            <div className="pagination-wrapper text-center mt-4">
-              <nav aria-label="Page navigation">
-                <ul className="pagination justify-content-center">
-                  <li className="page-item disabled">
-                    <a className="page-link" href="#" tabIndex={-1} aria-disabled="true">السابق</a>
-                  </li>
-                  <li className="page-item active">
-                    <a className="page-link" href="#">1</a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">2</a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">3</a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">التالي</a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+            ) : (
+              <div className="widget widget-style-1 mb-4" data-grid="6">
+                <div className="widget-body">
+                  <div className="row" data-testid="movies-grid">
+                    {filteredMovies.map((movie) => (
+                      <MovieCard key={movie.id} {...movie} />
+                    ))}
+                    
+                    {filteredMovies.length === 0 && (
+                      <div className="col-12 text-center py-5">
+                        <p className="text-white">لا توجد أفلام تطابق المعايير المحددة</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

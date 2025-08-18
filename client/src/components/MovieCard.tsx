@@ -1,117 +1,51 @@
 import { Link } from 'wouter';
 
 interface MovieCardProps {
-  id: number;
+  id: string;
   title: string;
-  arabicTitle?: string;
-  year?: number;
-  posterUrl: string;
-  rating?: number;
-  quality?: string[];
-  type: 'movie' | 'series' | 'show' | 'episode';
+  poster: string;
+  year: string;
+  rating: number;
+  quality?: string;
   genre?: string[];
-  isNew?: boolean;
-  isFavorite?: boolean;
-  onToggleFavorite?: (id: number) => void;
 }
 
-export default function MovieCard({
-  id,
-  title,
-  arabicTitle,
-  year,
-  posterUrl,
-  rating,
-  quality = [],
-  type,
-  genre = [],
-  isNew = false,
-  isFavorite = false,
-  onToggleFavorite
-}: MovieCardProps) {
-  const getTypeUrl = () => {
-    switch (type) {
-      case 'movie': return `/movie/${id}`;
-      case 'series': return `/series/${id}`;
-      case 'show': return `/show/${id}`;
-      case 'episode': return `/episode/${id}`;
-      default: return `/movie/${id}`;
-    }
-  };
-
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onToggleFavorite) {
-      onToggleFavorite(id);
-    }
-  };
-
+export default function MovieCard({ id, title, poster, year, rating, quality, genre }: MovieCardProps) {
   return (
-    <div className="entry-box entry-box-1">
-      <div className="box">
-        <Link href={getTypeUrl()}>
+    <div className="col-6 col-lg-2 col-md-3 col-xl-2 mb-12">
+      <div className="entry-box entry-box-1" data-testid={`movie-card-${id}`}>
+        <div className="labels d-flex">
+          <span className="label rating">
+            <i className="icon-star mr-2"></i>{rating}
+          </span>
+          {quality && (
+            <span className="label quality ml-2">{quality}</span>
+          )}
+          <span className="ml-auto"></span>
+        </div>
+        
+        <Link href={`/movie/${id}`} data-testid={`movie-link-${id}`}>
           <div className="entry-image">
-            <img 
-              src={posterUrl} 
-              className="img-fluid" 
-              alt={arabicTitle || title}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = '/client/src/assets/images/default-poster.jpg';
+            <div 
+              className="image" 
+              style={{ 
+                backgroundImage: `url("${poster}")`,
+                height: '300px',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
               }}
-            />
-            {isNew && (
-              <div className="entry-badge new-badge">
-                <span className="badge badge-success">جديد</span>
+            ></div>
+            <div className="entry-overlay">
+              <div className="overlay-content">
+                <div className="entry-title" data-testid={`movie-title-${id}`}>{title}</div>
+                <div className="entry-year" data-testid={`movie-year-${id}`}>{year}</div>
+                {genre && genre.length > 0 && (
+                  <div className="entry-genre">{genre.join(', ')}</div>
+                )}
               </div>
-            )}
-            {quality.length > 0 && (
-              <div className="entry-qualities">
-                {quality.map((q, index) => (
-                  <span key={index} className="quality-badge">{q}</span>
-                ))}
-              </div>
-            )}
-          </div>
-          
-          <div className="entry-body">
-            <h3 className="entry-title">
-              {arabicTitle || title}
-            </h3>
-            {title !== arabicTitle && arabicTitle && (
-              <h4 className="entry-subtitle">{title}</h4>
-            )}
-            
-            <div className="entry-meta">
-              {year && <span className="entry-year">{year}</span>}
-              {rating && (
-                <span className="entry-rating">
-                  <i className="icon-star"></i>
-                  {rating.toFixed(1)}
-                </span>
-              )}
             </div>
-            
-            {genre.length > 0 && (
-              <div className="entry-genres">
-                {genre.slice(0, 3).map((g, index) => (
-                  <span key={index} className="genre-tag">{g}</span>
-                ))}
-              </div>
-            )}
           </div>
         </Link>
-        
-        <div className="entry-actions">
-          <button 
-            onClick={handleFavoriteClick}
-            className={`btn-favorite ${isFavorite ? 'active' : ''}`}
-            title={isFavorite ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}
-          >
-            <i className={`icon-${isFavorite ? 'heart' : 'heart-o'}`}></i>
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -1,268 +1,160 @@
-import { useEffect } from "react";
-import logoWhite from "../assets/images/logo-white.svg";
-
-declare global {
-  interface Window {
-    $: any;
-  }
-}
+import { useEffect } from 'react';
+import AkwamHeader from '../components/AkwamHeader';
+import '../assets/css/plugins.css';
+import '../assets/css/style.css';
+import '../assets/css/akwam.css';
 
 export default function AdPolicy() {
   useEffect(() => {
-    document.body.className = 'header-fixed header-pages pace-done';
-
-    const jqueryScript = document.createElement('script');
-    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
-    jqueryScript.onload = () => {
-      setTimeout(() => {
-        if (window.$) {
-          const $ = window.$;
-          
-          $(".menu-toggle").on("click", function(){
-            $("body").removeClass("search-active").toggleClass("main-menu-active");
-          });
-          
-          $(".site-overlay").on("click", function(){
-            $("body").removeClass("main-menu-active search-active");
-          });
-
-          $(document).on("keydown", function(e: any){
-            if (e.keyCode === 27) {
-              $("body").removeClass("search-active main-menu-active");
-            }
-          });
-        }
-      }, 100);
-    };
-    document.head.appendChild(jqueryScript);
-
+    document.body.className = 'header-fixed body-main';
+    document.title = 'سياسة الإعلانات - يمن فليكس';
+    
     return () => {
       document.body.className = '';
     };
   }, []);
 
   return (
-    <div className="site-container">
-      <input type="hidden" name="page_app" value="ad-policy" />
-      
-      {/* Site Overlay */}
-      <span className="site-overlay"></span>
+    <>
+      <div className="site-container">
+        <div className="main-header-top"></div>
+        <AkwamHeader />
+        <div className="main-header-height"></div>
 
-      {/* Main Menu */}
-      <div className="main-menu">
-        <div className="d-flex flex-column">
-          <div className="my-auto w-100">
-            <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
-              </a>
-              <a href="/series" className="item">
-                <div className="icn ml-3"><i className="icon-monitor"></i></div>
-                <div className="text">مسلسلات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
-              </a>
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
-            </div>
-          </div>
-          <nav className="social d-flex justify-content-center">
-            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="/contactus" className="email mx-2"><i className="icon-email"></i></a>
-          </nav>
-        </div>
-      </div>
-
-      {/* Header */}
-      <header className="main-header">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-auto">
-              <h2 className="main-logo m-0">
-                <a href="/" className="d-inline-flex">
-                  <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                </a>
-              </h2>
-            </div>
-            <div className="col-auto menu-toggle-container">
-              <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
-                <span className="icn">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </span>
-                <div className="text font-size-18 mr-3">الأقسام</div>
-              </a>
-            </div>
-            <div className="ml-auto"></div>
-            <div className="col-auto recently-container">
-              <a href="/recent" className="btn-recently">
-                <i className="icon-plus2 ml-2"></i>
-                <span>أضيف حديثا</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="main-content">
-        <div className="container">
-          <div className="py-5">
-            <div className="row justify-content-center">
-              <div className="col-lg-8">
-                <div className="page-content">
-                  <h1 className="page-title text-center mb-5">سياسة الإعلانات</h1>
-                  
-                  <div className="content-section">
-                    <h2>مقدمة</h2>
-                    <p>
-                      في يمن فليكس، نسعى لتوفير تجربة مشاهدة ممتعة ومريحة لجميع مستخدمينا. 
-                      هذه السياسة توضح كيفية تعاملنا مع الإعلانات على منصتنا وما يمكن أن تتوقعه كمستخدم.
+        <div className="page page-ad-policy">
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <div className="page-header mb-4">
+                  <h1 className="page-title">سياسة الإعلانات</h1>
+                  <p className="page-subtitle">معايير وقواعد الإعلانات على منصة يمن فليكس</p>
+                </div>
+                
+                <div className="ad-policy-content bg-dark p-4 rounded">
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">مقدمة</h2>
+                    <p className="text-light">
+                      تهدف هذه السياسة إلى توضيح المعايير والقواعد المتعلقة بالإعلانات على منصة يمن فليكس. 
+                      نحن ملتزمون بتوفير تجربة مشاهدة آمنة وممتعة لجميع المستخدمين، مع ضمان جودة المحتوى الإعلاني المعروض.
                     </p>
                   </div>
 
-                  <div className="content-section">
-                    <h2>أنواع الإعلانات</h2>
-                    <h3>1. الإعلانات التجارية</h3>
-                    <ul>
-                      <li>إعلانات المنتجات والخدمات من شركاء موثوقين</li>
-                      <li>إعلانات التطبيقات والألعاب</li>
-                      <li>إعلانات العلامات التجارية المحلية والعالمية</li>
-                    </ul>
-
-                    <h3>2. الإعلانات الترويجية</h3>
-                    <ul>
-                      <li>ترويج المحتوى الجديد على المنصة</li>
-                      <li>إعلانات الأفلام والمسلسلات القادمة</li>
-                      <li>عروض وخصومات خاصة</li>
-                    </ul>
-
-                    <h3>3. الإعلانات التفاعلية</h3>
-                    <ul>
-                      <li>إعلانات يمكن التفاعل معها</li>
-                      <li>استطلاعات رأي</li>
-                      <li>مسابقات وجوائز</li>
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">أنواع الإعلانات المسموحة</h2>
+                    <ul className="policy-list text-light">
+                      <li><strong>الإعلانات التجارية المشروعة:</strong> إعلانات المنتجات والخدمات القانونية</li>
+                      <li><strong>الإعلانات الترفيهية:</strong> إعلانات الأفلام والمسلسلات والألعاب</li>
+                      <li><strong>الإعلانات التعليمية:</strong> إعلانات الكورسات والبرامج التعليمية</li>
+                      <li><strong>الإعلانات الثقافية:</strong> إعلانات الفعاليات والأنشطة الثقافية</li>
                     </ul>
                   </div>
 
-                  <div className="content-section">
-                    <h2>مواضع الإعلانات</h2>
-                    <p>نحرص على وضع الإعلانات بطريقة لا تعطل تجربة المشاهدة:</p>
-                    <ul>
-                      <li><strong>قبل المحتوى:</strong> إعلانات قصيرة قبل بدء الفيلم أو الحلقة</li>
-                      <li><strong>أثناء المحتوى:</strong> فواصل إعلانية في المحتوى الطويل</li>
-                      <li><strong>الشريط الجانبي:</strong> إعلانات صغيرة على جانب الصفحة</li>
-                      <li><strong>بين المحتوى:</strong> إعلانات بين قوائم الأفلام والمسلسلات</li>
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">الإعلانات المحظورة</h2>
+                    <div className="prohibited-ads bg-danger p-3 rounded mb-3">
+                      <h4 className="text-light mb-3">نحظر بشكل قاطع الإعلانات التالية:</h4>
+                      <ul className="text-light">
+                        <li>المحتوى غير المناسب أو المسيء</li>
+                        <li>المواد الإباحية أو الجنسية الصريحة</li>
+                        <li>العنف المفرط أو المحتوى الدموي</li>
+                        <li>الترويج للمخدرات أو المواد المحظورة</li>
+                        <li>القمار والمراهنات</li>
+                        <li>الاحتيال والخداع</li>
+                        <li>خطاب الكراهية أو التمييز</li>
+                        <li>المحتوى السياسي المثير للجدل</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">معايير الجودة</h2>
+                    <div className="quality-standards bg-secondary p-3 rounded">
+                      <h4 className="text-light mb-3">يجب أن تلتزم جميع الإعلانات بالمعايير التالية:</h4>
+                      <ul className="text-light">
+                        <li><strong>الوضوح:</strong> يجب أن تكون الإعلانات واضحة ومفهومة</li>
+                        <li><strong>الصدق:</strong> لا يُسمح بالإعلانات المضللة أو الكاذبة</li>
+                        <li><strong>الجودة التقنية:</strong> دقة عالية ووضوح في الصورة والصوت</li>
+                        <li><strong>اللغة المناسبة:</strong> استخدام لغة محترمة ومهذبة</li>
+                        <li><strong>احترام الثقافة المحلية:</strong> مراعاة القيم والتقاليد</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">أماكن عرض الإعلانات</h2>
+                    <p className="text-light mb-3">يتم عرض الإعلانات في الأماكن التالية:</p>
+                    <ul className="text-light">
+                      <li>قبل بداية مقاطع الفيديو (Pre-roll)</li>
+                      <li>أثناء مقاطع الفيديو (Mid-roll)</li>
+                      <li>بعد انتهاء مقاطع الفيديو (Post-roll)</li>
+                      <li>الأشرطة الجانبية على الصفحات</li>
+                      <li>البانر العلوي والسفلي</li>
                     </ul>
                   </div>
 
-                  <div className="content-section">
-                    <h2>معايير الإعلانات</h2>
-                    <p>نحن ملتزمون بعرض إعلانات عالية الجودة ومناسبة لجمهورنا:</p>
-                    <ul>
-                      <li>جميع الإعلانات تخضع للمراجعة قبل النشر</li>
-                      <li>لا نعرض محتوى إعلاني مسيء أو غير مناسب</li>
-                      <li>نرفض الإعلانات المضللة أو الاحتيالية</li>
-                      <li>نضمن أن الإعلانات لا تحتوي على فيروسات أو برمجيات ضارة</li>
-                    </ul>
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">حقوق المستخدمين</h2>
+                    <div className="user-rights bg-info p-3 rounded">
+                      <h4 className="text-light mb-3">حقوق المستخدم فيما يتعلق بالإعلانات:</h4>
+                      <ul className="text-light">
+                        <li>الحق في تخطي الإعلانات بعد مدة معينة</li>
+                        <li>الحق في الإبلاغ عن الإعلانات غير المناسبة</li>
+                        <li>الحق في معرفة سبب عرض إعلان معين</li>
+                        <li>الحق في التحكم في تفضيلات الإعلانات</li>
+                      </ul>
+                    </div>
                   </div>
 
-                  <div className="content-section">
-                    <h2>حقوق المستخدم</h2>
-                    <h3>يحق لك كمستخدم:</h3>
-                    <ul>
-                      <li>تخطي الإعلانات القابلة للتخطي بعد المدة المحددة</li>
-                      <li>الإبلاغ عن الإعلانات غير المناسبة</li>
-                      <li>طلب معلومات حول سبب عرض إعلان معين</li>
-                      <li>تعديل تفضيلات الإعلانات (عند توفر هذه الميزة)</li>
-                    </ul>
-                  </div>
-
-                  <div className="content-section">
-                    <h2>الإعلانات الشخصية</h2>
-                    <p>
-                      قد نستخدم معلومات عامة حول اهتماماتك لعرض إعلانات أكثر صلة بك، 
-                      مع احترام كامل لخصوصيتك وعدم مشاركة معلوماتك الشخصية مع المعلنين.
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">إجراءات المراقبة والمراجعة</h2>
+                    <p className="text-light">
+                      يتم مراجعة جميع الإعلانات من قبل فريق متخصص قبل عرضها على المنصة. 
+                      نستخدم أيضاً تقنيات الذكاء الاصطناعي لمراقبة المحتوى الإعلاني والتأكد من التزامه بسياساتنا.
                     </p>
                   </div>
 
-                  <div className="content-section">
-                    <h2>شركاء الإعلانات</h2>
-                    <p>نتعامل مع شبكات إعلانية موثوقة مثل:</p>
-                    <ul>
-                      <li>Google AdSense</li>
-                      <li>شبكات إعلانية إقليمية</li>
-                      <li>معلنين مباشرين بعد فحص دقيق</li>
-                    </ul>
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">الإبلاغ عن مخالفات</h2>
+                    <div className="reporting bg-warning p-3 rounded">
+                      <h4 className="text-dark mb-3">كيفية الإبلاغ عن إعلان مخالف:</h4>
+                      <ol className="text-dark">
+                        <li>انقر على زر "الإبلاغ عن هذا الإعلان"</li>
+                        <li>اختر نوع المخالفة من القائمة</li>
+                        <li>أضف تفاصيل إضافية إذا لزم الأمر</li>
+                        <li>اضغط على "إرسال البلاغ"</li>
+                      </ol>
+                      <p className="text-dark mb-0">
+                        <strong>البريد الإلكتروني للشكاوى:</strong> ads-report@yemen-flix.com
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="content-section">
-                    <h2>الإبلاغ عن المشاكل</h2>
-                    <p>إذا واجهت أي مشكلة مع الإعلانات، يرجى الاتصال بنا وتضمين:</p>
-                    <ul>
-                      <li>وصف مفصل للمشكلة</li>
-                      <li>لقطة شاشة للإعلان إن أمكن</li>
-                      <li>نوع الجهاز والمتصفح المستخدم</li>
-                      <li>وقت وتاريخ ظهور الإعلان</li>
-                    </ul>
-                  </div>
-
-                  <div className="content-section">
-                    <h2>تحديثات السياسة</h2>
-                    <p>
-                      قد نقوم بتحديث هذه السياسة من وقت لآخر. سيتم إشعار المستخدمين بأي تغييرات 
-                      مهمة عبر الموقع أو البريد الإلكتروني.
+                  <div className="section mb-4">
+                    <h2 className="section-title mb-3">العواقب والجزاءات</h2>
+                    <p className="text-light">
+                      في حالة مخالفة هذه السياسة، قد نتخذ الإجراءات التالية:
                     </p>
-                    <p><strong>آخر تحديث:</strong> يناير 2025</p>
+                    <ul className="text-light">
+                      <li>إزالة الإعلان المخالف فوراً</li>
+                      <li>تحذير المعلن</li>
+                      <li>تعليق حساب المعلن مؤقتاً</li>
+                      <li>إنهاء الشراكة الإعلانية نهائياً في الحالات الخطيرة</li>
+                    </ul>
                   </div>
 
-                  <div className="text-center mt-5">
-                    <a href="/contactus" className="btn btn-primary">
-                      <i className="icon-email ml-2"></i>
-                      أبلغ عن إعلان غير مناسب
-                    </a>
+                  <div className="section">
+                    <h2 className="section-title mb-3">تحديثات السياسة</h2>
+                    <p className="text-light">
+                      قد نقوم بتحديث هذه السياسة من وقت لآخر. سيتم إشعار المستخدمين والمعلنين بأي تغييرات جوهرية. 
+                      آخر تحديث: يناير 2025
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="main-footer">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <div className="footer-logo">
-                <img src={logoWhite} alt="يمن فليكس" className="footer-logo-img" />
-              </div>
-              <p className="footer-description">
-                يمن فليكس - أفضل موقع لمشاهدة الأفلام والمسلسلات العربية والأجنبية
-              </p>
-            </div>
-            <div className="col-md-6">
-              <div className="footer-links">
-                <a href="/movies">الأفلام</a>
-                <a href="/series">المسلسلات</a>
-                <a href="/shows">التلفزيون</a>
-                <a href="/contactus">اتصل بنا</a>
-                <a href="/ad-policy">سياسة الإعلانات</a>
-              </div>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2025 يمن فليكس. جميع الحقوق محفوظة.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }

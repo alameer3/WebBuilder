@@ -1,284 +1,333 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
+import AkwamHeader from '../components/AkwamHeader';
+import MovieCard from '../components/MovieCard';
 import '../assets/css/plugins.css';
-import '../assets/css/style.css';  
-import '../assets/css/yemen-flix.css';
+import '../assets/css/style.css';
+import '../assets/css/akwam.css';
 
-// استيراد الصور
-import logoWhite from '../assets/images/logo-white.svg';
-import defaultAvatar from '../assets/images/default.jpg';
+interface SearchResult {
+  id: string;
+  title: string;
+  poster: string;
+  year: string;
+  rating: number;
+  type: 'movie' | 'series' | 'show' | 'person' | 'mix';
+  genre?: string[];
+  quality?: string;
+  description?: string;
+  episodes?: number;
+  seasons?: number;
+}
 
 export default function Search() {
   const [location] = useLocation();
-  const urlParams = new URLSearchParams(window.location.search);
-  const searchQuery = urlParams.get('q') || '';
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filter, setFilter] = useState('all');
+  
+  useEffect(() => {
+    // استخراج كلمة البحث من URL
+    const urlParams = new URLSearchParams(location.split('?')[1] || '');
+    const query = urlParams.get('q') || '';
+    setSearchQuery(query);
+  }, [location]);
+
+  // بيانات تجريبية لنتائج البحث
+  const searchResults: SearchResult[] = [
+    {
+      id: "search1",
+      title: "فيلم الأزرق 3",
+      poster: "https://img.downet.net/thumb/270x400/uploads/search1.jpg",
+      year: "2024",
+      rating: 8.2,
+      type: "movie",
+      genre: ["اكشن", "مغامرات"],
+      quality: "HD",
+      description: "فيلم اكشن مثير..."
+    },
+    {
+      id: "search2",
+      title: "مسلسل بنات الأم",
+      poster: "https://img.downet.net/thumb/270x400/uploads/search2.jpg",
+      year: "2024",
+      rating: 8.7,
+      type: "series",
+      genre: ["دراما", "عائلي"],
+      quality: "HD",
+      episodes: 30,
+      seasons: 1,
+      description: "مسلسل درامي عائلي..."
+    },
+    {
+      id: "search3",
+      title: "برنامج اشرطة الاحساء",
+      poster: "https://img.downet.net/thumb/270x400/uploads/search3.jpg",
+      year: "2024",
+      rating: 7.8,
+      type: "show",
+      genre: ["توك شو"],
+      quality: "HD",
+      episodes: 20,
+      description: "برنامج حواري..."
+    }
+  ];
+
+  const { data: results = [], isLoading } = useQuery({
+    queryKey: ['/api/search', searchQuery],
+    queryFn: () => {
+      if (!searchQuery) return [];
+      // محاكاة البحث في البيانات التجريبية
+      return searchResults.filter(item => 
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.genre?.some(g => g.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    },
+    enabled: !!searchQuery
+  });
 
   useEffect(() => {
-    // إضافة الكلاسات المطلوبة للـ body
-    document.body.className = 'header-fixed';
+    document.body.className = 'header-fixed body-main';
     
-    // تحميل jQuery للتفاعلات
-    const jqueryScript = document.createElement('script');  
-    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
-    jqueryScript.onload = () => {
-      if (window.$) {
-        const $ = window.$;
-        
-        // التفاعلات الأساسية
-        $(document).ready(() => {
-          // Header background on scroll
-          function handleScroll() {
-            if ($(".main-header").length) {
-              if ($(window).scrollTop()! <= 50) {
-                $("body").removeClass("header-bg");
-              } else {
-                $("body").addClass("header-bg");
-              }
-            }
+    const breadcrumbSchema = {
+      "@context": "http://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https://yemen-flix.replit.app/",
+            "name": "يمن فليكس"
           }
-          
-          handleScroll();
-          $(window).on("scroll", handleScroll);
-          
-          // Input focus states
-          $("input, textarea").on("focusout change submit blur", function(this: HTMLElement){
-            if ($(this).val()) {
-              $(this).addClass("not-empty");
-            } else {
-              $(this).removeClass("not-empty");
-            }
-          });
-
-          // Site overlay
-          $(".site-overlay").on("click", function(){
-            $("body").removeClass("main-menu-active search-active");
-          });
-
-          // Menu toggle  
-          $(".menu-toggle").on("click", function(){
-            $("body").removeClass("search-active").toggleClass("main-menu-active");
-          });
-
-          // Search toggle
-          $(".search-toggle").on("click", function(){
-            $("body").removeClass("main-menu-active").toggleClass("search-active");
-            setTimeout(function(){
-              $(".search-box form input").focus();
-            }, 200);
-          });
-
-          // ESC key
-          $(document).on("keydown", function(e: any){
-            if (e.keyCode === 27) {
-              $("body").removeClass("search-active main-menu-active");
-            }
-          });
-        });
-      }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": `https://yemen-flix.replit.app/search?q=${searchQuery}`,
+            "name": `البحث: ${searchQuery}`
+          }
+        }
+      ]
     };
-    document.head.appendChild(jqueryScript);
 
-    // تنظيف عند الخروج
+    const scriptTag = document.createElement('script');
+    scriptTag.type = 'application/ld+json';
+    scriptTag.textContent = JSON.stringify(breadcrumbSchema);
+    document.head.appendChild(scriptTag);
+
     return () => {
       document.body.className = '';
     };
-  }, []);
+  }, [searchQuery]);
+
+  const filteredResults = results.filter((item: SearchResult) => {
+    if (filter === 'all') return true;
+    return item.type === filter;
+  });
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'movie': return 'فيلم';
+      case 'series': return 'مسلسل';
+      case 'show': return 'برنامج';
+      case 'person': return 'شخص';
+      case 'mix': return 'منوعات';
+      default: return type;
+    }
+  };
+
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'movie': return 'icon-video-camera';
+      case 'series': return 'icon-monitor';
+      case 'show': return 'icon-tv';
+      case 'person': return 'icon-user';
+      case 'mix': return 'icon-mix';
+      default: return 'icon-file';
+    }
+  };
 
   return (
     <>
-      {/* Site overlay */}
-      <span className="site-overlay"></span>
-
-      {/* القائمة الجانبية */}
-      <div className="main-menu">
-        <div className="d-flex flex-column">
-          <div className="my-auto w-100">
-            <div className="menu d-flex flex-wrap justify-content-center">
-              <a href="/movies" className="item">
-                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
-                <div className="text">أفلام</div>
-              </a>
-              <a href="/series" className="item">
-                <div className="icn ml-3"><i className="icon-monitor"></i></div>
-                <div className="text">مسلسلات</div>
-              </a>
-              <a href="/shows" className="item">
-                <div className="icn ml-3"><i className="icon-tv"></i></div>
-                <div className="text">تلفزيون</div>
-              </a>
-              <a href="/mix" className="item">
-                <div className="icn ml-3"><i className="icon-mix"></i></div>
-                <div className="text">منوعات</div>
-              </a>
-            </div>
-          </div>
-          <nav className="social d-flex justify-content-center">
-            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="/notifications" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="/contact" className="email mx-2"><i className="icon-email"></i></a>
-          </nav>
-        </div>
-      </div>
-
-      {/* صندوق البحث */}
-      <div className="search-box px-xl-5">
-        <div className="container search-container">
-          <form action="/search" className="search-form" method="get">
-            <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
-              <button type="submit" className="px-3 ml-2 font-size-30"><i className="icon-search"></i></button>
-              <input type="search" name="q" id="searchBoxInput" placeholder="ابحث هنا" defaultValue={searchQuery} />
-            </label>
-          </form>
-          <div className="search-toggle"><i className="icon-arrow-back"></i></div>
-        </div>
-      </div>
-
-      {/* الحاوي الرئيسي */}
       <div className="site-container">
-        <div className="page-search">
-          <div className="main-header-top"></div>
-          
-          {/* الهيدر */}
-          <header className="main-header">
-            <div className="container">
+        <div className="main-header-top"></div>
+        <AkwamHeader />
+        <div className="main-header-height"></div>
+
+        <div className="page page-search">
+          <div className="container">
+            <div className="search-header mb-4">
               <div className="row align-items-center">
-                <div className="col-auto">
-                  <h2 className="main-logo m-0">
-                    <a href="/" className="d-inline-flex">
-                      <img src={logoWhite} className="img-fluid" alt="يمن فليكس" />
-                    </a>
-                  </h2>
+                <div className="col-md-6">
+                  <h1 className="search-title">
+                    {searchQuery ? `نتائج البحث عن: "${searchQuery}"` : 'البحث'}
+                  </h1>
+                  {searchQuery && (
+                    <p className="search-results-count">
+                      {filteredResults.length} نتيجة
+                    </p>
+                  )}
                 </div>
-                <div className="col-auto menu-toggle-container">
-                  <a href="#" onClick={(e) => e.preventDefault()} className="menu-toggle d-flex align-items-center text-white">
-                    <span className="icn">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </span>
-                    <div className="text font-size-18 mr-3">الأقسام</div>
-                  </a>
-                </div>
-                <div className="ml-auto"></div>
-                <div className="col-md-5 col-lg-6 search-container">
-                  <div className="search-form">
-                    <form action="/search" method="get">
-                      <input type="text" id="headerSearchInput" name="q" defaultValue={searchQuery} />
-                      <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
-                      <button><i className="icon-search"></i></button>
+                
+                <div className="col-md-6">
+                  <div className="search-form-container">
+                    <form action="/search" method="get" className="search-form">
+                      <input 
+                        type="text" 
+                        name="q" 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="ابحث عن أفلام، مسلسلات، برامج..."
+                        data-testid="search-input"
+                      />
+                      <button type="submit" data-testid="search-button">
+                        <i className="icon-search"></i>
+                      </button>
                     </form>
                   </div>
                 </div>
-                <div className="col-auto recently-container">
-                  <a href="/recent" className="btn-recently">
-                    <i className="icon-plus2 ml-2"></i>
-                    <span>أضيف حديثا</span>
-                  </a>
-                </div>
-                <div className="col-auto user-profile-container">
-                  <div className="user-panel">
-                    <a className="user-toggle d-block font-size-20 private hide" href="#" onClick={(e) => e.preventDefault()}>
-                      <i className="icon-user"></i>
-                    </a>
-                    <div className="login-panel private hide">
-                      <div className="user-logged d-flex align-items-center no-gutters p-3">
-                        <div className="col-auto">
-                          <img src={defaultAvatar} className="img-fluid rounded-circle" alt="user avatar" />
-                        </div>
-                        <div className="col pr-2">
-                          <div className="username font-size-14 font-weight-normal text-truncate text-white mb-0 mr-1" style={{width: '120px', height: '22px'}}>
-                            مستخدم
-                          </div>
-                        </div>
-                      </div>
-                      <nav className="list">
-                        <a href="/profile">تعديل البروفايل</a>
-                        <a href="/favorite/movies">قائمتي المفضلة</a>
-                        <span className="line"></span>
-                        <a href="/logout">تسجيل خروج</a>
-                      </nav>
-                    </div>
-                    <a className="user-toggle d-block font-size-20 public" href="/login">
-                      <i className="icon-user"></i>
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
-          </header>
 
-          <div className="main-header-height"></div>
-          
-          {/* المحتوى الرئيسي */}
-          <div className="container py-5">
-            <div className="row">
-              <div className="col-12">
-                <h1 className="text-white mb-4">
-                  {searchQuery ? `نتائج البحث عن: "${searchQuery}"` : 'صفحة البحث'}
-                </h1>
-                
-                {searchQuery ? (
-                  <div className="search-results">
-                    <p className="text-white-50 mb-4">جاري البحث في قاعدة البيانات...</p>
-                    {/* هنا ستكون النتائج */}
-                    <div className="alert alert-info text-center">
-                      <h4>قريباً</h4>
-                      <p>وظيفة البحث تحت التطوير</p>
-                    </div>
+            {searchQuery && (
+              <>
+                <div className="search-filters mb-4">
+                  <div className="filter-tabs d-flex flex-wrap">
+                    <button 
+                      className={`filter-tab btn ${filter === 'all' ? 'active' : ''}`}
+                      onClick={() => setFilter('all')}
+                    >
+                      الكل ({results.length})
+                    </button>
+                    <button 
+                      className={`filter-tab btn ${filter === 'movie' ? 'active' : ''}`}
+                      onClick={() => setFilter('movie')}
+                    >
+                      أفلام ({results.filter(r => r.type === 'movie').length})
+                    </button>
+                    <button 
+                      className={`filter-tab btn ${filter === 'series' ? 'active' : ''}`}
+                      onClick={() => setFilter('series')}
+                    >
+                      مسلسلات ({results.filter(r => r.type === 'series').length})
+                    </button>
+                    <button 
+                      className={`filter-tab btn ${filter === 'show' ? 'active' : ''}`}
+                      onClick={() => setFilter('show')}
+                    >
+                      برامج ({results.filter(r => r.type === 'show').length})
+                    </button>
+                    <button 
+                      className={`filter-tab btn ${filter === 'person' ? 'active' : ''}`}
+                      onClick={() => setFilter('person')}
+                    >
+                      أشخاص ({results.filter(r => r.type === 'person').length})
+                    </button>
                   </div>
-                ) : (
-                  <div className="search-help">
-                    <div className="widget-2 widget mb-4">
-                      <div className="widget-body">
-                        <form className="form d-flex no-gutters" action="/search" method="get">
-                          <div className="col pl-12">
-                            <input type="text" className="form-control" id="mainSearchInput" name="q" />
-                            <label htmlFor="mainSearchInput" className="m-0">
-                              <span className="label">ابحث عن فيلم او مسلسل او لعبة او برنامج</span>
-                            </label>
-                          </div>
-                          <div className="col-auto">
-                            <button type="submit" className="btn btn-orange">بحث</button>
-                          </div>
-                        </form>
+                </div>
+
+                <div className="search-results">
+                  {isLoading ? (
+                    <div className="text-center py-5">
+                      <div className="spinner-border text-warning" role="status">
+                        <span className="sr-only">جاري البحث...</span>
                       </div>
                     </div>
-                  </div>
-                )}
+                  ) : filteredResults.length > 0 ? (
+                    <div className="widget widget-style-1 mb-4" data-grid="6">
+                      <div className="widget-body">
+                        <div className="row" data-testid="search-results">
+                          {filteredResults.map((item) => (
+                            <div key={item.id} className="col-6 col-lg-2 col-md-3 col-xl-2 mb-12">
+                              <div className="entry-box entry-box-1">
+                                <div className="labels d-flex">
+                                  <span className="label rating">
+                                    <i className="icon-star mr-2"></i>{item.rating}
+                                  </span>
+                                  <span className="label type ml-2">
+                                    <i className={`${getTypeIcon(item.type)} mr-1`}></i>
+                                    {getTypeLabel(item.type)}
+                                  </span>
+                                  {item.quality && (
+                                    <span className="label quality ml-2">{item.quality}</span>
+                                  )}
+                                  <span className="ml-auto"></span>
+                                </div>
+                                
+                                <a href={`/${item.type}/${item.id}`} data-testid={`result-link-${item.id}`}>
+                                  <div className="entry-image">
+                                    <div 
+                                      className="image"
+                                      style={{
+                                        backgroundImage: `url("${item.poster}")`,
+                                        height: '300px',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center'
+                                      }}
+                                    ></div>
+                                    <div className="entry-overlay">
+                                      <div className="overlay-content">
+                                        <div className="entry-title" data-testid={`result-title-${item.id}`}>
+                                          {item.title}
+                                        </div>
+                                        <div className="entry-year">{item.year}</div>
+                                        <div className="entry-type">{getTypeLabel(item.type)}</div>
+                                        {item.type === 'series' && item.episodes && (
+                                          <div className="entry-episodes">
+                                            {item.seasons} موسم • {item.episodes} حلقة
+                                          </div>
+                                        )}
+                                        {item.type === 'show' && item.episodes && (
+                                          <div className="entry-episodes">{item.episodes} حلقة</div>
+                                        )}
+                                        {item.genre && item.genre.length > 0 && (
+                                          <div className="entry-genre">{item.genre.join(', ')}</div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="no-results text-center py-5">
+                      <i className="icon-search-outline font-size-48 text-muted mb-3"></i>
+                      <h3>لا توجد نتائج</h3>
+                      <p className="text-muted">
+                        لم نجد أي نتائج تطابق بحثك عن "<strong>{searchQuery}</strong>"
+                      </p>
+                      <div className="search-suggestions">
+                        <p>جرب:</p>
+                        <ul className="list-unstyled">
+                          <li>• التأكد من الإملاء</li>
+                          <li>• استخدام كلمات أقل أو مختلفة</li>
+                          <li>• البحث بكلمات أكثر عمومية</li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+            
+            {!searchQuery && (
+              <div className="search-placeholder text-center py-5">
+                <i className="icon-search font-size-48 text-muted mb-3"></i>
+                <h3>ابحث في مكتبة يمن فليكس</h3>
+                <p className="text-muted">
+                  اكتشف آلاف الأفلام والمسلسلات والبرامج
+                </p>
               </div>
-            </div>
+            )}
           </div>
         </div>
-
-        {/* Footer */}
-        <footer className="main-footer py-5">
-          <nav className="social d-flex justify-content-center">
-            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
-            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="/notifications" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="/contact" className="email mx-2"><i className="icon-email"></i></a>
-          </nav>
-
-          <nav className="links d-flex justify-content-center mt-3">
-            <a href="/" className="mx-2">يمن فليكس</a>
-            <a href="/old" target="_blank" className="mx-2">الموقع القديم</a>
-            <a href="/dmca" className="mx-2">DMCA</a>
-            <a href="/ad-policy" className="mx-2">AD-P</a>
-            <a href="/news" target="_blank" className="mx-2">يمن فليكس نيوز</a>
-            <a href="/network" target="_blank" className="mx-2">شبكة يمن فليكس</a>
-          </nav>
-
-          <p className="copyright mb-0 font-size-12 text-center mt-3">
-            جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
-          </p>
-        </footer>
       </div>
     </>
   );
