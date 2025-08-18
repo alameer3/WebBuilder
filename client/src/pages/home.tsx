@@ -17,10 +17,10 @@ declare global {
 
 export default function Home() {
   useEffect(() => {
-    // تطبيق كلاسات body الأصلية
+    // تطبيق كلاسات body الأصلية مطابقة للموقع الأصلي
     document.body.className = 'header-fixed body-home';
     
-    // إضافة الخلفية الصحيحة للصفحة الرئيسية
+    // إضافة الخلفية الصحيحة للصفحة الرئيسية مطابقة للموقع الأصلي
     const homeStyle = document.createElement('style');
     homeStyle.textContent = `
       body { 
@@ -32,7 +32,7 @@ export default function Home() {
     `;
     document.head.appendChild(homeStyle);
 
-    // إضافة BreadcrumbList JSON-LD Schema
+    // إضافة BreadcrumbList JSON-LD Schema مطابقة للموقع الأصلي
     const breadcrumbSchema = {
       "@context": "http://schema.org",
       "@type": "BreadcrumbList",

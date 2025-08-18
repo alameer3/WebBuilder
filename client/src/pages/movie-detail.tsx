@@ -1,72 +1,86 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'wouter';
 
-// Simple string assets for now
-const logoWhite = "/assets/logo-white.svg";
-const tmdbIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='%23f3951e'%3E%3Crect width='20' height='20'/%3E%3C/svg%3E";
-const imdbIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='%23f3951e'%3E%3Ccircle cx='10' cy='10' r='10'/%3E%3C/svg%3E";
+// استيراد الأصول مطابقة للموقع الأصلي
+import logoWhite from '../assets/images/logo-white.svg';
 
 export default function MovieDetail() {
   const { id } = useParams();
-  const [showReportModal, setShowReportModal] = useState(false);
+  const [likes, setLikes] = useState(2);
+  const [dislikes, setDislikes] = useState(0);
+  const [userRating, setUserRating] = useState<'like' | 'dislike' | null>(null);
+
+  useEffect(() => {
+    // تطبيق كلاسات body الأصلية
+    document.body.className = 'header-fixed';
+    
+    return () => {
+      document.body.className = '';
+    };
+  }, []);
 
   // بيانات الفيلم - مطابقة للتصميم الأصلي
   const movieData = {
-    title: "28 Years Later",
-    rating: "7.1",
-    imdbRating: "10 / 7.1",
-    year: 2025,
-    duration: "115 دقيقة",
+    title: "Rambo: First Blood Part II",
+    imdbRating: "10 / 6.5",
+    year: 1985,
+    duration: "96 دقيقة",
     language: "الإنجليزية", 
     subtitle: "العربية",
-    quality: "WEB-DL - 1080p",
+    quality: "BluRay - 1080p",
     country: "الولايات المتحدة الأمريكية",
-    genres: ["اثارة", "رعب"],
-    office: "BOX OFFICE",
+    genres: ["اثارة", "مغامرة", "اكشن"],
     certification: "PG13 اشراف عائلي",
-    backdrop: "https://img.downet.net/thumb/1920x600/uploads/Gn5bw.webp",
-    poster: "https://img.downet.net/thumb/260x380/uploads/Gn5bw.webp",
-    trailer: "https://www.youtube.com/watch?v=mcvLKldPM08",
-    description: "فيلم 28 Years Later حيث يدور العمل حول بعد ثمانية وعشرين عامًا من هروب فيروس الغضب من مختبر للأسلحة البيولوجية، لا يزال البعض يخضع لحجر صحي قاسٍ، وقد وجدوا سبلًا للعيش وسط المصابين. تعيش إحدى هذه المجموعات على جزيرة صغيرة متصلة بالبر الرئيسي عبر جسر واحد مُحصّن جيدًا.",
+    backdrop: "https://img.downet.net/thumb/1920x600/uploads/VlnG0.jpeg",
+    poster: "https://img.downet.net/thumb/260x380/uploads/VlnG0.jpeg",
+    posterLarge: "https://img.downet.net/uploads/VlnG0.jpeg",
+    trailer: "https://www.youtube.com/watch?v=WQGJAIYtWD4",
+    description: "فيلم Rambo: First Blood Part II بعد أن تم سجن (جون رامبو) في وقت سابق، يتم إطلاق سراحه بأوامر عليا من الحكومة وقيادات الجيش، من أجل تنفيذ مهمة خاصة للغاية في أحراش فيتنام، والمهمة هي القيام بعملية تصوير للجنود الأمريكيين المعتقلين في فيتنام، من دون حدوث معركة بينه وبين معتقلينهم، أو إطلاق رصاصة واحدة، ولكن الأمور لا تتم بتلك السهولة، ولا تسير المهمة بتلك السلاسة، خاصة في ظل وجود القائد الفيتنامي السادي ورفيقه الروسي.",
     cast: [
-      { name: "Jodie Comer", image: "https://img.downet.net/thumb/54x54/uploads/HD9VV.jpeg" },
-      { name: "Aaron Taylor-Johnson", image: "https://img.downet.net/thumb/54x54/uploads/Nf84R.jpg" },
-      { name: "Ralph Fiennes", image: "https://img.downet.net/thumb/54x54/uploads/ZwiTY.jpeg" }
+      { name: "Sylvester Stallone", image: "https://img.downet.net/thumb/54x54/uploads/bflPa.jpeg", url: "/person/20/sylvester-stallone" }
     ],
     gallery: [
-      "https://img.downet.net/thumb/180x100/uploads/JeOy3.jpg",
-      "https://img.downet.net/thumb/180x100/uploads/vud56.jpg",
-      "https://img.downet.net/thumb/180x100/uploads/hG2yM.jpg",
-      "https://img.downet.net/thumb/180x100/uploads/6Sfgr.jpg"
+      "https://img.downet.net/uploads/maP9n.jpeg",
+      "https://img.downet.net/uploads/wN0tO.jpeg", 
+      "https://img.downet.net/uploads/3diP6.jpeg"
     ],
-    likes: 2,
-    dislikes: 0,
-    addedDate: "الثلاثاء 29 07 2025 - 07:57 مساءاً",
-    servers: [
-      { 
-        name: "خادم المشاهدة 1080p", 
-        url: "#", 
-        type: "watch",
-        size: "1.7 GB"
-      },
-      { 
-        name: "خادم التحميل 720p", 
-        url: "#", 
-        type: "download",
-        size: "908.5 MB"
-      }
-    ]
+    galleryThumbs: [
+      "https://img.downet.net/thumb/180x100/uploads/maP9n.jpeg",
+      "https://img.downet.net/thumb/180x100/uploads/wN0tO.jpeg",
+      "https://img.downet.net/thumb/180x100/uploads/3diP6.jpeg"
+    ],
+    addedDate: "السبت 11 01 2020 - 08:45 مساءاً",
+    updatedDate: "الخميس 02 07 2020 - 03:28 مساءاً"
   };
 
-  // أفلام مشابهة
-  const relatedMovies = [
-    { id: "1", title: "Escape the Field", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 4.9 },
-    { id: "2", title: "Under the Amalfi Sun", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 5.5 },
-    { id: "3", title: "Bloody Hell", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 6.2 },
-    { id: "4", title: "الحدود", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 7.1 },
-    { id: "5", title: "Iron Man 2", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 7.8 },
-    { id: "6", title: "Mahaveeryar", poster: "https://img.downet.net/thumb/178x260/uploads/default.jpg", rating: 6.5 }
-  ];
+  const handleRating = (type: 'like' | 'dislike') => {
+    if (userRating === type) {
+      // إلغاء التقييم
+      setUserRating(null);
+      if (type === 'like') {
+        setLikes(prev => prev - 1);
+      } else {
+        setDislikes(prev => prev - 1);
+      }
+    } else {
+      // تغيير التقييم
+      if (userRating === 'like') {
+        setLikes(prev => prev - 1);
+        setDislikes(prev => prev + 1);
+      } else if (userRating === 'dislike') {
+        setDislikes(prev => prev - 1);
+        setLikes(prev => prev + 1);
+      } else {
+        // تقييم جديد
+        if (type === 'like') {
+          setLikes(prev => prev + 1);
+        } else {
+          setDislikes(prev => prev + 1);
+        }
+      }
+      setUserRating(type);
+    }
+  };
 
   return (
     <>
@@ -126,6 +140,7 @@ export default function MovieDetail() {
         </div>
       </div>
 
+      {/* Site Container - مطابقة للتصميم الأصلي */}
       <div className="site-container">
         <div className="main-header-top"></div>
         
@@ -142,11 +157,7 @@ export default function MovieDetail() {
               </div>
               <div className="col-auto menu-toggle-container">
                 <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
-                  <span className="icn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </span>
+                  <span className="icn"></span>
                   <div className="text font-size-18 mr-3">الأقسام</div>
                 </a>
               </div>
@@ -178,20 +189,27 @@ export default function MovieDetail() {
         
         {/* Hidden Inputs */}
         <input type="hidden" id="page_app" value="movies" className="not-empty" />
-        <input type="hidden" id="page_id" value={id} className="not-empty" />
+        <input type="hidden" id="page_id" value={id || "241"} className="not-empty" />
 
-        {/* Breadcrumb */}
+        {/* Breadcrumb Navigation - مطابقة للتصميم الأصلي */}
         <nav aria-label="breadcrumb" style={{ backgroundColor: '#1c1c20' }}>
           <div className="container py-3">
             <ol className="breadcrumb mb-0">
-              <li className="breadcrumb-item"><a href="/" className="text-white"><i className="icon-home ml-2"></i> الرئيسية</a></li>
-              <li className="breadcrumb-item"><a href="/movies" className="text-white"><i className="icon-video-camera ml-2"></i> أفلام</a></li>
-              <li className="breadcrumb-item active text-orange" aria-current="page">{movieData.title}</li>
+              <li className="breadcrumb-item">
+                <a href="/" className="text-white">
+                  <i className="icon-home ml-2"></i> الرئيسية
+                </a>
+              </li>
+              <li className="breadcrumb-item">
+                <a href="/movies" className="text-white">
+                  <i className="icon-video-camera ml-2"></i> أفلام
+                </a>
+              </li>
             </ol>
           </div>
         </nav>
 
-        {/* SVG Filter */}
+        {/* SVG Filter للخلفية المطموسة */}
         <svg style={{ opacity: 0, visibility: 'hidden', position: 'absolute', top: '-999px', right: '-999px' }}>
           <filter id="blur-effect-1">
             <feGaussianBlur stdDeviation="20"></feGaussianBlur>
@@ -200,64 +218,73 @@ export default function MovieDetail() {
 
         {/* Movie Page */}
         <div className="page page-movie page-film">
-          {/* Movie Cover */}
+          {/* Movie Cover مع SVG blur effect */}
           <div className="movie-cover mb-4 without-cover">
             <svg>
               <image x="0" y="0" filter="url(#blur-effect-1)" xlinkHref={movieData.backdrop}></image>
             </svg>
             <div className="container">
               <div className="row py-4">
+                {/* Movie Poster */}
                 <div className="col-lg-3 col-md-4 text-center mb-5 mb-md-0">
-                  <a href={movieData.poster} data-fancybox="">
+                  <a href={movieData.posterLarge} data-fancybox="">
                     <picture>
                       <img src={movieData.poster} className="img-fluid" alt={movieData.title} />
                     </picture>
                   </a>
                 </div>
+
+                {/* Movie Info */}
                 <div className="col-lg-7 pr-lg-4 col-md-5 col-sm-8 mb-4 mb-sm-0 px-4 px-sm-0">
                   <h1 className="entry-title font-size-28 font-weight-bold text-white mb-0">{movieData.title}</h1>
+                  
                   <div className="font-size-16 text-white mt-2 d-flex align-items-center">
-                    <a href="#" rel="nofollow" className="ml-2" target="_blank">
-                      <img src={tmdbIcon} height="20" alt="TMDB" />
-                    </a>
-                    <a href="#" rel="nofollow" target="_blank">
-                      <img src={imdbIcon} alt="IMDB" />
+                    <a href={`https://www.imdb.com/title/tt0089880/?ref_=nv_sr_srsg_0`} rel="nofollow" target="_blank">
+                      <img src="https://ak.sv/style/assets/images/imdb.png" alt="IMDB" />
                     </a>
                     <span className="mx-2">{movieData.imdbRating}</span>
                     <i className="icon-star text-orange"></i>
                     <span className="badge badge-pill badge-info font-size-14 mr-3">{movieData.certification}</span>
                   </div>
-                  <div className="font-size-16 text-white mt-2"><span>{movieData.office}</span></div>
+                  
                   <div className="font-size-16 text-white mt-2"><span>اللغة : {movieData.language}</span></div>
                   <div className="font-size-16 text-white mt-2"><span>الترجمة : {movieData.subtitle}</span></div>
-                  <div className="font-size-16 text-white mt-2">
-                    <span>جودة الفيلم : {movieData.quality}</span>
-                  </div>
-                  <div className="font-size-16 text-white mt-2"><span>انتاج : {movieData.country}</span></div>
-                  <div className="font-size-16 text-white mt-2"><span>السنة : {movieData.year}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>جودة الفيلم : {movieData.quality}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span> انتاج : {movieData.country}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span> السنة : {movieData.year}</span></div>
                   <div className="font-size-16 text-white mt-2"><span>مدة الفيلم : {movieData.duration}</span></div>
+                  
                   <div className="font-size-16 d-flex align-items-center mt-3">
                     {movieData.genres.map((genre, index) => (
-                      <a key={index} href="#" className="badge badge-pill badge-light ml-2">{genre}</a>
+                      <a key={index} href={`/movies?category=${genre}`} className="badge badge-pill badge-light ml-2">{genre}</a>
                     ))}
                   </div>
+                  
                   <div className="font-size-14 text-muted mt-3">
                     <span>تـ الإضافة : {movieData.addedDate}</span>
                   </div>
+                  <div className="font-size-14 text-muted">
+                    <span>تـ اخر تحديث : {movieData.updatedDate}</span>
+                  </div>
                 </div>
+
+                {/* Action Buttons */}
                 <div className="col-lg-2 col-md-3 col-sm-4 d-flex flex-column px-4 px-sm-0">
                   <a href={movieData.trailer} className="btn btn-light btn-pill d-flex align-items-center" data-fancybox="">
                     <span className="font-size-18 font-weight-medium">الاعلان</span>
                     <i className="icon-play2 font-size-20 mr-auto"></i>
                   </a>
+                  
                   <a href="#downloads" className="btn btn-orange btn-pill d-flex align-items-center text-white mt-2">
                     <span className="font-size-18 font-weight-medium">مشاهدة</span>
                     <i className="icon-play2 font-size-20 mr-auto"></i>
                   </a>
+                  
                   <a href="#downloads" className="btn btn-info btn-pill d-flex align-items-center text-white mt-2">
                     <span className="font-size-18 font-weight-medium">تحميل</span>
                     <i className="icon-download font-size-20 mr-auto"></i>
                   </a>
+                  
                   <div className="btn btn-share btn-pill d-none d-sm-flex align-items-center text-white hal-container mt-2">
                     <span className="font-size-18 font-weight-medium">شارك</span>
                     <i className="icon-share font-size-20 mr-auto"></i>
@@ -268,19 +295,32 @@ export default function MovieDetail() {
                       <a href="javascript:;" className="whatsapp ml-2"><i className="icon-whatsapp"></i></a>
                     </div>
                   </div>
-                  <a href="javascript:;" className="btn btn-favorite btn-pill d-flex align-items-center text-white mt-2 add-to-fav">
+                  
+                  <a href="javascript:;" className="btn btn-favorite btn-pill d-flex align-items-center text-white mt-2 add-to-fav private hide" data-type="movie" data-id="241">
                     <span className="font-size-18 font-weight-medium">قائمتي</span>
                     <i className="icon-plus icon1 font-size-20 mr-auto"></i>
                     <i className="icon-check icon2 font-size-20 mr-auto"></i>
                   </a>
+                  
+                  {/* Rating System - مطابقة للتصميم الأصلي */}
                   <div className="mt-auto pt-3">
                     <div className="movie-rating d-flex justify-content-center align-items-center">
                       <span className="text font-size-16 text-white d-none">ما رأيك في هذا الموضوع ؟</span>
-                      <a href="javascript:;" className="like mx-1">
-                        <i className="icon-like"></i><span className="number">{movieData.likes}</span>
+                      <a 
+                        href="javascript:;" 
+                        className={`like mx-1 ${userRating === 'like' ? 'active' : ''}`}
+                        onClick={() => handleRating('like')}
+                      >
+                        <i className="icon-like"></i>
+                        <span className="number">{likes}</span>
                       </a>
-                      <a href="javascript:;" className="unlike mx-1">
-                        <i className="icon-like1"></i><span className="number">{movieData.dislikes}</span>
+                      <a 
+                        href="javascript:;" 
+                        className={`unlike mx-1 ${userRating === 'dislike' ? 'active' : ''}`}
+                        onClick={() => handleRating('dislike')}
+                      >
+                        <i className="icon-like1"></i>
+                        <span className="number">{dislikes}</span>
                       </a>
                     </div>
                   </div>
@@ -288,26 +328,27 @@ export default function MovieDetail() {
               </div>
             </div>
           </div>
-          
-          {/* Movie Story */}
+
+          {/* Movie Content */}
           <div className="container">
+            {/* Movie Description */}
             <div className="widget widget-style-1 mb-5">
               <header className="widget-header border-0 mb-4">
                 <div className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">قصة الفيلم</span>
                 </div>
-                <img src="/src/assets/images/icn-w-header.png" className="header-img" alt="" />
+                <img src="https://ak.sv/style/assets/images/icn-w-header.png" className="header-img" alt="" />
               </header>
               <div className="widget-body">
                 <h2>
-                  <div className="text-white font-size-18" style={{ lineHeight: 1.7 }}>
-                    فيلم {movieData.title} <p>{movieData.description}</p>
+                  <div className="text-white font-size-18" style={{ lineHeight: '1.7' }}>
+                    {movieData.title} <p>{movieData.description}</p>
                   </div>
                 </h2>
                 <div className="d-flex">
-                  {movieData.gallery.map((image, index) => (
-                    <a key={index} href={image.replace('thumb/180x100/', '')} data-fancybox="movie-gallery" className="ml-12">
-                      <img src={image} className="img-fluid" alt={`${movieData.title} ${index + 1}`} />
+                  {movieData.galleryThumbs.map((thumb, index) => (
+                    <a key={index} href={movieData.gallery[index]} data-fancybox="movie-gallery" className="ml-12">
+                      <img src={thumb} className="img-fluid" alt={`${movieData.title} undefined`} />
                     </a>
                   ))}
                 </div>
@@ -320,13 +361,13 @@ export default function MovieDetail() {
                 <h3 className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">فريق العمل</span>
                 </h3>
-                <img src="/src/assets/images/icn-w-header.png" className="header-img" alt="" />
+                <img src="https://ak.sv/style/assets/images/icn-w-header.png" className="header-img" alt="" />
               </header>
               <div className="widget-body row">
                 {movieData.cast.map((actor, index) => (
                   <div key={index} className="col-lg-auto col-md-4 col-6 mb-12">
                     <div className="entry-box entry-box-3 h-100">
-                      <a href="#" className="box d-flex no-gutters align-items-center">
+                      <a href={actor.url} className="box d-flex no-gutters align-items-center">
                         <div className="col-auto">
                           <img src={actor.image} className="img-fluid rounded-circle" alt={actor.name} />
                         </div>
@@ -339,164 +380,17 @@ export default function MovieDetail() {
                 ))}
               </div>
             </div>
-
-            {/* Download/Watch Section */}
-            <div className="widget widget-style-1 mb-5">
-              <header className="widget-header border-0 mb-4" id="downloads">
-                <h2 className="header-title font-size-18 font-weight-bold mb-0">
-                  <span className="header-link text-white">مشاهدة وتحميل</span>
-                </h2>
-                <img src="/src/assets/images/icn-w-header.png" className="header-img" alt="" />
-              </header>
-              <div className="widget-body">
-                <div className="qualities">
-                  {movieData.servers.map((server, index) => (
-                    <div key={index} className="quality-item mb-3">
-                      <div className="d-flex align-items-center justify-content-between p-3 bg-dark rounded">
-                        <div className="d-flex align-items-center">
-                          <i className={`icon-${server.type === 'watch' ? 'play2' : 'download'} font-size-20 text-${server.type === 'watch' ? 'orange' : 'info'} ml-3`}></i>
-                          <span className="text-white font-weight-medium">{server.name}</span>
-                          <span className="text-muted font-size-14 mr-3">({server.size})</span>
-                        </div>
-                        <a 
-                          href={server.url} 
-                          className={`btn btn-${server.type === 'watch' ? 'orange' : 'info'} btn-sm`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {server.type === 'watch' ? 'مشاهدة' : 'تحميل'}
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Related Movies */}
-            <div className="widget widget-style-1 mb-5">
-              <header className="widget-header border-0 mb-4">
-                <h3 className="header-title font-size-18 font-weight-bold mb-0">
-                  <span className="header-link text-white">أفلام مشابهة</span>
-                </h3>
-                <img src="/src/assets/images/icn-w-header.png" className="header-img" alt="" />
-              </header>
-              <div className="widget-body">
-                <div className="row">
-                  {relatedMovies.map((movie) => (
-                    <div key={movie.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
-                      <div className="entry-box entry-box-1">
-                        <a href={`/movie/${movie.id}`} className="box d-block">
-                          <div className="entry-image">
-                            <img src={movie.poster} className="img-fluid" alt={movie.title} />
-                          </div>
-                          <div className="entry-body">
-                            <div className="entry-title font-size-14 text-white text-center mt-2">
-                              {movie.title}
-                            </div>
-                            <div className="entry-rating text-center mt-1">
-                              <i className="icon-star text-orange"></i>
-                              <span className="text-muted font-size-12">{movie.rating}</span>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-
-        {/* Report Error Modal */}
-        {showReportModal && (
-          <div className="modal fade show" style={{ display: 'block' }} tabIndex={-1}>
-            <div className="modal-dialog">
-              <div className="modal-content bg-dark text-white">
-                <div className="modal-header border-secondary">
-                  <h5 className="modal-title">
-                    <img src="/src/assets/images/report.svg" className="mr-2" alt="" />
-                    التبليغ عن خطأ
-                  </h5>
-                  <button 
-                    type="button" 
-                    className="close text-white"
-                    onClick={() => setShowReportModal(false)}
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <form>
-                    <div className="form-group">
-                      <label>رابط الصفحة</label>
-                      <input 
-                        type="url" 
-                        className="form-control bg-secondary text-white border-secondary" 
-                        readOnly 
-                        value={typeof window !== 'undefined' ? window.location.href : ''}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>البريد الإلكتروني (اختياري)</label>
-                      <input type="email" className="form-control bg-secondary text-white border-secondary" />
-                    </div>
-                    <div className="form-group">
-                      <label>السبب</label>
-                      <select className="form-control bg-secondary text-white border-secondary">
-                        <option>مشكلة في رابط التحميل المباشر</option>
-                        <option>مشكلة في رابط المشاهدة المباشرة</option>
-                        <option>مشكلة عدم توافق الترجمة</option>
-                        <option>مشكلة تقنية في الصوت او الصورة</option>
-                        <option>مشكلة تحريرية في الموضوع او الصور</option>
-                        <option>طلب تحديث جودة</option>
-                        <option>مشكلة اخرى</option>
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <label>بيانات إضافية / برجاء توضيح المشكلة بالضبط ليتم التعامل معها باسرع وقت</label>
-                      <textarea className="form-control bg-secondary text-white border-secondary" rows={4}></textarea>
-                    </div>
-                  </form>
-                </div>
-                <div className="modal-footer border-secondary">
-                  <button type="button" className="btn btn-secondary" onClick={() => setShowReportModal(false)}>
-                    إغلاق
-                  </button>
-                  <button type="button" className="btn btn-primary">
-                    ارسال
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Footer */}
         <footer className="main-footer py-5">
           <nav className="social d-flex justify-content-center">
-            <a href="/" target="" className="home mx-2"><i className="icon-home"></i></a>
+            <a href="/" className="home mx-2"><i className="icon-home"></i></a>
             <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
             <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
-            <a href="/contact" target="" className="email mx-2"><i className="icon-email"></i></a>
+            <a href="/contact" className="email mx-2"><i className="icon-email"></i></a>
           </nav>
-
-          <nav className="links d-flex justify-content-center mt-3">
-            <a href="/" target="" className="mx-2">يمن فليكس</a>
-            <a href="/old" target="_blank" className="mx-2">الموقع القديم</a>
-            <a href="/dmca" target="" className="mx-2">DMCA</a>
-            <a href="/ad-policy" target="" className="mx-2">AD-P</a>
-            <a href="#" target="_blank" className="mx-2">يمن فليكس نيوز</a>
-            <a href="#" target="_blank" className="mx-2">شبكة يمن فليكس</a>
-          </nav>
-
-          <p className="copyright mb-0 font-size-12 text-center mt-3">
-            جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
-          </p>
         </footer>
       </div>
     </>
