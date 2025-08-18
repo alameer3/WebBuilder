@@ -17,6 +17,7 @@ import "@/assets/css/plugins.css";
 import "@/assets/css/style.css"; 
 import "@/assets/css/akwam-original.css";
 import "@/assets/css/yemen-flix.css";
+import "@/assets/css/button-fixes.css";
 
 // Pages  
 import Home from "@/pages/home";

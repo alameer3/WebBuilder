@@ -277,7 +277,7 @@ export default function Notifications() {
               <div className="pagination-wrap mt-5">
                 <nav className="pagination">
                   <ul className="page-numbers d-flex justify-content-center">
-                    <li><a href="javascript:;" className="page-numbers current">1</a></li>
+                    <li><button type="button" className="page-numbers current btn-unstyled" onClick={() => console.log('Page 1')}>1</button></li>
                     <li><a href="/notifications?page=2" className="page-numbers">2</a></li>
                     <li><a href="/notifications?page=3" className="page-numbers">3</a></li>
                     <li><span className="page-numbers dots">…</span></li>

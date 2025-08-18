@@ -1,0 +1,34 @@
+/* إصلاحات الأزرار لتبدو كالروابط الأصلية */
+.btn-unstyled {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  display: inherit;
+  align-items: inherit;
+  justify-content: inherit;
+  flex-direction: inherit;
+}
+
+.btn-unstyled:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn-unstyled:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* إصلاحات خاصة لأزرار التقييم */
+.movie-rating .btn-unstyled {
+  background: none;
+  border: none;
+  padding: inherit;
+  margin: inherit;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
