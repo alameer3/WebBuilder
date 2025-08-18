@@ -83,7 +83,10 @@ class TMDBService {
   }
 
   private async request(endpoint: string): Promise<any> {
-    const url = `${TMDB_BASE_URL}${endpoint}?api_key=${this.apiKey}&language=ar-SA`;
+    // بناء URL مع المعاملات الصحيحة
+    const separator = endpoint.includes('?') ? '&' : '?';
+    const url = `${TMDB_BASE_URL}${endpoint}${separator}api_key=${this.apiKey}&language=ar-SA`;
+    
     console.log('TMDB API Request URL:', url.replace(this.apiKey, 'API_KEY_HIDDEN'));
     
     const response = await fetch(url);
