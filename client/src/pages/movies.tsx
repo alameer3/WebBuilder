@@ -1,13 +1,13 @@
 // Movies Page - مطابق للأصل تماماً
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'wouter';
 import '../assets/css/plugins.css';
 import '../assets/css/style.css';  
 import '../assets/css/akwam.css';
 
 // استيراد المكونات
 import AkwamHeader from '../components/AkwamHeader';
-import MovieCard from '../components/MovieCard';
 
 // إعلان jQuery على النافذة
 declare global {
@@ -21,7 +21,7 @@ interface Movie {
   id: string;
   title: string;
   poster: string;
-  year: string;
+  year: string | number;
   rating: number;
   genre?: string[];
   quality?: string;
@@ -36,74 +36,13 @@ export default function Movies() {
     year: '0'
   });
 
-  // بيانات تجريبية للأفلام (سيتم استبدالها ببيانات حقيقية)
-  const moviesData: Movie[] = [
-    {
-      id: "227",
-      title: "فيلم الأزرق 3",
-      poster: "https://img.downet.net/thumb/270x400/uploads/4f2gT.jpg",
-      year: "2024",
-      rating: 8.2,
-      genre: ["اكشن", "مغامرات"],
-      quality: "HD",
-      description: "فيلم اكشن مثير..."
-    },
-    {
-      id: "228", 
-      title: "فيلم الأزرق 4",
-      poster: "https://img.downet.net/thumb/270x400/uploads/TiYPC.jpg",
-      year: "2024",
-      rating: 7.8,
-      genre: ["اكشن", "مغامرات"], 
-      quality: "HD",
-      description: "تكملة مشوقة..."
-    },
-    {
-      id: "241",
-      title: "Rambo: First Blood Part II",
-      poster: "https://img.downet.net/thumb/270x400/uploads/iQofs.jpg",
-      year: "1985",
-      rating: 8.5,
-      genre: ["اكشن", "حرب"],
-      quality: "HD",
-      description: "فيلم حرب كلاسيكي..."
-    },
-    {
-      id: "243",
-      title: "Rambo",
-      poster: "https://img.downet.net/thumb/270x400/uploads/R8cXw.jpg", 
-      year: "2008",
-      rating: 7.0,
-      genre: ["اكشن", "حرب"],
-      quality: "HD",
-      description: "عودة رامبو بقوة..."
-    },
-    {
-      id: "245",
-      title: "Maleficent",
-      poster: "https://img.downet.net/thumb/270x400/uploads/v1234.jpg",
-      year: "2014", 
-      rating: 6.9,
-      genre: ["فانتازيا", "عائلي"],
-      quality: "HD",
-      description: "قصة الساحرة الشريرة..."
-    },
-    {
-      id: "247",
-      title: "يا أنا يا خالتي",
-      poster: "https://img.downet.net/thumb/270x400/uploads/q5678.jpg",
-      year: "2005",
-      rating: 7.5,
-      genre: ["كوميدي", "مصري"],
-      quality: "HD", 
-      description: "كوميديا مصرية رائعة..."
-    }
-  ];
-
-  const { data: movies = moviesData, isLoading } = useQuery({
+  // جلب الأفلام من API
+  const { data: moviesResponse, isLoading, error } = useQuery({
     queryKey: ['/api/movies'],
-    queryFn: () => fetch('/api/movies').then(res => res.json()).catch(() => moviesData)
+    select: (data: any) => data?.movies || []
   });
+
+  const movies = moviesResponse || [];
 
   useEffect(() => {
     // تطبيق كلاسات body الأصلية للصفحة
@@ -139,15 +78,31 @@ export default function Movies() {
     document.head.appendChild(scriptTag);
 
     return () => {
-      document.body.className = '';
+      // تنظيف العناصر عند الخروج من الصفحة
+      const scripts = document.querySelectorAll('script[type="application/ld+json"]');
+      scripts.forEach(script => script.remove());
     };
   }, []);
 
+  // فلترة الأفلام حسب الفلاتر المحددة
   const filteredMovies = Array.isArray(movies) ? movies.filter((movie: Movie) => {
-    if (filters.year !== '0' && movie.year !== filters.year) return false;
+    if (filters.year !== '0' && movie.year?.toString() !== filters.year) return false;
     if (filters.rating !== '0' && movie.rating < parseInt(filters.rating)) return false;
     return true;
   }) : [];
+
+  if (isLoading) {
+    return (
+      <div className="site-container">
+        <AkwamHeader />
+        <div className="container text-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">جاري التحميل...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -251,10 +206,11 @@ export default function Movies() {
                                 data-testid="rating-filter"
                               >
                                 <option value="0">التقييم</option>
-                                <option value="8">+8</option>
-                                <option value="7">+7</option>
-                                <option value="6">+6</option>
-                                <option value="5">+5</option>
+                                <option value="9">9+</option>
+                                <option value="8">8+</option>
+                                <option value="7">7+</option>
+                                <option value="6">6+</option>
+                                <option value="5">5+</option>
                               </select>
                             </div>
                           </div>
@@ -269,27 +225,75 @@ export default function Movies() {
 
           {/* Movies Grid */}
           <div className="container">
-            {isLoading ? (
-              <div className="text-center py-5">
-                <div className="spinner-border text-warning" role="status">
-                  <span className="sr-only">Loading...</span>
-                </div>
-              </div>
-            ) : (
-              <div className="widget widget-style-1 mb-4" data-grid="6">
-                <div className="widget-body">
-                  <div className="row" data-testid="movies-grid">
-                    {filteredMovies.map((movie) => (
-                      <MovieCard key={movie.id} {...movie} />
-                    ))}
-                    
-                    {filteredMovies.length === 0 && (
-                      <div className="col-12 text-center py-5">
-                        <p className="text-white">لا توجد أفلام تطابق المعايير المحددة</p>
+            <div className="row">
+              {filteredMovies.length > 0 ? (
+                filteredMovies.map((movie: Movie) => (
+                  <div key={movie.id} className="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div className="post-item">
+                      <div className="post-poster">
+                        <Link href={`/movie/${movie.id}`}>
+                          <a className="d-block">
+                            <img
+                              src={movie.poster}
+                              className="img-fluid"
+                              alt={movie.title}
+                              data-testid={`movie-poster-${movie.id}`}
+                            />
+                            <div className="post-overlay">
+                              <div className="post-quality">{movie.quality || 'HD'}</div>
+                              <div className="post-rating">
+                                <i className="icon-star"></i>
+                                {movie.rating}
+                              </div>
+                            </div>
+                          </a>
+                        </Link>
                       </div>
-                    )}
+                      <div className="post-content">
+                        <h3 className="post-title">
+                          <Link href={`/movie/${movie.id}`}>
+                            <a className="text-white" data-testid={`movie-title-${movie.id}`}>
+                              {movie.title}
+                            </a>
+                          </Link>
+                        </h3>
+                        <div className="post-meta text-muted">
+                          <span>{movie.year}</span>
+                          {movie.genre && movie.genre.length > 0 && (
+                            <>
+                              <span className="mx-2">•</span>
+                              <span>{movie.genre[0]}</span>
+                            </>
+                          )}
+                        </div>
+                        {movie.genre && movie.genre.length > 0 && (
+                          <div className="post-genres">
+                            {movie.genre.slice(0, 3).map((g, index) => (
+                              <span key={index} className="genre-tag">{g}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-12 text-center py-5">
+                  <div className="alert alert-info">
+                    <h4>لا توجد أفلام متاحة حالياً</h4>
+                    <p>يرجى المحاولة لاحقاً أو تعديل الفلاتر</p>
                   </div>
                 </div>
+              )}
+            </div>
+
+            {/* Load More Button */}
+            {filteredMovies.length > 0 && (
+              <div className="text-center mt-5">
+                <button className="btn btn-orange btn-pill px-5" data-testid="load-more-btn">
+                  <i className="icon-plus mr-2"></i>
+                  تحميل المزيد
+                </button>
               </div>
             )}
           </div>
