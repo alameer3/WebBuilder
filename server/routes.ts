@@ -377,7 +377,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin Dashboard API endpoints
   app.get("/api/admin/stats", async (req, res) => {
     try {
-      const allMovies = await storage.getMovies({});
+      const allMovies = await storage.getAllMovies();
       const allContacts = await storage.getAllContacts();
       const stats = {
         totalMovies: allMovies.length,
