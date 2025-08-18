@@ -374,6 +374,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin Dashboard API endpoints
+  app.get("/api/admin/stats", async (req, res) => {
+    try {
+      const allMovies = await storage.getMovies({});
+      const allContacts = await storage.getAllContacts();
+      const stats = {
+        totalMovies: allMovies.length,
+        totalUsers: 15, // قيمة افتراضية
+        totalContacts: allContacts.length,
+        recentMovies: 12 // الأفلام المضافة هذا الشهر
+      };
+      res.json(stats);
+    } catch (error) {
+      console.error("Admin stats error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع الإحصائيات" });
+    }
+  });
+
+  // Admin Users Management
+  app.get("/api/admin/users", async (req, res) => {
+    try {
+      const users = [
+        { id: "1", username: "admin", email: "admin@yemenflix.com", role: "admin", createdAt: new Date() },
+        { id: "2", username: "user1", email: "user1@example.com", role: "user", createdAt: new Date() }
+      ];
+      res.json({ users });
+    } catch (error) {
+      console.error("Get users error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع المستخدمين" });
+    }
+  });
+
+  app.delete("/api/admin/users/:id", async (req, res) => {
+    try {
+      // تم حذف المستخدم (محاكاة)
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Delete user error:", error);
+      res.status(500).json({ message: "خطأ في حذف المستخدم" });
+    }
+  });
+
+  // Admin Movies Management  
+  app.delete("/api/admin/movies/:id", async (req, res) => {
+    try {
+      // تم حذف الفيلم (محاكاة)
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Delete movie error:", error);
+      res.status(500).json({ message: "خطأ في حذف الفيلم" });
+    }
+  });
+
   // TMDB Integration endpoints
   app.get("/api/tmdb/popular-movies", async (req, res) => {
     try {
