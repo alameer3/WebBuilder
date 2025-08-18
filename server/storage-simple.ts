@@ -20,7 +20,7 @@ export class SimpleMemoryStorage implements IStorage {
   };
 
   constructor() {
-    // Add sample data
+    // Add sample data - Movies
     this.data.movies.push({
       id: "1",
       title: "The Dark Knight",
@@ -56,6 +56,97 @@ export class SimpleMemoryStorage implements IStorage {
       addedDate: new Date(),
       updatedDate: new Date(),
     });
+
+    // Add sample series
+    this.data.movies.push({
+      id: "2",
+      title: "Breaking Bad",
+      originalTitle: "Breaking Bad",
+      description: "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
+      year: 2008,
+      duration: 49,
+      rating: 9.5,
+      imdbRating: 9.5,
+      tmdbRating: 9.0,
+      genre: ["Crime", "Drama", "Thriller"],
+      tags: ["chemistry", "drugs", "family"],
+      poster: "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
+      backdrop: null,
+      trailer: null,
+      quality: "HD",
+      language: "English",
+      subtitle: ["Arabic"],
+      category: "series",
+      section: "مترجم",
+      country: "USA",
+      director: ["Vince Gilligan"],
+      cast: ["Bryan Cranston", "Aaron Paul"],
+      writer: ["Vince Gilligan"],
+      producer: ["Mark Johnson"],
+      isNew: false,
+      isFeatured: true,
+      isRecommended: true,
+      viewCount: 2500,
+      downloadCount: 800,
+      likeCount: 200,
+      dislikeCount: 3,
+      addedDate: new Date(),
+      updatedDate: new Date(),
+    });
+
+    // Add sample show
+    this.data.movies.push({
+      id: "3",
+      title: "The Tonight Show",
+      originalTitle: "The Tonight Show Starring Jimmy Fallon",
+      description: "Emmy Award and Grammy Award winner Jimmy Fallon brings a high-tempo energy to the storied NBC franchise.",
+      year: 2014,
+      duration: 45,
+      rating: 7.5,
+      imdbRating: 7.0,
+      tmdbRating: 7.5,
+      genre: ["Talk Show", "Comedy"],
+      tags: ["entertainment", "celebrity", "comedy"],
+      poster: "https://image.tmdb.org/t/p/w500/h5yG5OsA6LgljNe7s50JFHfRpPG.jpg",
+      backdrop: null,
+      trailer: null,
+      quality: "HD",
+      language: "English",
+      subtitle: ["Arabic"],
+      category: "show",
+      section: "مترجم",
+      country: "USA",
+      director: ["Jimmy Fallon"],
+      cast: ["Jimmy Fallon", "The Roots"],
+      writer: ["Jimmy Fallon"],
+      producer: ["NBC"],
+      isNew: true,
+      isFeatured: false,
+      isRecommended: true,
+      viewCount: 850,
+      downloadCount: 200,
+      likeCount: 65,
+      dislikeCount: 8,
+      addedDate: new Date(),
+      updatedDate: new Date(),
+    });
+
+    // Add sample categories
+    this.data.categories.push(
+      { id: "1", name: "أفلام", nameAr: "أفلام", slug: "movies", type: "content", isActive: true, sortOrder: 1 },
+      { id: "2", name: "مسلسلات", nameAr: "مسلسلات", slug: "series", type: "content", isActive: true, sortOrder: 2 },
+      { id: "3", name: "برامج", nameAr: "برامج", slug: "shows", type: "content", isActive: true, sortOrder: 3 },
+      { id: "4", name: "متنوع", nameAr: "متنوع", slug: "mix", type: "content", isActive: true, sortOrder: 4 }
+    );
+
+    // Add sample tags
+    this.data.tags.push(
+      { id: "1", name: "أكشن", nameAr: "أكشن", slug: "action", count: 15, isActive: true },
+      { id: "2", name: "دراما", nameAr: "دراما", slug: "drama", count: 25, isActive: true },
+      { id: "3", name: "كوميديا", nameAr: "كوميديا", slug: "comedy", count: 18, isActive: true },
+      { id: "4", name: "رعب", nameAr: "رعب", slug: "horror", count: 12, isActive: true },
+      { id: "5", name: "إثارة", nameAr: "إثارة", slug: "thriller", count: 20, isActive: true }
+    );
   }
 
   private generateId(): string {

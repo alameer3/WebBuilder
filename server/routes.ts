@@ -132,6 +132,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Series endpoints
+  app.get("/api/series", async (req, res) => {
+    try {
+      const series = await storage.getMoviesByCategory("series");
+      res.json(series);
+    } catch (error) {
+      console.error("Get series error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع المسلسلات" });
+    }
+  });
+
+  app.get("/api/series/:id", async (req, res) => {
+    try {
+      const series = await storage.getMovieById(req.params.id);
+      if (!series || series.category !== "series") {
+        return res.status(404).json({ message: "المسلسل غير موجود" });
+      }
+      
+      // Update view count
+      await storage.updateMovieViews(req.params.id);
+      res.json(series);
+    } catch (error) {
+      console.error("Get series error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع المسلسل" });
+    }
+  });
+
+  // Shows endpoints
+  app.get("/api/shows", async (req, res) => {
+    try {
+      const shows = await storage.getMoviesByCategory("show");
+      res.json(shows);
+    } catch (error) {
+      console.error("Get shows error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع البرامج" });
+    }
+  });
+
+  app.get("/api/shows/:id", async (req, res) => {
+    try {
+      const show = await storage.getMovieById(req.params.id);
+      if (!show || show.category !== "show") {
+        return res.status(404).json({ message: "البرنامج غير موجود" });
+      }
+      
+      // Update view count
+      await storage.updateMovieViews(req.params.id);
+      res.json(show);
+    } catch (error) {
+      console.error("Get show error:", error);
+      res.status(500).json({ message: "خطأ في استرجاع البرنامج" });
+    }
+  });
+
   // Episodes endpoints
   app.get("/api/series/:seriesId/episodes", async (req, res) => {
     try {
