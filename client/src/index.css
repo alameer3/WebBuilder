@@ -803,6 +803,183 @@ body.search-active .site-overlay {
   text-decoration: none !important;
 }
 
+/* Home Page Specific Styles - AKWAM Design */
+.page-home {
+  position: relative;
+}
+
+.page-home body {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url('/src/assets/images/home-bg.webp') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+}
+
+/* Menu Toggle Animation */
+.menu-toggle .icn {
+  width: 24px;
+  height: 18px;
+  position: relative;
+}
+
+.menu-toggle .icn span {
+  display: block;
+  background: white;
+  height: 2px;
+  width: 100%;
+  margin-bottom: 4px;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle .icn span:last-child {
+  margin-bottom: 0;
+}
+
+/* Search Form Styles */
+.search-form input[type="text"] {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+.search-form input[type="text"]:focus {
+  border-color: #f3951e !important;
+  box-shadow: 0 0 0 0.2rem rgba(243, 149, 30, 0.25) !important;
+}
+
+/* Widget 2 Search Form */
+.widget-2 .form .form-control {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+  padding: 1rem !important;
+  border-radius: 8px !important;
+  font-size: 1.125rem !important;
+}
+
+.widget-2 .form .form-control:focus {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: #f3951e !important;
+  box-shadow: 0 0 0 0.2rem rgba(243, 149, 30, 0.25) !important;
+}
+
+.widget-2 .form label {
+  position: absolute !important;
+  top: 50% !important;
+  right: 1rem !important;
+  transform: translateY(-50%) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  pointer-events: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.widget-2 .form .form-control:focus + label,
+.widget-2 .form .form-control.not-empty + label {
+  top: 0 !important;
+  right: 0.5rem !important;
+  transform: translateY(-100%) !important;
+  font-size: 0.875rem !important;
+  color: #f3951e !important;
+}
+
+/* Main Categories List */
+.main-categories-list .item {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.main-categories-list .item:hover {
+  background: rgba(243, 149, 30, 0.2) !important;
+  border-color: #f3951e !important;
+  transform: translateY(-5px) !important;
+  text-decoration: none !important;
+  color: white !important;
+}
+
+.main-categories-list .item .icn {
+  font-size: 2rem !important;
+  margin-bottom: 0.5rem !important;
+  color: #f3951e !important;
+}
+
+/* Recently Added Section */
+.entry-box {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.entry-box:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.entry-image .image {
+  height: 260px !important;
+  background-size: cover !important;
+  background-position: center !important;
+  border-radius: 12px !important;
+  transition: transform 0.3s ease !important;
+}
+
+.entry-box:hover .entry-image .image {
+  transform: scale(1.05) !important;
+}
+
+.entry-overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 100%) !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  padding: 1rem !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.entry-box:hover .entry-overlay {
+  opacity: 1 !important;
+}
+
+.overlay-content {
+  color: white !important;
+}
+
+.entry-title {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.entry-year {
+  font-size: 0.875rem !important;
+  color: #f3951e !important;
+}
+
+.labels {
+  position: absolute !important;
+  top: 0.5rem !important;
+  left: 0.5rem !important;
+  right: 0.5rem !important;
+  z-index: 2 !important;
+}
+
+.label.rating {
+  background: rgba(243, 149, 30, 0.9) !important;
+  color: white !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 6px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+}
+
 .yf-card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
