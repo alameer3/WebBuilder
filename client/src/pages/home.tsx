@@ -20,6 +20,18 @@ export default function Home() {
   useEffect(() => {
     // تطبيق كلاسات body الأصلية
     document.body.className = 'header-fixed body-home';
+    
+    // إضافة الخلفية الصحيحة للصفحة الرئيسية
+    const homeStyle = document.createElement('style');
+    homeStyle.textContent = `
+      body { 
+        background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(/src/assets/images/home-bg.webp) !important;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+    `;
+    document.head.appendChild(homeStyle);
 
     // إضافة BreadcrumbList JSON-LD Schema
     const breadcrumbSchema = {
@@ -335,24 +347,30 @@ export default function Home() {
               </div>
             </div>
           </div>
+          
+          {/* Main Categories List End */}
           <div className="main-categories-list-end"></div>
         </div>
-
+        
         {/* Footer */}
         <footer className="main-footer py-5">
           <nav className="social d-flex justify-content-center">
+            <a href="#" className="home mx-2"><i className="icon-home"></i></a>
             <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
-            <a href="#" className="twitter mx-2"><i className="icon-twitter"></i></a>
-            <a href="#" className="instagram mx-2"><i className="icon-instagram"></i></a>
+            <a href="#" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
             <a href="#" className="youtube mx-2"><i className="icon-youtube"></i></a>
-            <a href="#" className="telegram mx-2"><i className="icon-telegram"></i></a>
+            <a href="#" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="/contact" className="email mx-2"><i className="icon-email"></i></a>
           </nav>
 
           <nav className="links d-flex justify-content-center mt-3">
             <a href="/" className="mx-2">يمن فليكس</a>
+            <a href="/old" className="mx-2">الموقع القديم</a>
             <a href="/dmca" className="mx-2">DMCA</a>
             <a href="/ad-policy" className="mx-2">AD-P</a>
-            <a href="/contactus" className="mx-2">اتصل بنا</a>
+            <a href="#" className="mx-2">يمن فليكس نيوز</a>
+            <a href="#" className="mx-2">شبكة يمن فليكس</a>
           </nav>
 
           <p className="copyright mb-0 font-size-12 text-center mt-3">
