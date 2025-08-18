@@ -9,6 +9,8 @@ import {
   insertNotificationSchema
 } from "@shared/schema";
 import { z } from "zod";
+import { tmdbService } from "./services/tmdb";
+import { dataPopulationService } from "./services/dataPopulation";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -369,6 +371,78 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.error("Registration error:", error);
         res.status(500).json({ message: "خطأ في التسجيل" });
       }
+    }
+  });
+
+  // TMDB Integration endpoints
+  app.get("/api/tmdb/popular-movies", async (req, res) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const movies = await tmdbService.getPopularMovies(page);
+      res.json(movies);
+    } catch (error) {
+      console.error("TMDB popular movies error:", error);
+      res.status(500).json({ message: "خطأ في جلب الأفلام الشائعة" });
+    }
+  });
+
+  app.get("/api/tmdb/movie/:id", async (req, res) => {
+    try {
+      const movieId = parseInt(req.params.id);
+      const movie = await tmdbService.getMovieDetails(movieId);
+      const convertedMovie = tmdbService.convertTMDBMovieToDBFormat(movie);
+      res.json(convertedMovie);
+    } catch (error) {
+      console.error("TMDB movie details error:", error);
+      res.status(500).json({ message: "خطأ في جلب تفاصيل الفيلم" });
+    }
+  });
+
+  app.get("/api/tmdb/search", async (req, res) => {
+    try {
+      const query = req.query.q as string;
+      const page = parseInt(req.query.page as string) || 1;
+      
+      if (!query) {
+        return res.status(400).json({ message: "مطلوب نص البحث" });
+      }
+
+      const results = await tmdbService.searchMovies(query, page);
+      res.json(results);
+    } catch (error) {
+      console.error("TMDB search error:", error);
+      res.status(500).json({ message: "خطأ في البحث" });
+    }
+  });
+
+  // Data population endpoints (للإدارة)
+  app.post("/api/admin/populate-movies", async (req, res) => {
+    try {
+      await dataPopulationService.populateMovies();
+      res.json({ success: true, message: "تم تعبئة الأفلام بنجاح" });
+    } catch (error) {
+      console.error("Populate movies error:", error);
+      res.status(500).json({ message: "خطأ في تعبئة الأفلام" });
+    }
+  });
+
+  app.post("/api/admin/populate-tv", async (req, res) => {
+    try {
+      await dataPopulationService.populateTVShows();
+      res.json({ success: true, message: "تم تعبئة المسلسلات بنجاح" });
+    } catch (error) {
+      console.error("Populate TV shows error:", error);
+      res.status(500).json({ message: "خطأ في تعبئة المسلسلات" });
+    }
+  });
+
+  app.post("/api/admin/populate-all", async (req, res) => {
+    try {
+      await dataPopulationService.populateAll();
+      res.json({ success: true, message: "تم تعبئة قاعدة البيانات بنجاح" });
+    } catch (error) {
+      console.error("Populate all error:", error);
+      res.status(500).json({ message: "خطأ في تعبئة قاعدة البيانات" });
     }
   });
 

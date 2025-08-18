@@ -38,6 +38,7 @@ import PersonDetail from "@/pages/person-detail";
 import EpisodeDetail from "@/pages/episode-detail";
 import DMCA from "@/pages/dmca";
 import AdPolicy from "@/pages/ad-policy";
+import AdminPanel from "@/pages/admin";
 import Ones from "@/pages/ones";
 import FavoriteMovies from "@/pages/favorite-movies";
 
@@ -109,6 +110,7 @@ function Router() {
             <Route path="/series/:seriesId/episode/:episodeId" component={EpisodeDetail} />
             <Route path="/dmca" component={DMCA} />
             <Route path="/ad-policy" component={AdPolicy} />
+            <Route path="/admin" component={AdminPanel} />
             <Route path="/ones" component={Ones} />
             <Route path="/favorite-movies" component={FavoriteMovies} />
             <Route path="/favorites" component={Favorites} />

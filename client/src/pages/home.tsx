@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import logoWhite from '../assets/images/logo-white.svg';
 import siteNewBg from '../assets/images/site-new.webp';
+import TMDBDataFetcher from '../components/TMDBDataFetcher';
+import EnhancedMovieCard from '../components/EnhancedMovieCard';
 
 // تحميل ملفات CSS الأصلية
 import '../assets/css/plugins.css';
@@ -16,6 +19,18 @@ declare global {
 }
 
 export default function Home() {
+  // جلب الأفلام من قاعدة البيانات
+  const { data: moviesData, isLoading: moviesLoading, refetch: refetchMovies } = useQuery({
+    queryKey: ['/api/movies'],
+    select: (data: any) => data?.movies || []
+  });
+
+  // جلب الأفلام الشائعة من TMDB
+  const { data: tmdbMovies, isLoading: tmdbLoading } = useQuery({
+    queryKey: ['/api/tmdb/popular-movies'],
+    enabled: false // نشط هذا فقط عند الحاجة
+  });
+
   useEffect(() => {
     // تطبيق كلاسات body الأصلية مطابقة للموقع الأصلي
     document.body.className = 'header-fixed body-home';
@@ -396,6 +411,59 @@ export default function Home() {
             جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
           </p>
         </footer>
+
+        {/* TMDB Data Management */}
+        <div className="container mt-5">
+          <TMDBDataFetcher 
+            onDataFetched={() => {
+              refetchMovies();
+            }}
+          />
+
+          {/* Movies Grid */}
+          {moviesData && moviesData.length > 0 && (
+            <div className="mt-5">
+              <h3 className="text-[#f3951e] text-xl font-bold mb-4">الأفلام المتوفرة ({moviesData.length})</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {moviesData.slice(0, 12).map((movie: any) => (
+                  <EnhancedMovieCard 
+                    key={movie.id} 
+                    movie={movie} 
+                    size="medium"
+                    showDetails={true}
+                  />
+                ))}
+              </div>
+              
+              {moviesData.length > 12 && (
+                <div className="text-center mt-4">
+                  <a href="/movies" className="btn btn-orange">
+                    عرض جميع الأفلام ({moviesData.length})
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Loading State */}
+          {moviesLoading && (
+            <div className="text-center mt-5">
+              <div className="text-white">جاري تحميل الأفلام...</div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!moviesLoading && (!moviesData || moviesData.length === 0) && (
+            <div className="text-center mt-5 bg-[#27272c] rounded-lg p-6">
+              <div className="text-gray-400 mb-4">
+                لا توجد أفلام في قاعدة البيانات حالياً
+              </div>
+              <div className="text-sm text-gray-500">
+                استخدم أزرار التعبئة أعلاه لإضافة أفلام من TMDB
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
