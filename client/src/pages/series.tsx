@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 
 interface Series {
@@ -22,32 +23,11 @@ export default function Series() {
     year: '0'
   });
 
-  const seriesData: Series[] = [
-    {
-      id: "4948",
-      title: "بنات الأم",
-      poster: "https://img.downet.net/thumb/270x400/uploads/series1.jpg",
-      year: "2024",
-      rating: 8.7,
-      seasons: 1,
-      episodes: 30,
-      genre: ["دراما", "عائلي"],
-      quality: "HD",
-      status: "completed"
-    },
-    {
-      id: "4949", 
-      title: "إسعاد بنات",
-      poster: "https://img.downet.net/thumb/270x400/uploads/series2.jpg",
-      year: "2024",
-      rating: 8.2,
-      seasons: 1,
-      episodes: 30,
-      genre: ["كوميدي", "عائلي"],
-      quality: "HD",
-      status: "completed"
-    }
-  ];
+  // جلب المسلسلات من API بدلاً من البيانات الثابتة
+  const { data: seriesData, isLoading, error } = useQuery({
+    queryKey: ['/api/series'],
+    select: (data: any) => data || []
+  });
 
   useEffect(() => {
     document.body.className = 'header-fixed';
@@ -140,7 +120,7 @@ export default function Series() {
         {/* Series List Content */}
         <div className="container">
           <div className="row">
-            {seriesData.map((series) => (
+            {seriesData.map((series: any) => (
               <div key={series.id} className="col-lg-2 col-md-3 col-sm-4 col-6">
                 <div className="post-item">
                   <div className="post-poster">
@@ -175,7 +155,7 @@ export default function Series() {
                       <span>{series.episodes} حلقة</span>
                     </div>
                     <div className="post-genres">
-                      {series.genre?.map((g, index) => (
+                      {series.genre?.map((g: string, index: number) => (
                         <span key={index} className="genre-tag">{g}</span>
                       ))}
                     </div>

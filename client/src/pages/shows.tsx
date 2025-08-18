@@ -26,48 +26,10 @@ export default function Shows() {
     year: '0'
   });
 
-  const showsData: Show[] = [
-    {
-      id: "113",
-      title: "اشرطة الاحساء",
-      poster: "https://img.downet.net/thumb/270x400/uploads/show1.jpg",
-      year: "2024",
-      rating: 7.8,
-      episodes: 20,
-      channel: "MBC",
-      genre: ["توك شو"],
-      quality: "HD",
-      type: "talk-show"
-    },
-    {
-      id: "127",
-      title: "AEW Dynamite",
-      poster: "https://img.downet.net/thumb/270x400/uploads/aew.jpg", 
-      year: "2020",
-      rating: 8.5,
-      episodes: 150,
-      channel: "TNT",
-      genre: ["مصارعة", "رياضة"],
-      quality: "HD",
-      type: "sport"
-    },
-    {
-      id: "142",
-      title: "مسرح الغرب",
-      poster: "https://img.downet.net/thumb/270x400/uploads/theater.jpg",
-      year: "2023",
-      rating: 7.2,
-      episodes: 12,
-      channel: "العربية",
-      genre: ["مسرحية"],
-      quality: "HD",
-      type: "reality"
-    }
-  ];
-
-  const { data: shows = showsData, isLoading } = useQuery({
+  // جلب البرامج من API
+  const { data: shows, isLoading } = useQuery({
     queryKey: ['/api/shows'],
-    queryFn: () => fetch('/api/shows').then(res => res.json()).catch(() => showsData)
+    select: (data: any) => data || []
   });
 
   useEffect(() => {
