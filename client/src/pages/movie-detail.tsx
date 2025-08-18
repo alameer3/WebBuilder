@@ -1,106 +1,37 @@
-import { useParams } from "wouter";
-import { useState, useEffect } from "react";
+import { useState } from 'react';
+import { useParams } from 'wouter';
 
-// استيراد ملفات CSS الأصلية
-import '../assets/css/plugins.css';
-import '../assets/css/style.css';  
-import '../assets/css/yemen-flix.css';
-import '../assets/css/akwam-original.css';
-
-// استيراد الأيقونات الأصلية
-import logoWhite from "../assets/images/logo-white.svg";
-import imdbIcon from "../assets/images/imdb.png";
-import tmdbIcon from "../assets/images/tmdb.png";
-
-// تعريف jQuery للنافذة
-declare global {
-  interface Window {
-    $: any;
-    jQuery: any;
-  }
-}
+// Simple string assets for now
+const logoWhite = "/assets/logo-white.svg";
+const tmdbIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='%23f3951e'%3E%3Crect width='20' height='20'/%3E%3C/svg%3E";
+const imdbIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='%23f3951e'%3E%3Ccircle cx='10' cy='10' r='10'/%3E%3C/svg%3E";
 
 export default function MovieDetail() {
-  const { id } = useParams() as { id: string };
+  const { id } = useParams();
   const [showReportModal, setShowReportModal] = useState(false);
 
-  useEffect(() => {
-    // تطبيق كلاسات body الأصلية مطابقة للموقع الأصلي
-    document.body.className = "header-fixed header-pages pace-done";
-    
-    // تحميل وتطبيق JavaScript الأصلي
-    const loadOriginalScripts = () => {
-      // تحميل jQuery
-      const jqueryScript = document.createElement('script');
-      jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
-      jqueryScript.onload = () => {
-        // تطبيق التفاعلات الأصلية
-        const $ = (window as any).$;
-        if ($) {
-          // وظائف التفاعل الأصلية
-          $(".menu-toggle").on("click", function(){
-            $("body").removeClass("search-active").toggleClass("main-menu-active");
-          });
-
-          $(".search-toggle").on("click", function(){
-            $("body").removeClass("main-menu-active").toggleClass("search-active");
-            setTimeout(function(){
-              $(".search-box form input").focus();
-            }, 200);
-          });
-
-          $(".site-overlay").on("click", function(){
-            $("body").removeClass("main-menu-active search-active");
-          });
-
-          $(document).on("keydown", function(e: any){
-            if (e.keyCode === 27) {
-              $("body").removeClass("search-active main-menu-active");
-            }
-          });
-
-          // تفاعلات أزرار المشاهدة والتحميل
-          $(".btn-watch, .btn-download").on("click", function(e: any){
-            e.preventDefault();
-            const action = $(this).hasClass('btn-watch') ? 'مشاهدة' : 'تحميل';
-            console.log(`تم الضغط على زر ${action}`);
-          });
-        }
-      };
-      document.head.appendChild(jqueryScript);
-    };
-
-    loadOriginalScripts();
-
-    return () => {
-      document.body.className = "";
-    };
-  }, []);
-
-  // بيانات مطابقة للتصميم الأصلي مع إضافات من لقطات الشاشة
+  // بيانات الفيلم - مطابقة للتصميم الأصلي
   const movieData = {
-    id: id || "28-years-later",
     title: "28 Years Later",
-    arabicTitle: "28 سنة لاحقا",
-    poster: "https://img.downet.net/thumb/260x380/uploads/28years.webp",
-    backdrop: "https://img.downet.net/thumb/1920x600/uploads/28years-bg.webp",
-    rating: 8.0,
-    imdbRating: "8.0 / 10",
-    quality: "WEB-DL - 1080p",
-    language: "الإنجليزية",
-    subtitle: "العربية",
-    country: "المملكة المتحدة",
+    rating: "7.1",
+    imdbRating: "10 / 7.1",
     year: 2025,
     duration: "115 دقيقة",
-    certification: "R عنف ودماء",
-    office: "BOX OFFICE",
+    language: "الإنجليزية", 
+    subtitle: "العربية",
+    quality: "WEB-DL - 1080p",
+    country: "الولايات المتحدة الأمريكية",
     genres: ["اثارة", "رعب"],
-    description: "مشاهدة و تحميل فيلم Rambo: First Blood Part II مدبلج. يقع (رامبو) في الأسر في إحدى المهام، ويتمكن من الهرب من معسكر الاعتقال، ويُقاتل من أجل حياته. من بطولة سيلفستر ستالون، وهو الجزء الثاني من سلسلة أفلام رامبو الشهيرة.",
+    office: "BOX OFFICE",
+    certification: "PG13 اشراف عائلي",
+    backdrop: "https://img.downet.net/thumb/1920x600/uploads/Gn5bw.webp",
+    poster: "https://img.downet.net/thumb/260x380/uploads/Gn5bw.webp",
     trailer: "https://www.youtube.com/watch?v=mcvLKldPM08",
+    description: "فيلم 28 Years Later حيث يدور العمل حول بعد ثمانية وعشرين عامًا من هروب فيروس الغضب من مختبر للأسلحة البيولوجية، لا يزال البعض يخضع لحجر صحي قاسٍ، وقد وجدوا سبلًا للعيش وسط المصابين. تعيش إحدى هذه المجموعات على جزيرة صغيرة متصلة بالبر الرئيسي عبر جسر واحد مُحصّن جيدًا.",
     cast: [
-      { name: "Sylvester Stallone", image: "https://img.downet.net/thumb/54x54/uploads/stallone.jpg" },
-      { name: "Richard Crenna", image: "https://img.downet.net/thumb/54x54/uploads/crenna.jpg" },
-      { name: "Julia Nickson", image: "https://img.downet.net/thumb/54x54/uploads/nickson.jpg" }
+      { name: "Jodie Comer", image: "https://img.downet.net/thumb/54x54/uploads/HD9VV.jpeg" },
+      { name: "Aaron Taylor-Johnson", image: "https://img.downet.net/thumb/54x54/uploads/Nf84R.jpg" },
+      { name: "Ralph Fiennes", image: "https://img.downet.net/thumb/54x54/uploads/ZwiTY.jpeg" }
     ],
     gallery: [
       "https://img.downet.net/thumb/180x100/uploads/JeOy3.jpg",
@@ -275,177 +206,165 @@ export default function MovieDetail() {
             </svg>
             <div className="container">
               <div className="row py-4">
-                {/* Movie Poster */}
                 <div className="col-lg-3 col-md-4 text-center mb-5 mb-md-0">
-                  <a href={movieData.poster.replace('thumb/260x380/', '')} data-fancybox="">
+                  <a href={movieData.poster} data-fancybox="">
                     <picture>
                       <img src={movieData.poster} className="img-fluid" alt={movieData.title} />
                     </picture>
                   </a>
                 </div>
-
-                {/* Movie Info */}
-                <div className="col-lg-7 pr-lg-4 col-md-5 col-sm-8 mb-4 mb-sm-0 px-4 px-sm-0 movie-info">
+                <div className="col-lg-7 pr-lg-4 col-md-5 col-sm-8 mb-4 mb-sm-0 px-4 px-sm-0">
                   <h1 className="entry-title font-size-28 font-weight-bold text-white mb-0">{movieData.title}</h1>
-                  
                   <div className="font-size-16 text-white mt-2 d-flex align-items-center">
-                    <a href="https://www.themoviedb.org/movie/1100988-28-years-later" rel="nofollow" className="ml-2" target="_blank">
+                    <a href="#" rel="nofollow" className="ml-2" target="_blank">
                       <img src={tmdbIcon} height="20" alt="TMDB" />
                     </a>
-                    <a href="https://www.imdb.com/title/tt10548174" rel="nofollow" target="_blank">
+                    <a href="#" rel="nofollow" target="_blank">
                       <img src={imdbIcon} alt="IMDB" />
                     </a>
                     <span className="mx-2">{movieData.imdbRating}</span>
                     <i className="icon-star text-orange"></i>
                     <span className="badge badge-pill badge-info font-size-14 mr-3">{movieData.certification}</span>
                   </div>
-
                   <div className="font-size-16 text-white mt-2"><span>{movieData.office}</span></div>
                   <div className="font-size-16 text-white mt-2"><span>اللغة : {movieData.language}</span></div>
                   <div className="font-size-16 text-white mt-2"><span>الترجمة : {movieData.subtitle}</span></div>
-                  <div className="font-size-16 text-white mt-2"><span>جودة الفيلم : {movieData.quality}</span></div>
+                  <div className="font-size-16 text-white mt-2">
+                    <span>جودة الفيلم : {movieData.quality}</span>
+                  </div>
                   <div className="font-size-16 text-white mt-2"><span>انتاج : {movieData.country}</span></div>
                   <div className="font-size-16 text-white mt-2"><span>السنة : {movieData.year}</span></div>
                   <div className="font-size-16 text-white mt-2"><span>مدة الفيلم : {movieData.duration}</span></div>
-
                   <div className="font-size-16 d-flex align-items-center mt-3">
                     {movieData.genres.map((genre, index) => (
-                      <a key={index} href={`/movies?category=${genre}`} className="badge badge-pill badge-light ml-2">{genre}</a>
+                      <a key={index} href="#" className="badge badge-pill badge-light ml-2">{genre}</a>
                     ))}
                   </div>
-
                   <div className="font-size-14 text-muted mt-3">
                     <span>تـ الإضافة : {movieData.addedDate}</span>
                   </div>
                 </div>
-
-                {/* Action Buttons - مطابق للتصميم الأصلي */}
                 <div className="col-lg-2 col-md-3 col-sm-4 d-flex flex-column px-4 px-sm-0">
                   <a href={movieData.trailer} className="btn btn-light btn-pill d-flex align-items-center" data-fancybox="">
                     <span className="font-size-18 font-weight-medium">الاعلان</span>
                     <i className="icon-play2 font-size-20 mr-auto"></i>
                   </a>
-                  
                   <a href="#downloads" className="btn btn-orange btn-pill d-flex align-items-center text-white mt-2">
                     <span className="font-size-18 font-weight-medium">مشاهدة</span>
                     <i className="icon-play2 font-size-20 mr-auto"></i>
                   </a>
-                  
                   <a href="#downloads" className="btn btn-info btn-pill d-flex align-items-center text-white mt-2">
                     <span className="font-size-18 font-weight-medium">تحميل</span>
                     <i className="icon-download font-size-20 mr-auto"></i>
                   </a>
-
                   <div className="btn btn-share btn-pill d-none d-sm-flex align-items-center text-white hal-container mt-2">
                     <span className="font-size-18 font-weight-medium">شارك</span>
                     <i className="icon-share font-size-20 mr-auto"></i>
                     <div className="menu d-flex align-items-center share">
-                      <button className="facebook ml-2 bg-transparent border-0"><i className="icon-facebook"></i></button>
-                      <button className="twitter ml-2 bg-transparent border-0"><i className="icon-twitter"></i></button>
-                      <button className="messenger ml-2 bg-transparent border-0"><i className="icon-messenger"></i></button>
-                      <button className="whatsapp ml-2 bg-transparent border-0"><i className="icon-whatsapp"></i></button>
+                      <a href="javascript:;" className="facebook ml-2"><i className="icon-facebook"></i></a>
+                      <a href="javascript:;" className="twitter ml-2"><i className="icon-twitter"></i></a>
+                      <a href="javascript:;" className="messenger ml-2"><i className="icon-messenger"></i></a>
+                      <a href="javascript:;" className="whatsapp ml-2"><i className="icon-whatsapp"></i></a>
                     </div>
                   </div>
-
-                  <button className="btn btn-favorite btn-pill d-flex align-items-center text-white mt-2 add-to-fav private hide bg-transparent border-0" data-type="movie" data-id={id}>
+                  <a href="javascript:;" className="btn btn-favorite btn-pill d-flex align-items-center text-white mt-2 add-to-fav">
                     <span className="font-size-18 font-weight-medium">قائمتي</span>
                     <i className="icon-plus icon1 font-size-20 mr-auto"></i>
                     <i className="icon-check icon2 font-size-20 mr-auto"></i>
-                  </button>
-
+                  </a>
                   <div className="mt-auto pt-3">
                     <div className="movie-rating d-flex justify-content-center align-items-center">
                       <span className="text font-size-16 text-white d-none">ما رأيك في هذا الموضوع ؟</span>
-                      <button className="like mx-1 bg-transparent border-0"><i className="icon-like"></i><span className="number">{movieData.likes}</span></button>
-                      <button className="unlike mx-1 bg-transparent border-0"><i className="icon-like1"></i><span className="number">{movieData.dislikes}</span></button>
+                      <a href="javascript:;" className="like mx-1">
+                        <i className="icon-like"></i><span className="number">{movieData.likes}</span>
+                      </a>
+                      <a href="javascript:;" className="unlike mx-1">
+                        <i className="icon-like1"></i><span className="number">{movieData.dislikes}</span>
+                      </a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
+          
+          {/* Movie Story */}
           <div className="container">
-            {/* Movie Description */}
             <div className="widget widget-style-1 mb-5">
               <header className="widget-header border-0 mb-4">
-                <h3 className="header-title font-size-18 font-weight-bold mb-0">
+                <div className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">قصة الفيلم</span>
-                </h3>
-                <div className="header-decoration"></div>
-              </header>
-              <div className="widget-body">
-                <div className="text-white font-size-18" style={{ lineHeight: 1.7 }}>
-                  فيلم {movieData.title} <p>{movieData.description}</p>
                 </div>
-              </div>
-            </div>
-
-            {/* Cast Section */}
-            <div className="widget widget-style-1 mb-5">
-              <header className="widget-header border-0 mb-4">
-                <h3 className="header-title font-size-18 font-weight-bold mb-0">
-                  <span className="header-link text-white">فريق العمل</span>
-                </h3>
-                <div className="header-decoration"></div>
+                <img src="/src/assets/images/icn-w-header.png" className="header-img" alt="" />
               </header>
               <div className="widget-body">
-                <div className="d-flex justify-content-center">
-                  {movieData.cast.map((actor, index) => (
-                    <div key={index} className="text-center mx-3">
-                      <img src={actor.image} className="cast-image rounded-circle mb-2" width="54" height="54" alt={actor.name} />
-                      <div className="font-size-14 text-white">{actor.name}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Gallery Section */}
-            <div className="widget widget-style-1 mb-5">
-              <header className="widget-header border-0 mb-4">
-                <h3 className="header-title font-size-18 font-weight-bold mb-0">
-                  <span className="header-link text-white">صور من الفيلم</span>
-                </h3>
-                <div className="header-decoration"></div>
-              </header>
-              <div className="widget-body">
-                <div className="d-flex flex-wrap justify-content-center">
+                <h2>
+                  <div className="text-white font-size-18" style={{ lineHeight: 1.7 }}>
+                    فيلم {movieData.title} <p>{movieData.description}</p>
+                  </div>
+                </h2>
+                <div className="d-flex">
                   {movieData.gallery.map((image, index) => (
-                    <a key={index} href={image} data-fancybox="gallery" className="m-2">
-                      <img src={image} className="img-fluid rounded" alt={`صورة ${index + 1}`} />
+                    <a key={index} href={image.replace('thumb/180x100/', '')} data-fancybox="movie-gallery" className="ml-12">
+                      <img src={image} className="img-fluid" alt={`${movieData.title} ${index + 1}`} />
                     </a>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Download & Watch Section */}  
-            <div className="widget widget-style-1 mb-5" id="downloads">
+            {/* Cast */}
+            <div className="widget widget-style-1 mb-5" data-grid="5">
               <header className="widget-header border-0 mb-4">
+                <h3 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">فريق العمل</span>
+                </h3>
+                <img src="/src/assets/images/icn-w-header.png" className="header-img" alt="" />
+              </header>
+              <div className="widget-body row">
+                {movieData.cast.map((actor, index) => (
+                  <div key={index} className="col-lg-auto col-md-4 col-6 mb-12">
+                    <div className="entry-box entry-box-3 h-100">
+                      <a href="#" className="box d-flex no-gutters align-items-center">
+                        <div className="col-auto">
+                          <img src={actor.image} className="img-fluid rounded-circle" alt={actor.name} />
+                        </div>
+                        <div className="col">
+                          <div className="entry-title text-center">{actor.name}</div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Download/Watch Section */}
+            <div className="widget widget-style-1 mb-5">
+              <header className="widget-header border-0 mb-4" id="downloads">
                 <h2 className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">مشاهدة وتحميل</span>
                 </h2>
-                <div className="header-decoration"></div>
+                <img src="/src/assets/images/icn-w-header.png" className="header-img" alt="" />
               </header>
               <div className="widget-body">
-                <div className="servers-list">
+                <div className="qualities">
                   {movieData.servers.map((server, index) => (
-                    <div key={index} className="server-item d-flex align-items-center mb-3 p-3 rounded" style={{ backgroundColor: '#2a2a2e' }}>
-                      <div className="server-info flex-grow-1">
-                        <h4 className="server-name text-white mb-1">{server.name}</h4>
-                        <small className="text-muted">الحجم: {server.size}</small>
-                      </div>
-                      <div className="server-actions">
-                        {server.type === 'watch' ? (
-                          <a href={server.url} className="link-btn link-show d-flex align-items-center px-3">
-                            <span className="text">مشاهدة</span><i className="icon-play2 mr-auto"></i>
-                          </a>
-                        ) : (
-                          <a href={server.url} className="link-btn link-download d-flex align-items-center px-3">
-                            <span className="text">تحميل</span><span className="font-size-14 mr-auto">{server.size}</span>
-                          </a>
-                        )}
+                    <div key={index} className="quality-item mb-3">
+                      <div className="d-flex align-items-center justify-content-between p-3 bg-dark rounded">
+                        <div className="d-flex align-items-center">
+                          <i className={`icon-${server.type === 'watch' ? 'play2' : 'download'} font-size-20 text-${server.type === 'watch' ? 'orange' : 'info'} ml-3`}></i>
+                          <span className="text-white font-weight-medium">{server.name}</span>
+                          <span className="text-muted font-size-14 mr-3">({server.size})</span>
+                        </div>
+                        <a 
+                          href={server.url} 
+                          className={`btn btn-${server.type === 'watch' ? 'orange' : 'info'} btn-sm`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {server.type === 'watch' ? 'مشاهدة' : 'تحميل'}
+                        </a>
                       </div>
                     </div>
                   ))}
@@ -454,68 +373,104 @@ export default function MovieDetail() {
             </div>
 
             {/* Related Movies */}
-            <div className="widget widget-style-1 mb-5" data-grid="6">
+            <div className="widget widget-style-1 mb-5">
               <header className="widget-header border-0 mb-4">
                 <h3 className="header-title font-size-18 font-weight-bold mb-0">
-                  <span className="header-link text-white">شاهد المزيد</span>
+                  <span className="header-link text-white">أفلام مشابهة</span>
                 </h3>
-                <div className="header-decoration"></div>
+                <img src="/src/assets/images/icn-w-header.png" className="header-img" alt="" />
               </header>
-              <div className="widget-body row">
-                {relatedMovies.map((movie) => (
-                  <div key={movie.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
-                    <div className="entry-box entry-box-1">
-                      <a href={`/movie/${movie.id}`}>
-                        <div className="entry-image">
-                          <div className="image" style={{ backgroundImage: `url("${movie.poster}")` }}></div>
-                          <div className="entry-overlay">
-                            <div className="overlay-content">
-                              <div className="entry-rating">
-                                <i className="icon-star"></i>
-                                <span>{movie.rating}</span>
-                              </div>
+              <div className="widget-body">
+                <div className="row">
+                  {relatedMovies.map((movie) => (
+                    <div key={movie.id} className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4">
+                      <div className="entry-box entry-box-1">
+                        <a href={`/movie/${movie.id}`} className="box d-block">
+                          <div className="entry-image">
+                            <img src={movie.poster} className="img-fluid" alt={movie.title} />
+                          </div>
+                          <div className="entry-body">
+                            <div className="entry-title font-size-14 text-white text-center mt-2">
+                              {movie.title}
+                            </div>
+                            <div className="entry-rating text-center mt-1">
+                              <i className="icon-star text-orange"></i>
+                              <span className="text-muted font-size-12">{movie.rating}</span>
                             </div>
                           </div>
-                        </div>
-                        <div className="entry-body px-3 pb-3 text-center">
-                          <h3 className="entry-title font-size-14 m-0">
-                            <span className="text-white">{movie.title}</span>
-                          </h3>
-                        </div>
-                      </a>
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer */}
-        <footer className="main-footer">
-          <div className="container">
-            <div className="widget-footer text-center border-top pt-4 mt-5">
-              <nav className="footer-social d-flex justify-content-center mb-4">
-                <a href="/" className="home mx-2" title="الرئيسية"><i className="icon-home"></i></a>
-                <a href="https://www.facebook.com/yemenflix" target="_blank" className="facebook mx-2" title="فيسبوك"><i className="icon-facebook"></i></a>
-                <a href="https://www.youtube.com/c/yemenflix" target="_blank" className="youtube mx-2" title="يوتيوب"><i className="icon-youtube"></i></a>
-                <a href="/contactus" className="email mx-2" title="اتصل بنا"><i className="icon-email"></i></a>
-              </nav>
-              <div className="footer-links d-flex justify-content-center flex-wrap mb-3">
-                <a href="/movies" className="mx-2">أفلام</a>
-                <a href="/series" className="mx-2">مسلسلات</a>
-                <a href="/shows" className="mx-2">تلفزيون</a>
-                <a href="/mix" className="mx-2">منوعات</a>
-                <a href="/recent" className="mx-2">أضيف حديثا</a>
-                <a href="/profile" className="mx-2">البروفايل</a>
-                <a href="/contactus" className="mx-2">اتصل بنا</a>
-              </div>
-              <div className="copyright">
-                <p>جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025</p>
+        {/* Report Error Modal */}
+        {showReportModal && (
+          <div className="modal fade show" style={{ display: 'block' }} tabIndex={-1}>
+            <div className="modal-dialog">
+              <div className="modal-content bg-dark text-white">
+                <div className="modal-header border-secondary">
+                  <h5 className="modal-title">
+                    <img src="/src/assets/images/report.svg" className="mr-2" alt="" />
+                    التبليغ عن خطأ
+                  </h5>
+                  <button 
+                    type="button" 
+                    className="close text-white"
+                    onClick={() => setShowReportModal(false)}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label>رابط الصفحة</label>
+                      <input 
+                        type="url" 
+                        className="form-control bg-secondary text-white border-secondary" 
+                        readOnly 
+                        value={typeof window !== 'undefined' ? window.location.href : ''}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>البريد الإلكتروني (اختياري)</label>
+                      <input type="email" className="form-control bg-secondary text-white border-secondary" />
+                    </div>
+                    <div className="form-group">
+                      <label>السبب</label>
+                      <select className="form-control bg-secondary text-white border-secondary">
+                        <option>مشكلة في رابط التحميل المباشر</option>
+                        <option>مشكلة في رابط المشاهدة المباشرة</option>
+                        <option>مشكلة عدم توافق الترجمة</option>
+                        <option>مشكلة تقنية في الصوت او الصورة</option>
+                        <option>مشكلة تحريرية في الموضوع او الصور</option>
+                        <option>طلب تحديث جودة</option>
+                        <option>مشكلة اخرى</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>بيانات إضافية / برجاء توضيح المشكلة بالضبط ليتم التعامل معها باسرع وقت</label>
+                      <textarea className="form-control bg-secondary text-white border-secondary" rows={4}></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div className="modal-footer border-secondary">
+                  <button type="button" className="btn btn-secondary" onClick={() => setShowReportModal(false)}>
+                    إغلاق
+                  </button>
+                  <button type="button" className="btn btn-primary">
+                    ارسال
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </footer>
+        )}
       </div>
     </>
   );
