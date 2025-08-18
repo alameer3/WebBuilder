@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'wouter';
+import VideoPlayer from '../components/VideoPlayer';
+import ServerLinks from '../components/ServerLinks';
 
 // استيراد الأصول مطابقة للموقع الأصلي
 import logoWhite from '../assets/images/logo-white.svg';
@@ -428,7 +430,7 @@ export default function MovieDetail() {
                     <div className="qualities row flex-wrap align-items-center">
                       <div className="col-lg-6 row " data-server="39" data-quality="5">
                         <div className="col-lg-6 col">
-                          <a href="#" className="link-btn link-show d-flex align-items-center px-3">
+                          <a href={`/watch/${id}?server=yemenflix&quality=1080p`} className="link-btn link-show d-flex align-items-center px-3">
                             <span className="text">مشاهدة</span><i className="icon-play2 mr-auto"></i>
                           </a>
                         </div>
@@ -445,7 +447,7 @@ export default function MovieDetail() {
                     <div className="qualities row flex-wrap align-items-center">
                       <div className="col-lg-6 row " data-server="39" data-quality="4">
                         <div className="col-lg-6 col">
-                          <a href="#" className="link-btn link-show d-flex align-items-center px-3">
+                          <a href={`/watch/${id}?server=yemenflix&quality=720p`} className="link-btn link-show d-flex align-items-center px-3">
                             <span className="text">مشاهدة</span><i className="icon-play2 mr-auto"></i>
                           </a>
                         </div>
@@ -462,7 +464,7 @@ export default function MovieDetail() {
                     <div className="qualities row flex-wrap align-items-center">
                       <div className="col-lg-6 row " data-server="39" data-quality="3">
                         <div className="col-lg-6 col">
-                          <a href="#" className="link-btn link-show d-flex align-items-center px-3">
+                          <a href={`/watch/${id}?server=yemenflix&quality=480p`} className="link-btn link-show d-flex align-items-center px-3">
                             <span className="text">مشاهدة</span><i className="icon-play2 mr-auto"></i>
                           </a>
                         </div>

@@ -31,6 +31,7 @@ import Login from "@/pages/login";
 import Contact from "@/pages/contact";
 import MovieDetail from "@/pages/movie-detail";
 import SeriesDetail from "@/pages/series-detail";
+import WatchPage from "@/pages/watch";
 import Favorites from "@/pages/favorites";
 import Notifications from "@/pages/notifications";
 import NotFound from "@/pages/not-found";
@@ -109,6 +110,7 @@ function Router() {
               <Route path="/logout" component={Login} />
               <Route path="/contactus" component={Contact} />
               <Route path="/movie/:id" component={MovieDetail} />
+              <Route path="/watch/:id" component={WatchPage} />
               <Route path="/series/:id" component={SeriesDetail} />
               <Route path="/person/:id" component={PersonDetail} />
               <Route path="/series/:seriesId/episode/:episodeId" component={EpisodeDetail} />
