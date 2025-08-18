@@ -84,10 +84,14 @@ class TMDBService {
 
   private async request(endpoint: string): Promise<any> {
     const url = `${TMDB_BASE_URL}${endpoint}?api_key=${this.apiKey}&language=ar-SA`;
+    console.log('TMDB API Request URL:', url.replace(this.apiKey, 'API_KEY_HIDDEN'));
+    
     const response = await fetch(url);
     
     if (!response.ok) {
-      throw new Error(`TMDB API error: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('TMDB API Error Response:', errorText);
+      throw new Error(`TMDB API error: ${response.status} ${response.statusText}`);
     }
     
     return response.json();
