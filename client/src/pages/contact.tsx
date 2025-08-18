@@ -1,12 +1,6 @@
 import { useState } from "react";
-import { MessageCircle, Mail, Phone, MapPin, Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -63,168 +57,176 @@ export default function Contact() {
   };
 
   return (
-    <div className="container mx-auto max-w-4xl">
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <MessageCircle className="h-8 w-8 text-orange-500" />
-          <h1 className="text-3xl font-bold text-white">اتصل بنا</h1>
+    <>
+      {/* Hidden Inputs */}
+      <input type="hidden" id="page_app" value="contactus" className="not-empty" />
+      
+      {/* Breadcrumb */}
+      <nav aria-label="breadcrumb" style={{ backgroundColor: '#1c1c20' }}>
+        <div className="container py-3">
+          <ol className="breadcrumb mb-0">
+            <li className="breadcrumb-item"><a href="/" className="text-white"><i className="icon-home ml-2"></i> الرئيسية</a></li>
+            <li className="breadcrumb-item active text-orange" aria-current="page">اتصل بنا</li>
+          </ol>
         </div>
-        <p className="text-gray-400 max-w-2xl mx-auto">
-          نحن هنا لمساعدتك. يمكنك التواصل معنا في أي وقت للحصول على الدعم أو الإجابة على أسئلتك
-        </p>
-      </div>
+      </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Contact Form */}
-        <div className="lg:col-span-2">
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Send className="h-5 w-5 text-orange-500" />
-                إرسال رسالة
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-white">الاسم الكامل</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="أدخل اسمك الكامل"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="bg-gray-900 border-gray-600 text-white"
-                      required
-                    />
+      {/* Page Content */}
+      <div className="container py-5">
+        {/* Header */}
+        <div className="text-center mb-5">
+          <h1 className="font-size-32 font-weight-bold mb-3 text-white">اتصل بنا</h1>
+          <p className="text-muted font-size-16">
+            نرحب بتواصلكم معنا، سنكون سعداء للإجابة على استفساراتكم ومساعدتكم
+          </p>
+        </div>
+
+        <div className="row justify-content-center">
+          <div className="col-lg-8">
+            {/* Contact Form Widget */}
+            <div className="widget widget-style-1 mb-4">
+              <header className="widget-header mb-4 d-flex align-items-center">
+                <h2 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">إرسال رسالة</span>
+                </h2>
+                <img src="/style/assets/images/icn-w-header.png" className="header-img" alt="icn-w-header" />
+              </header>
+              <div className="widget-body">
+                <form onSubmit={handleSubmit} className="row">
+                  <div className="col-md-6 mb-3">
+                    <div className="form-group">
+                      <label className="form-label text-white">الاسم الكامل</label>
+                      <input 
+                        type="text" 
+                        name="name" 
+                        className="form-control bg-dark text-white border-secondary"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="أدخل اسمك الكامل"
+                        required
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white">البريد الإلكتروني</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="أدخل بريدك الإلكتروني"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="bg-gray-900 border-gray-600 text-white"
-                      required
-                    />
+                  <div className="col-md-6 mb-3">
+                    <div className="form-group">
+                      <label className="form-label text-white">البريد الإلكتروني</label>
+                      <input 
+                        type="email" 
+                        name="email" 
+                        className="form-control bg-dark text-white border-secondary"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="أدخل بريدك الإلكتروني"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-12 mb-3">
+                    <div className="form-group">
+                      <label className="form-label text-white">الموضوع</label>
+                      <input 
+                        type="text" 
+                        name="subject" 
+                        className="form-control bg-dark text-white border-secondary"
+                        value={formData.subject}
+                        onChange={handleInputChange}
+                        placeholder="موضوع الرسالة"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-12 mb-3">
+                    <div className="form-group">
+                      <label className="form-label text-white">الرسالة</label>
+                      <textarea 
+                        name="message" 
+                        className="form-control bg-dark text-white border-secondary" 
+                        rows={6}
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="اكتب رسالتك هنا..."
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="col-12">
+                    <button 
+                      type="submit" 
+                      className="btn btn-orange btn-pill px-5"
+                      disabled={contactMutation.isPending}
+                    >
+                      {contactMutation.isPending ? "جاري الإرسال..." : (
+                        <>
+                          <i className="icon-send mr-2"></i>
+                          إرسال الرسالة
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div className="widget widget-style-1">
+              <header className="widget-header mb-4 d-flex align-items-center">
+                <h2 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">معلومات التواصل</span>
+                </h2>
+                <img src="/style/assets/images/icn-w-header.png" className="header-img" alt="icn-w-header" />
+              </header>
+              <div className="widget-body">
+                <div className="row">
+                  <div className="col-md-6 mb-4">
+                    <div className="d-flex align-items-center">
+                      <div className="contact-icon bg-orange text-white rounded-circle d-flex align-items-center justify-content-center ml-3" style={{width: '50px', height: '50px'}}>
+                        <i className="icon-email font-size-20"></i>
+                      </div>
+                      <div>
+                        <h6 className="text-white mb-1">البريد الإلكتروني</h6>
+                        <p className="text-muted mb-0">contact@yemenflix.com</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6 mb-4">
+                    <div className="d-flex align-items-center">
+                      <div className="contact-icon bg-orange text-white rounded-circle d-flex align-items-center justify-content-center ml-3" style={{width: '50px', height: '50px'}}>
+                        <i className="icon-phone font-size-20"></i>
+                      </div>
+                      <div>
+                        <h6 className="text-white mb-1">الهاتف</h6>
+                        <p className="text-muted mb-0">+967 123 456 789</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6 mb-4">
+                    <div className="d-flex align-items-center">
+                      <div className="contact-icon bg-orange text-white rounded-circle d-flex align-items-center justify-content-center ml-3" style={{width: '50px', height: '50px'}}>
+                        <i className="icon-clock font-size-20"></i>
+                      </div>
+                      <div>
+                        <h6 className="text-white mb-1">ساعات العمل</h6>
+                        <p className="text-muted mb-0">24/7 دعم متواصل</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6 mb-4">
+                    <div className="d-flex align-items-center">
+                      <div className="contact-icon bg-orange text-white rounded-circle d-flex align-items-center justify-content-center ml-3" style={{width: '50px', height: '50px'}}>
+                        <i className="icon-location font-size-20"></i>
+                      </div>
+                      <div>
+                        <h6 className="text-white mb-1">الموقع</h6>
+                        <p className="text-muted mb-0">اليمن - صنعاء</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="subject" className="text-white">الموضوع</Label>
-                  <Input
-                    id="subject"
-                    name="subject"
-                    type="text"
-                    placeholder="موضوع الرسالة"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className="bg-gray-900 border-gray-600 text-white"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message" className="text-white">الرسالة</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    placeholder="اكتب رسالتك هنا..."
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    className="bg-gray-900 border-gray-600 text-white min-h-32"
-                    required
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full yf-btn-primary"
-                  disabled={contactMutation.isPending}
-                >
-                  {contactMutation.isPending ? (
-                    "جاري الإرسال..."
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4 mr-2" />
-                      إرسال الرسالة
-                    </>
-                  )}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Contact Information */}
-        <div className="space-y-6">
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white">معلومات التواصل</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <Mail className="h-5 w-5 text-orange-500" />
-                <div>
-                  <p className="text-white font-medium">البريد الإلكتروني</p>
-                  <p className="text-gray-400 text-sm">support@yemenflix.com</p>
-                </div>
               </div>
-              
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <Phone className="h-5 w-5 text-orange-500" />
-                <div>
-                  <p className="text-white font-medium">رقم الهاتف</p>
-                  <p className="text-gray-400 text-sm">+967 1 234 567</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <MapPin className="h-5 w-5 text-orange-500" />
-                <div>
-                  <p className="text-white font-medium">العنوان</p>
-                  <p className="text-gray-400 text-sm">صنعاء، الجمهورية اليمنية</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white">ساعات العمل</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-400">السبت - الخميس</span>
-                <span className="text-white">9:00 ص - 6:00 م</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">الجمعة</span>
-                <span className="text-white">2:00 م - 6:00 م</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">الدعم الفني</span>
-                <span className="text-green-500">24/7</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-orange-500/10 border-orange-500/20">
-            <CardContent className="p-4">
-              <h3 className="text-orange-500 font-semibold mb-2">نصيحة سريعة</h3>
-              <p className="text-gray-300 text-sm">
-                للحصول على رد أسرع، يرجى تحديد موضوع الرسالة بوضوح وتقديم أكبر قدر من التفاصيل حول مشكلتك أو استفسارك.
-              </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
