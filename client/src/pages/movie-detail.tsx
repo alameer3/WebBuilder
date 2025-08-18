@@ -25,54 +25,74 @@ export default function MovieDetail() {
   const [showReportModal, setShowReportModal] = useState(false);
 
   useEffect(() => {
+    // تطبيق كلاسات body الأصلية مطابقة للموقع الأصلي
     document.body.className = "header-fixed header-pages pace-done";
     
-    // تطبيق JavaScript للتفاعلات
-    const handleMenuToggle = () => {
-      document.body.classList.toggle('main-menu-active');
+    // تحميل وتطبيق JavaScript الأصلي
+    const loadOriginalScripts = () => {
+      // تحميل jQuery
+      const jqueryScript = document.createElement('script');
+      jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
+      jqueryScript.onload = () => {
+        // تطبيق التفاعلات الأصلية
+        const $ = (window as any).$;
+        if ($) {
+          // وظائف التفاعل الأصلية
+          $(".menu-toggle").on("click", function(){
+            $("body").removeClass("search-active").toggleClass("main-menu-active");
+          });
+
+          $(".search-toggle").on("click", function(){
+            $("body").removeClass("main-menu-active").toggleClass("search-active");
+            setTimeout(function(){
+              $(".search-box form input").focus();
+            }, 200);
+          });
+
+          $(".site-overlay").on("click", function(){
+            $("body").removeClass("main-menu-active search-active");
+          });
+
+          $(document).on("keydown", function(e: any){
+            if (e.keyCode === 27) {
+              $("body").removeClass("search-active main-menu-active");
+            }
+          });
+
+          // تفاعلات أزرار المشاهدة والتحميل
+          $(".btn-watch, .btn-download").on("click", function(e: any){
+            e.preventDefault();
+            const action = $(this).hasClass('btn-watch') ? 'مشاهدة' : 'تحميل';
+            console.log(`تم الضغط على زر ${action}`);
+          });
+        }
+      };
+      document.head.appendChild(jqueryScript);
     };
 
-    const handleSearchToggle = () => {
-      document.body.classList.toggle('search-active');
-    };
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        document.body.classList.remove('main-menu-active', 'search-active');
-      }
-    };
-
-    const menuToggle = document.querySelector('.menu-toggle');
-    const searchToggle = document.querySelector('.search-toggle');
-    
-    menuToggle?.addEventListener('click', handleMenuToggle);
-    searchToggle?.addEventListener('click', handleSearchToggle);
-    document.addEventListener('keydown', handleEscape);
+    loadOriginalScripts();
 
     return () => {
-      menuToggle?.removeEventListener('click', handleMenuToggle);
-      searchToggle?.removeEventListener('click', handleSearchToggle);
-      document.removeEventListener('keydown', handleEscape);
       document.body.className = "";
     };
   }, []);
 
-  // بيانات مطابقة للتصميم الأصلي في site/movie_241_rambo-first-blood-part-ii
+  // بيانات مطابقة للتصميم الأصلي مع إضافات من لقطات الشاشة
   const movieData = {
-    id: id || "rambo-first-blood-part-ii",
-    title: "Rambo: First Blood Part II",
-    arabicTitle: "رامبو الجزء الثاني",
-    poster: "https://img.downet.net/thumb/260x380/uploads/rambo2.webp",
-    backdrop: "https://img.downet.net/thumb/1920x600/uploads/rambo2-bg.webp",
-    rating: 7.2,
-    imdbRating: "7.2 / 10",
-    quality: "BluRay - 1080p",
+    id: id || "28-years-later",
+    title: "28 Years Later",
+    arabicTitle: "28 سنة لاحقا",
+    poster: "https://img.downet.net/thumb/260x380/uploads/28years.webp",
+    backdrop: "https://img.downet.net/thumb/1920x600/uploads/28years-bg.webp",
+    rating: 8.0,
+    imdbRating: "8.0 / 10",
+    quality: "WEB-DL - 1080p",
     language: "الإنجليزية",
     subtitle: "العربية",
-    country: "الولايات المتحدة الأمريكية",
-    year: 1985,
-    duration: "96 دقيقة",
-    certification: "PG13 اشراف عائلي",
+    country: "المملكة المتحدة",
+    year: 2025,
+    duration: "115 دقيقة",
+    certification: "R عنف ودماء",
     office: "BOX OFFICE",
     genres: ["اثارة", "رعب"],
     description: "مشاهدة و تحميل فيلم Rambo: First Blood Part II مدبلج. يقع (رامبو) في الأسر في إحدى المهام، ويتمكن من الهرب من معسكر الاعتقال، ويُقاتل من أجل حياته. من بطولة سيلفستر ستالون، وهو الجزء الثاني من سلسلة أفلام رامبو الشهيرة.",
@@ -299,7 +319,7 @@ export default function MovieDetail() {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Action Buttons - مطابق للتصميم الأصلي */}
                 <div className="col-lg-2 col-md-3 col-sm-4 d-flex flex-column px-4 px-sm-0">
                   <a href={movieData.trailer} className="btn btn-light btn-pill d-flex align-items-center" data-fancybox="">
                     <span className="font-size-18 font-weight-medium">الاعلان</span>

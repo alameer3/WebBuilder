@@ -622,6 +622,187 @@ body.search-active .site-overlay {
   background: linear-gradient(135deg, #161619 0%, #2d1b69 50%, #f3951e 100%);
 }
 
+/* Movie Page AKWAM Design - الأزرار والتصميم الأصلي */
+:root {
+  --btn-light: #6c757d;
+  --btn-orange: #f3951e;
+  --btn-info: #17a2b8;
+  --btn-share: #6f42c1;
+  --btn-favorite: #20c997;
+}
+
+/* أزرار صفحة الفيلم - مطابقة للتصميم الأصلي */
+.btn-pill {
+  border-radius: 25px !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.btn-light.btn-pill {
+  background-color: var(--btn-light) !important;
+  border-color: var(--btn-light) !important;
+  color: white !important;
+}
+
+.btn-orange.btn-pill {
+  background-color: var(--btn-orange) !important;
+  border-color: var(--btn-orange) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(243, 149, 30, 0.3) !important;
+}
+
+.btn-orange.btn-pill:hover {
+  background-color: #ff6b35 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(243, 149, 30, 0.4) !important;
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.btn-info.btn-pill {
+  background-color: var(--btn-info) !important;
+  border-color: var(--btn-info) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3) !important;
+}
+
+.btn-info.btn-pill:hover {
+  background-color: #20c997 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(23, 162, 184, 0.4) !important;
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.btn-share.btn-pill {
+  background-color: var(--btn-share) !important;
+  border-color: var(--btn-share) !important;
+  color: white !important;
+}
+
+.btn-favorite.btn-pill {
+  background-color: var(--btn-favorite) !important;
+  border-color: var(--btn-favorite) !important;
+  color: white !important;
+}
+
+/* Movie Cover with SVG Blur */
+.movie-cover {
+  position: relative !important;
+  min-height: 500px !important;
+  overflow: hidden !important;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)) !important;
+}
+
+.movie-cover svg {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+}
+
+.movie-cover .container {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+  background: transparent !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "/" !important;
+  color: #6c757d !important;
+}
+
+.breadcrumb-item a {
+  color: #f3951e !important;
+  text-decoration: none !important;
+}
+
+.breadcrumb-item a:hover {
+  color: #fff !important;
+}
+
+/* Widget Headers */
+.widget-header {
+  position: relative !important;
+  margin-bottom: 2rem !important;
+}
+
+.header-decoration {
+  width: 50px !important;
+  height: 3px !important;
+  background: linear-gradient(45deg, #f3951e, #ff6b35) !important;
+  margin-top: 0.5rem !important;
+}
+
+/* Server Items */
+.server-item {
+  transition: all 0.3s ease !important;
+  border: 1px solid #444 !important;
+}
+
+.server-item:hover {
+  background-color: #333 !important;
+  border-color: #f3951e !important;
+}
+
+/* Link Buttons */
+.link-btn {
+  background: linear-gradient(45deg, #f3951e, #ff6b35) !important;
+  color: white !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 20px !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.link-btn:hover {
+  background: linear-gradient(45deg, #ff6b35, #f3951e) !important;
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.link-download {
+  background: linear-gradient(45deg, #17a2b8, #20c997) !important;
+}
+
+.link-download:hover {
+  background: linear-gradient(45deg, #20c997, #17a2b8) !important;
+}
+
+/* Rating System */
+.movie-rating .like,
+.movie-rating .unlike {
+  background: transparent !important;
+  border: 1px solid #444 !important;
+  color: #f3951e !important;
+  padding: 0.5rem !important;
+  border-radius: 50% !important;
+  margin: 0 5px !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+}
+
+.movie-rating .like:hover,
+.movie-rating .unlike:hover {
+  background: #f3951e !important;
+  color: white !important;
+  border-color: #f3951e !important;
+  text-decoration: none !important;
+}
+
 .yf-card-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
