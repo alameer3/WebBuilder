@@ -9,6 +9,7 @@ export default function MovieDetail() {
   const [likes, setLikes] = useState(2);
   const [dislikes, setDislikes] = useState(0);
   const [userRating, setUserRating] = useState<'like' | 'dislike' | null>(null);
+  const [activeTab, setActiveTab] = useState('tab-5'); // التبويب النشط للجودات
 
   useEffect(() => {
     // تطبيق كلاسات body الأصلية
@@ -378,6 +379,148 @@ export default function MovieDetail() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Downloads Section - قسم مشاهدة وتحميل */}
+            <div className="widget widget-style-1 mb-5">
+              <header className="widget-header border-0 mb-4" id="downloads">
+                <h2 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">مشاهدة وتحميل</span>
+                </h2>
+                <img src="https://ak.sv/style/assets/images/icn-w-header.png" className="header-img" alt="" />
+              </header>
+              
+              <div className="widget-body">
+                <div className="header-tabs-container">
+                  <ul className="header-tabs tabs d-flex list-unstyled p-0 m-0">
+                    <li>
+                      <a 
+                        href="#tab-5" 
+                        className={activeTab === 'tab-5' ? 'selected' : ''}
+                        onClick={(e) => { e.preventDefault(); setActiveTab('tab-5'); }}
+                      >
+                        1080p
+                      </a>
+                    </li>
+                    <li>
+                      <a 
+                        href="#tab-4" 
+                        className={activeTab === 'tab-4' ? 'selected' : ''}
+                        onClick={(e) => { e.preventDefault(); setActiveTab('tab-4'); }}
+                      >
+                        720p
+                      </a>
+                    </li>
+                    <li>
+                      <a 
+                        href="#tab-3" 
+                        className={activeTab === 'tab-3' ? 'selected' : ''}
+                        onClick={(e) => { e.preventDefault(); setActiveTab('tab-3'); }}
+                      >
+                        480p
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-primary2 p-4" style={{ borderRadius: '6px 0 6px 6px' }}>
+                  <div className="tab-content quality" id="tab-5" style={{ display: activeTab === 'tab-5' ? 'block' : 'none' }}>
+                    <div className="qualities row flex-wrap align-items-center">
+                      <div className="col-lg-6 row " data-server="39" data-quality="5">
+                        <div className="col-lg-6 col">
+                          <a href="#" className="link-btn link-show d-flex align-items-center px-3">
+                            <span className="text">مشاهدة</span><i className="icon-play2 mr-auto"></i>
+                          </a>
+                        </div>
+                        <div className="col-lg-6 col">
+                          <a href="#" className="link-btn link-download d-flex align-items-center px-3">
+                            <span className="text">تحميل</span><span className="font-size-14 mr-auto">1.8 GB</span>
+                            <i className="icon-download mr-2"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tab-content quality" id="tab-4" style={{ display: activeTab === 'tab-4' ? 'block' : 'none' }}>
+                    <div className="qualities row flex-wrap align-items-center">
+                      <div className="col-lg-6 row " data-server="39" data-quality="4">
+                        <div className="col-lg-6 col">
+                          <a href="#" className="link-btn link-show d-flex align-items-center px-3">
+                            <span className="text">مشاهدة</span><i className="icon-play2 mr-auto"></i>
+                          </a>
+                        </div>
+                        <div className="col-lg-6 col">
+                          <a href="#" className="link-btn link-download d-flex align-items-center px-3">
+                            <span className="text">تحميل</span><span className="font-size-14 mr-auto">1.0 GB</span>
+                            <i className="icon-download mr-2"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tab-content quality" id="tab-3" style={{ display: activeTab === 'tab-3' ? 'block' : 'none' }}>
+                    <div className="qualities row flex-wrap align-items-center">
+                      <div className="col-lg-6 row " data-server="39" data-quality="3">
+                        <div className="col-lg-6 col">
+                          <a href="#" className="link-btn link-show d-flex align-items-center px-3">
+                            <span className="text">مشاهدة</span><i className="icon-play2 mr-auto"></i>
+                          </a>
+                        </div>
+                        <div className="col-lg-6 col">
+                          <a href="#" className="link-btn link-download d-flex align-items-center px-3">
+                            <span className="text">تحميل</span><span className="font-size-14 mr-auto">561.6 MB</span>
+                            <i className="icon-download mr-2"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Related Movies Section - قسم شاهد المزيد */}
+            <div className="widget-4 widget widget-style-1 more mb-4">
+              <header className="widget-header mb-4 d-flex align-items-center">
+                <h2 className="header-title font-size-18 font-weight-bold mb-0">
+                  <span className="header-link text-white">شاهد المزيد</span>
+                </h2>
+                <img src="/style/assets/images/icn-w-header.png" className="header-img" alt="icn-w-header" />
+              </header>
+              <div className="widget-body">
+                <div className="row">
+                  {/* Sample Related Movies */}
+                  {[
+                    { id: '4813', title: 'Help', rating: '8.3', quality: 'WEB-DL', image: 'https://img.downet.net/thumb/178x260/uploads/igtta.jpg' },
+                    { id: '5014', title: 'Rambo III', rating: '7.5', quality: 'BluRay', image: 'https://img.downet.net/thumb/178x260/uploads/5ek0n.jpeg' },
+                    { id: '6215', title: 'First Blood', rating: '8.1', quality: 'BluRay', image: 'https://img.downet.net/thumb/178x260/uploads/mZNr0.jpeg' },
+                    { id: '7416', title: 'Rocky', rating: '8.6', quality: 'BluRay', image: 'https://img.downet.net/thumb/178x260/uploads/nuqhQ.jpg' },
+                    { id: '8517', title: 'The Expendables', rating: '7.2', quality: 'BluRay', image: 'https://img.downet.net/thumb/178x260/uploads/ZL1w1.jpg' },
+                    { id: '9618', title: 'Creed', rating: '8.0', quality: 'BluRay', image: 'https://img.downet.net/thumb/178x260/uploads/h9rWZ.jpg' }
+                  ].map((movie, index) => (
+                    <div key={index} className="col-6 col-lg-2 col-md-4 mb-12">
+                      <div className="entry-box entry-box-1">
+                        <div className="labels d-flex">
+                          <span className="label rating"><i className="icon-star mr-2"></i>{movie.rating}</span>
+                          <span className="ml-auto"></span>
+                          <span className="label quality">{movie.quality}</span>
+                        </div>
+                        <div className="entry-image">
+                          <a href={`/movie/${movie.id}/${movie.title.toLowerCase()}`} className="box">
+                            <picture>
+                              <img src={movie.image} className="img-fluid w-100 lazy" alt={movie.title} style={{}} />
+                            </picture>
+                          </a>
+                        </div>
+                        <div className="entry-header">
+                          <div className="entry-title">
+                            <a href={`/movie/${movie.id}/${movie.title.toLowerCase()}`}>{movie.title}</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
