@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Search, Download, Plus, AlertCircle, CheckCircle } from 'lucide-react';
-import { apiRequest } from '../lib/queryClient';
+import { apiRequest } from '@/lib/queryClient';
 
 export default function TMDBDataFetcher() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,12 +12,12 @@ export default function TMDBDataFetcher() {
 
   // Import single movie from TMDB
   const importMovieMutation = useMutation({
-    mutationFn: (tmdbId: number) => apiRequest(`/api/admin/import-movie`, {
-      method: 'POST',
-      body: JSON.stringify({ tmdbId })
-    }),
-    onSuccess: (data) => {
-      setImportStatus(`✅ تم إستيراد الفيلم: ${data.movie?.title}`);
+    mutationFn: async (tmdbId: number) => {
+      const response = await apiRequest(`/api/admin/import-movie`, 'POST', { tmdbId });
+      return response;
+    },
+    onSuccess: (data: any) => {
+      setImportStatus(`✅ تم إستيراد الفيلم: ${data.movie?.title || 'فيلم جديد'}`);
       queryClient.invalidateQueries({ queryKey: ['/api/movies'] });
     },
     onError: (error: any) => {
@@ -27,12 +27,12 @@ export default function TMDBDataFetcher() {
 
   // Import popular movies
   const importPopularMutation = useMutation({
-    mutationFn: () => apiRequest(`/api/admin/import-popular`, {
-      method: 'POST',
-      body: JSON.stringify({ count: importCount })
-    }),
-    onSuccess: (data) => {
-      setImportStatus(`✅ تم إستيراد ${data.imported} فيلم، تم تخطي ${data.skipped} فيلم موجود`);
+    mutationFn: async () => {
+      const response = await apiRequest(`/api/admin/import-popular`, 'POST', { count: importCount });
+      return response;
+    },
+    onSuccess: (data: any) => {
+      setImportStatus(`✅ تم إستيراد ${data.imported || 0} فيلم، تم تخطي ${data.skipped || 0} فيلم موجود`);
       queryClient.invalidateQueries({ queryKey: ['/api/movies'] });
     },
     onError: (error: any) => {
@@ -42,9 +42,13 @@ export default function TMDBDataFetcher() {
 
   // Search TMDB
   const searchMutation = useMutation({
-    mutationFn: (query: string) => apiRequest(`/api/admin/tmdb-search?query=${encodeURIComponent(query)}`),
-    onSuccess: (data) => {
+    mutationFn: async (query: string) => {
+      const response = await apiRequest(`/api/admin/tmdb-search?query=${encodeURIComponent(query)}`, 'GET');
+      return response;
+    },
+    onSuccess: (data: any) => {
       console.log('Search results:', data);
+      setImportStatus(`✅ تم العثور على ${data.results?.length || 0} نتيجة`);
     },
     onError: (error: any) => {
       setImportStatus(`❌ خطأ في البحث: ${error.message}`);

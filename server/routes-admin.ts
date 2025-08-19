@@ -71,9 +71,7 @@ router.get('/admin/tmdb-search', async (req, res) => {
       return res.status(400).json({ message: "نص البحث مطلوب" });
     }
 
-    // Note: searchMovies method needs to be implemented in tmdbService
-    // const results = await tmdbService.searchMovies(query as string);
-    const results = { results: [] }; // Placeholder until method is implemented
+    const results = await tmdbService.searchMovies(query as string);
     res.json(results);
 
   } catch (error) {
