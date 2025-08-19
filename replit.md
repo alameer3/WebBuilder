@@ -4,7 +4,7 @@ This is a modern full-stack web application built with React, TypeScript, Expres
 
 # User Preferences
 
-Preferred communication style: Simple and everyday language.
+Preferred communication style: Simple and everyday language (Arabic preferred).
 User preference: Work independently to make the website identical to AKWAM original design. Focus on completing missing elements systematically.
 UI design approach: Use original AKWAM CSS files for an authentic design instead of recreation from scratch.
 Color scheme: Use reference AKWAM colors (#161619, #27272c, #f3951e).
