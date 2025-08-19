@@ -92,7 +92,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             category: "movie",
             quality: "HD",
             language: "ar",
-            subtitle: "ar",
+            subtitle: ["ar"],
             country: tmdbMovie.production_countries?.[0]?.name || ""
           };
           
@@ -265,22 +265,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!person) {
         try {
           // For now, return a 404 as TMDB person API is not implemented yet
-          // TODO: Implement tmdbService.getPersonDetails method
           const tmdbPerson = null;
           if (tmdbPerson) {
             // Convert TMDB data to our format and store it
-            const personData = {
-              name: tmdbPerson.name,
-              arabicName: tmdbPerson.name, // Can be translated later
-              bio: tmdbPerson.biography || '',
-              birthDate: tmdbPerson.birthday || '',
-              nationality: tmdbPerson.place_of_birth || '',
-              photo: tmdbPerson.profile_path || '',
-              knownFor: tmdbPerson.known_for_department || '',
-              popularity: tmdbPerson.popularity || 0
-            };
+            // This code is commented out since tmdbPerson is null
+            // const personData = {
+            //   name: tmdbPerson.name,
+            //   arabicName: tmdbPerson.name,
+            //   bio: tmdbPerson.biography || '',
+            //   birthDate: tmdbPerson.birthday || '',
+            //   nationality: tmdbPerson.place_of_birth || '',
+            //   photo: tmdbPerson.profile_path || '',
+            //   knownFor: tmdbPerson.known_for_department || '',
+            //   popularity: tmdbPerson.popularity || 0
+            // };
             
-            person = await storage.createPerson(personData);
+            // person = await storage.createPerson(personData);
           }
         } catch (tmdbError) {
           console.error("TMDB person fetch error:", tmdbError);

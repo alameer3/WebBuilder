@@ -20,6 +20,35 @@ export default function MovieDetail() {
     enabled: !!id
   });
 
+  // Define types for better TypeScript support
+  interface MovieData {
+    id?: string;
+    title?: string;
+    titleAr?: string;
+    description?: string;
+    year?: number;
+    poster?: string;
+    backdrop?: string;
+    posterLarge?: string;
+    genre?: string[];
+    genres?: string[];
+    voteAverage?: number;
+    imdbRating?: string;
+    certification?: string;
+    language?: string;
+    subtitle?: string[] | string;
+    quality?: string;
+    country?: string;
+    runtime?: number;
+    duration?: string;
+    addedDate?: string;
+    updatedDate?: string;
+    trailer?: string;
+    galleryThumbs?: string[];
+    gallery?: string[];
+    cast?: Array<{name: string; image: string; url: string}>;
+  }
+
   useEffect(() => {
     // تطبيق كلاسات body الأصلية
     document.body.className = 'header-fixed';
@@ -64,7 +93,7 @@ export default function MovieDetail() {
   };
 
   // Use real data if available, otherwise use static data
-  const displayData = movieData || staticMovieData;
+  const displayData: MovieData = (movieData as MovieData) || staticMovieData;
 
   if (isLoading) {
     return (
