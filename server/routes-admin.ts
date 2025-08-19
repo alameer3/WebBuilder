@@ -27,7 +27,7 @@ router.post('/admin/import-movie', async (req, res) => {
       return res.status(404).json({ message: "الفيلم غير موجود في TMDB" });
     }
 
-    // Convert to our format
+    // Convert to our format with cast and crew data
     const movieData = {
       title: tmdbMovie.title,
       originalTitle: tmdbMovie.original_title,
@@ -48,6 +48,19 @@ router.post('/admin/import-movie', async (req, res) => {
       language: "ar",
       subtitle: ["ar"],
       country: tmdbMovie.production_countries?.[0]?.name || "",
+      
+      // إضافة بيانات فريق العمل
+      director: tmdbMovie.credits?.crew?.find((c: any) => c.job === 'Director')?.name || null,
+      writer: tmdbMovie.credits?.crew?.filter((c: any) => c.job === 'Writer' || c.job === 'Screenplay')
+        .map((c: any) => c.name).join(', ') || null,
+      producer: tmdbMovie.credits?.crew?.filter((c: any) => c.job === 'Producer')
+        .map((c: any) => c.name).slice(0, 3).join(', ') || null,
+      cast: tmdbMovie.credits?.cast?.slice(0, 10).map((actor: any) => ({
+        name: actor.name,
+        character: actor.character,
+        profilePath: actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : null
+      })) || [],
+      
       isNew: true,
       isFeatured: false,
       isRecommended: false

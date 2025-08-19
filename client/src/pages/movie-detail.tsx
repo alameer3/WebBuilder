@@ -428,20 +428,34 @@ export default function MovieDetail() {
                 <img src="https://ak.sv/style/assets/images/icn-w-header.png" className="header-img" alt="" />
               </header>
               <div className="widget-body row">
-                {displayData.cast?.map((actor: any, index: number) => (
-                  <div key={index} className="col-lg-auto col-md-4 col-6 mb-12">
-                    <div className="entry-box entry-box-3 h-100">
-                      <a href={actor.url} className="box d-flex no-gutters align-items-center">
-                        <div className="col-auto">
-                          <img src={actor.image} className="img-fluid rounded-circle" alt={actor.name} />
+                {displayData.cast && displayData.cast.length > 0 ? (
+                  displayData.cast.slice(0, 10).map((actor: any, index: number) => (
+                    <div key={index} className="col-lg-auto col-md-4 col-6 mb-12">
+                      <div className="entry-box entry-box-3 h-100">
+                        <div className="box d-flex no-gutters align-items-center">
+                          <div className="col-auto">
+                            <img 
+                              src={actor.profilePath || '/api/placeholder/80/80'} 
+                              className="img-fluid rounded-circle" 
+                              alt={actor.name}
+                              style={{ width: '60px', height: '60px', objectFit: 'cover' }}
+                            />
+                          </div>
+                          <div className="col">
+                            <div className="entry-title text-white font-size-14">{actor.name}</div>
+                            {actor.character && (
+                              <div className="text-muted font-size-12">{actor.character}</div>
+                            )}
+                          </div>
                         </div>
-                        <div className="col">
-                          <div className="entry-title text-center">{actor.name}</div>
-                        </div>
-                      </a>
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="col-12">
+                    <p className="text-muted text-center">لا توجد معلومات عن فريق العمل</p>
                   </div>
-                ))}
+                )}
               </div>
             </div>
 
