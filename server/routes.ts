@@ -11,6 +11,7 @@ import {
 import { z } from "zod";
 import { tmdbService } from "./services/tmdb";
 import { dataPopulationService } from "./services/dataPopulation";
+import adminRoutes from './routes-admin';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -68,37 +69,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // First try to get from storage
       let movie = await storage.getMovieById(req.params.id);
       
-      // If not found in storage, try to fetch from TMDB
-      if (!movie) {
-        const tmdbMovie = await tmdbService.getMovieDetails(parseInt(req.params.id));
-        if (tmdbMovie) {
-          // Convert TMDB data to our format and store it
-          const movieData = {
-            title: tmdbMovie.title,
-            titleAr: tmdbMovie.title, // We can translate this later
-            originalTitle: tmdbMovie.original_title,
-            description: tmdbMovie.overview,
-            year: parseInt(tmdbMovie.release_date?.split('-')[0] || '2024'),
-            poster: tmdbMovie.poster_path || '',
-            backdrop: tmdbMovie.backdrop_path || '',
-            genre: tmdbMovie.genres?.map(g => g.name) || [],
-            voteAverage: tmdbMovie.vote_average,
-            voteCount: tmdbMovie.vote_count,
-            popularity: tmdbMovie.popularity,
-            originalLanguage: tmdbMovie.original_language,
-            adult: tmdbMovie.adult || false,
-            video: tmdbMovie.video || false,
-            runtime: tmdbMovie.runtime || 0,
-            category: "movie",
-            quality: "HD",
-            language: "ar",
-            subtitle: ["ar"],
-            country: tmdbMovie.production_countries?.[0]?.name || ""
-          };
-          
-          movie = await storage.createMovie(movieData);
-        }
-      }
+      // Movie must exist in database - if not found, return 404
+      // Content should be added through Admin Panel only
       
       if (!movie) {
         return res.status(404).json({ message: "الفيلم غير موجود" });
@@ -619,6 +591,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok", message: "YEMEN_FLIX API is running" });
   });
+
+  // Register admin routes
+  app.use("/api", adminRoutes);
 
   const server = createServer(app);
   return server;
