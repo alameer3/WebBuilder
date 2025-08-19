@@ -65,7 +65,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/movies/:id", async (req, res) => {
     try {
-      const movie = await storage.getMovieById(req.params.id);
+      // First try to get from storage
+      let movie = await storage.getMovieById(req.params.id);
+      
+      // If not found in storage, try to fetch from TMDB
+      if (!movie) {
+        const tmdbMovie = await tmdbService.getMovieDetails(parseInt(req.params.id));
+        if (tmdbMovie) {
+          // Convert TMDB data to our format and store it
+          const movieData = {
+            title: tmdbMovie.title,
+            titleAr: tmdbMovie.title, // We can translate this later
+            originalTitle: tmdbMovie.original_title,
+            description: tmdbMovie.overview,
+            year: parseInt(tmdbMovie.release_date?.split('-')[0] || '2024'),
+            poster: tmdbMovie.poster_path || '',
+            backdrop: tmdbMovie.backdrop_path || '',
+            genre: tmdbMovie.genres?.map(g => g.name) || [],
+            voteAverage: tmdbMovie.vote_average,
+            voteCount: tmdbMovie.vote_count,
+            popularity: tmdbMovie.popularity,
+            originalLanguage: tmdbMovie.original_language,
+            adult: tmdbMovie.adult || false,
+            video: tmdbMovie.video || false,
+            runtime: tmdbMovie.runtime || 0,
+            category: "movie",
+            quality: "HD",
+            language: "ar",
+            subtitle: "ar",
+            country: tmdbMovie.production_countries?.[0]?.name || ""
+          };
+          
+          movie = await storage.createMovie(movieData);
+        }
+      }
+      
       if (!movie) {
         return res.status(404).json({ message: "الفيلم غير موجود" });
       }
@@ -224,7 +258,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/people/:id", async (req, res) => {
     try {
-      const person = await storage.getPersonById(req.params.id);
+      // First try to get from storage
+      let person = await storage.getPersonById(req.params.id);
+      
+      // If not found in storage, try to fetch from TMDB
+      if (!person) {
+        try {
+          // For now, return a 404 as TMDB person API is not implemented yet
+          // TODO: Implement tmdbService.getPersonDetails method
+          const tmdbPerson = null;
+          if (tmdbPerson) {
+            // Convert TMDB data to our format and store it
+            const personData = {
+              name: tmdbPerson.name,
+              arabicName: tmdbPerson.name, // Can be translated later
+              bio: tmdbPerson.biography || '',
+              birthDate: tmdbPerson.birthday || '',
+              nationality: tmdbPerson.place_of_birth || '',
+              photo: tmdbPerson.profile_path || '',
+              knownFor: tmdbPerson.known_for_department || '',
+              popularity: tmdbPerson.popularity || 0
+            };
+            
+            person = await storage.createPerson(personData);
+          }
+        } catch (tmdbError) {
+          console.error("TMDB person fetch error:", tmdbError);
+        }
+      }
+      
       if (!person) {
         return res.status(404).json({ message: "الشخص غير موجود" });
       }

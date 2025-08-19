@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
 import VideoPlayer from '../components/VideoPlayer';
 import ServerLinks from '../components/ServerLinks';
 
@@ -13,6 +14,12 @@ export default function MovieDetail() {
   const [userRating, setUserRating] = useState<'like' | 'dislike' | null>(null);
   const [activeTab, setActiveTab] = useState('tab-5'); // التبويب النشط للجودات
 
+  // Fetch movie data from API
+  const { data: movieData, isLoading, error } = useQuery({
+    queryKey: ['/api/movies', id],
+    enabled: !!id
+  });
+
   useEffect(() => {
     // تطبيق كلاسات body الأصلية
     document.body.className = 'header-fixed';
@@ -22,8 +29,8 @@ export default function MovieDetail() {
     };
   }, []);
 
-  // بيانات الفيلم - مطابقة للتصميم الأصلي
-  const movieData = {
+  // بيانات الفيلم الثابتة كاحتياطي - مطابقة للتصميم الأصلي
+  const staticMovieData = {
     title: "Rambo: First Blood Part II",
     imdbRating: "10 / 6.5",
     year: 1985,
@@ -55,6 +62,31 @@ export default function MovieDetail() {
     addedDate: "السبت 11 01 2020 - 08:45 مساءاً",
     updatedDate: "الخميس 02 07 2020 - 03:28 مساءاً"
   };
+
+  // Use real data if available, otherwise use static data
+  const displayData = movieData || staticMovieData;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#161619] text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <p className="text-xl">جاري تحميل بيانات الفيلم...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#161619] text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">خطأ في تحميل الفيلم</h1>
+          <p className="text-gray-400">حدث خطأ أثناء تحميل بيانات الفيلم. يرجى المحاولة لاحقاً.</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleRating = (type: 'like' | 'dislike') => {
     if (userRating === type) {
@@ -224,56 +256,56 @@ export default function MovieDetail() {
           {/* Movie Cover مع SVG blur effect */}
           <div className="movie-cover mb-4 without-cover">
             <svg>
-              <image x="0" y="0" filter="url(#blur-effect-1)" xlinkHref={movieData.backdrop}></image>
+              <image x="0" y="0" filter="url(#blur-effect-1)" xlinkHref={displayData.backdrop}></image>
             </svg>
             <div className="container">
               <div className="row py-4">
                 {/* Movie Poster */}
                 <div className="col-lg-3 col-md-4 text-center mb-5 mb-md-0">
-                  <a href={movieData.posterLarge} data-fancybox="">
+                  <a href={displayData.posterLarge} data-fancybox="">
                     <picture>
-                      <img src={movieData.poster} className="img-fluid" alt={movieData.title} />
+                      <img src={displayData.poster} className="img-fluid" alt={displayData.title} />
                     </picture>
                   </a>
                 </div>
 
                 {/* Movie Info */}
                 <div className="col-lg-7 pr-lg-4 col-md-5 col-sm-8 mb-4 mb-sm-0 px-4 px-sm-0">
-                  <h1 className="entry-title font-size-28 font-weight-bold text-white mb-0">{movieData.title}</h1>
+                  <h1 className="entry-title font-size-28 font-weight-bold text-white mb-0">{displayData.title}</h1>
                   
                   <div className="font-size-16 text-white mt-2 d-flex align-items-center">
                     <a href={`https://www.imdb.com/title/tt0089880/?ref_=nv_sr_srsg_0`} rel="nofollow" target="_blank">
                       <img src="https://ak.sv/style/assets/images/imdb.png" alt="IMDB" />
                     </a>
-                    <span className="mx-2">{movieData.imdbRating}</span>
+                    <span className="mx-2">{displayData.voteAverage || displayData.imdbRating}</span>
                     <i className="icon-star text-orange"></i>
-                    <span className="badge badge-pill badge-info font-size-14 mr-3">{movieData.certification}</span>
+                    <span className="badge badge-pill badge-info font-size-14 mr-3">{displayData.certification}</span>
                   </div>
                   
-                  <div className="font-size-16 text-white mt-2"><span>اللغة : {movieData.language}</span></div>
-                  <div className="font-size-16 text-white mt-2"><span>الترجمة : {movieData.subtitle}</span></div>
-                  <div className="font-size-16 text-white mt-2"><span>جودة الفيلم : {movieData.quality}</span></div>
-                  <div className="font-size-16 text-white mt-2"><span> انتاج : {movieData.country}</span></div>
-                  <div className="font-size-16 text-white mt-2"><span> السنة : {movieData.year}</span></div>
-                  <div className="font-size-16 text-white mt-2"><span>مدة الفيلم : {movieData.duration}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>اللغة : {displayData.language}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>الترجمة : {displayData.subtitle}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>جودة الفيلم : {displayData.quality}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span> انتاج : {displayData.country}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span> السنة : {displayData.year}</span></div>
+                  <div className="font-size-16 text-white mt-2"><span>مدة الفيلم : {displayData.runtime ? `${displayData.runtime} دقيقة` : displayData.duration}</span></div>
                   
                   <div className="font-size-16 d-flex align-items-center mt-3">
-                    {movieData.genres.map((genre, index) => (
+                    {(displayData.genre || displayData.genres)?.map((genre: any, index: number) => (
                       <a key={index} href={`/movies?category=${genre}`} className="badge badge-pill badge-light ml-2">{genre}</a>
                     ))}
                   </div>
                   
                   <div className="font-size-14 text-muted mt-3">
-                    <span>تـ الإضافة : {movieData.addedDate}</span>
+                    <span>تـ الإضافة : {displayData.addedDate || new Date(displayData.addedDate || Date.now()).toLocaleDateString('ar-SA')}</span>
                   </div>
                   <div className="font-size-14 text-muted">
-                    <span>تـ اخر تحديث : {movieData.updatedDate}</span>
+                    <span>تـ اخر تحديث : {displayData.updatedDate || new Date(displayData.updatedDate || Date.now()).toLocaleDateString('ar-SA')}</span>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="col-lg-2 col-md-3 col-sm-4 d-flex flex-column px-4 px-sm-0">
-                  <a href={movieData.trailer} className="btn btn-light btn-pill d-flex align-items-center" data-fancybox="">
+                  <a href={displayData.trailer} className="btn btn-light btn-pill d-flex align-items-center" data-fancybox="">
                     <span className="font-size-18 font-weight-medium">الاعلان</span>
                     <i className="icon-play2 font-size-20 mr-auto"></i>
                   </a>
@@ -345,13 +377,13 @@ export default function MovieDetail() {
               <div className="widget-body">
                 <h2>
                   <div className="text-white font-size-18" style={{ lineHeight: '1.7' }}>
-                    {movieData.title} <p>{movieData.description}</p>
+                    {displayData.title} <p>{displayData.description}</p>
                   </div>
                 </h2>
                 <div className="d-flex">
-                  {movieData.galleryThumbs.map((thumb, index) => (
-                    <a key={index} href={movieData.gallery[index]} data-fancybox="movie-gallery" className="ml-12">
-                      <img src={thumb} className="img-fluid" alt={`${movieData.title} undefined`} />
+                  {displayData.galleryThumbs?.map((thumb: any, index: number) => (
+                    <a key={index} href={displayData.gallery?.[index]} data-fancybox="movie-gallery" className="ml-12">
+                      <img src={thumb} className="img-fluid" alt={`${displayData.title} gallery ${index}`} />
                     </a>
                   ))}
                 </div>
@@ -367,7 +399,7 @@ export default function MovieDetail() {
                 <img src="https://ak.sv/style/assets/images/icn-w-header.png" className="header-img" alt="" />
               </header>
               <div className="widget-body row">
-                {movieData.cast.map((actor, index) => (
+                {displayData.cast?.map((actor: any, index: number) => (
                   <div key={index} className="col-lg-auto col-md-4 col-6 mb-12">
                     <div className="entry-box entry-box-3 h-100">
                       <a href={actor.url} className="box d-flex no-gutters align-items-center">
