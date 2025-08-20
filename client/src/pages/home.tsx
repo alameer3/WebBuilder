@@ -39,7 +39,7 @@ export default function Home() {
     const homeStyle = document.createElement('style');
     homeStyle.textContent = `
       body { 
-        background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(/src/assets/images/home-bg.webp) !important;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(/client/src/assets/images/home-bg.webp) !important;
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -68,13 +68,13 @@ export default function Home() {
     scriptTag.textContent = JSON.stringify(breadcrumbSchema);
     document.head.appendChild(scriptTag);
     
-    // تحميل jQuery أولاً
+    // تحميل jQuery أولاً من CDN
     const jqueryScript = document.createElement('script');
-    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
+    jqueryScript.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
     jqueryScript.onload = () => {
-      // تحميل Typed.js
+      // تحميل Typed.js من CDN
       const typedScript = document.createElement('script');
-      typedScript.src = '/src/assets/js/typed.min.js';
+      typedScript.src = 'https://cdn.jsdelivr.net/npm/typed.js@2.0.12';
       typedScript.onload = () => {
         setTimeout(() => {
           if (window.Typed && window.$) {
@@ -100,12 +100,16 @@ export default function Home() {
               }
             };
 
-            // تفعيل Typed.js الأصلي
-            if ($('.widget-2').length) {
-              new window.Typed('.widget-2 .form label[for="widget2SearchInput"] span', {
-                stringsElement: ".widget-2 .form .label-text",
-                typeSpeed: 30
-              });
+            // تفعيل Typed.js - تحقق من الكائن أولاً
+            if (window.Typed && $('.widget-2').length) {
+              try {
+                new window.Typed('.widget-2 .form label[for="widget2SearchInput"] span', {
+                  stringsElement: ".widget-2 .form .label-text",
+                  typeSpeed: 30
+                });
+              } catch (e) {
+                console.log('Typed.js initialization skipped');
+              }
             }
 
             $(document).ready(() => {
@@ -149,9 +153,13 @@ export default function Home() {
           }
         }, 1000);
       };
-      document.head.appendChild(typedScript);
+      if (typedScript.src) {
+        document.head.appendChild(typedScript);
+      }
     };
-    document.head.appendChild(jqueryScript);
+    if (jqueryScript.src) {
+      document.head.appendChild(jqueryScript);
+    }
 
     return () => {
       document.body.className = '';
@@ -354,7 +362,7 @@ export default function Home() {
                 <h2 className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">أضيف حديثا</span>
                 </h2>
-                <img src="/style/assets/images/icn-w-header.png" className="header-img" alt="icn-w-header" />
+                <img src="/client/src/assets/images/icn-w-header.png" className="header-img" alt="icn-w-header" />
               </header>
               <div className="widget-body">
                 <div className="row">
@@ -368,7 +376,7 @@ export default function Home() {
                         </div>
                         <a href={`/movie/${item}`}>
                           <div className="entry-image">
-                            <div className="image" style={{ backgroundImage: 'url("https://img.downet.net/thumb/178x260/uploads/default.jpg")' }}></div>
+                            <div className="image" style={{ backgroundImage: 'url("/client/src/assets/images/default.jpg")' }}></div>
                             <div className="entry-overlay">
                               <div className="overlay-content">
                                 <div className="entry-title">فيلم {item}</div>
@@ -414,11 +422,7 @@ export default function Home() {
 
         {/* TMDB Data Management */}
         <div className="container mt-5">
-          <TMDBDataFetcher 
-            onDataFetched={() => {
-              refetchMovies();
-            }}
-          />
+          <TMDBDataFetcher />
 
           {/* Movies Grid */}
           {moviesData && moviesData.length > 0 && (
