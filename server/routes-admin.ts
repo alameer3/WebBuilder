@@ -49,17 +49,16 @@ router.post('/admin/import-movie', async (req, res) => {
       subtitle: ["ar"],
       country: tmdbMovie.production_countries?.[0]?.name || "",
       
-      // إضافة بيانات فريق العمل
-      director: tmdbMovie.credits?.crew?.find((c: any) => c.job === 'Director')?.name || null,
+      // إضافة بيانات فريق العمل كـ arrays من strings
+      director: tmdbMovie.credits?.crew?.filter((c: any) => c.job === 'Director')
+        .map((c: any) => c.name) || [],
       writer: tmdbMovie.credits?.crew?.filter((c: any) => c.job === 'Writer' || c.job === 'Screenplay')
-        .map((c: any) => c.name).join(', ') || null,
+        .map((c: any) => c.name) || [],
       producer: tmdbMovie.credits?.crew?.filter((c: any) => c.job === 'Producer')
-        .map((c: any) => c.name).slice(0, 3).join(', ') || null,
-      cast: tmdbMovie.credits?.cast?.slice(0, 10).map((actor: any) => ({
-        name: actor.name,
-        character: actor.character,
-        profilePath: actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : null
-      })) || [],
+        .map((c: any) => c.name).slice(0, 3) || [],
+      cast: tmdbMovie.credits?.cast?.slice(0, 10).map((actor: any) => 
+        `${actor.name} (${actor.character})`
+      ) || [],
       
       isNew: true,
       isFeatured: false,

@@ -24,7 +24,7 @@ export default function Series() {
   });
 
   // جلب المسلسلات من API بدلاً من البيانات الثابتة
-  const { data: seriesData, isLoading, error } = useQuery({
+  const { data: seriesData = [], isLoading, error } = useQuery({
     queryKey: ['/api/series'],
     select: (data: any) => data || []
   });
@@ -119,6 +119,31 @@ export default function Series() {
 
         {/* Series List Content */}
         <div className="container">
+          {isLoading && (
+            <div className="text-center py-5">
+              <div className="spinner-border text-orange" role="status">
+                <span className="sr-only">جاري التحميل...</span>
+              </div>
+              <p className="mt-3 text-muted">جاري تحميل المسلسلات...</p>
+            </div>
+          )}
+          
+          {error && (
+            <div className="alert alert-danger text-center">
+              خطأ في تحميل المسلسلات. يرجى المحاولة مرة أخرى.
+            </div>
+          )}
+          
+          {!isLoading && !error && seriesData.length === 0 && (
+            <div className="text-center py-5">
+              <div className="empty-state">
+                <i className="icon-monitor display-1 text-muted mb-3"></i>
+                <h3 className="text-muted">لا توجد مسلسلات متاحة حالياً</h3>
+                <p className="text-muted">سيتم إضافة المحتوى قريباً</p>
+              </div>
+            </div>
+          )}
+          
           <div className="row">
             {seriesData.map((series: any) => (
               <div key={series.id} className="col-lg-2 col-md-3 col-sm-4 col-6">

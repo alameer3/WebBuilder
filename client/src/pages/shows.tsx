@@ -27,7 +27,7 @@ export default function Shows() {
   });
 
   // جلب البرامج من API
-  const { data: shows, isLoading } = useQuery({
+  const { data: shows = [], isLoading, error } = useQuery({
     queryKey: ['/api/shows'],
     select: (data: any) => data || []
   });
@@ -175,13 +175,32 @@ export default function Shows() {
           </div>
 
           <div className="container">
-            {isLoading ? (
+            {isLoading && (
               <div className="text-center py-5">
-                <div className="spinner-border text-warning" role="status">
-                  <span className="sr-only">Loading...</span>
+                <div className="spinner-border text-orange" role="status">
+                  <span className="sr-only">جاري التحميل...</span>
+                </div>
+                <p className="mt-3 text-muted">جاري تحميل البرامج...</p>
+              </div>
+            )}
+            
+            {error && (
+              <div className="alert alert-danger text-center">
+                خطأ في تحميل البرامج. يرجى المحاولة مرة أخرى.
+              </div>
+            )}
+            
+            {!isLoading && !error && shows.length === 0 && (
+              <div className="text-center py-5">
+                <div className="empty-state">
+                  <i className="icon-tv display-1 text-muted mb-3"></i>
+                  <h3 className="text-muted">لا توجد برامج متاحة حالياً</h3>
+                  <p className="text-muted">سيتم إضافة المحتوى قريباً</p>
                 </div>
               </div>
-            ) : (
+            )}
+            
+            {!isLoading && !error && shows.length > 0 && (
               <div className="widget widget-style-1 mb-4" data-grid="6">
                 <div className="widget-body">
                   <div className="row">

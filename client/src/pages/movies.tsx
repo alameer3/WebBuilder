@@ -225,8 +225,23 @@ export default function Movies() {
 
           {/* Movies Grid */}
           <div className="container">
+            {isLoading && (
+              <div className="text-center py-5">
+                <div className="spinner-border text-orange" role="status">
+                  <span className="sr-only">جاري التحميل...</span>
+                </div>
+                <p className="mt-3 text-muted">جاري تحميل الأفلام...</p>
+              </div>
+            )}
+            
+            {error && (
+              <div className="alert alert-danger text-center">
+                خطأ في تحميل الأفلام. يرجى المحاولة مرة أخرى.
+              </div>
+            )}
+            
             <div className="row">
-              {filteredMovies.length > 0 ? (
+              {!isLoading && !error && filteredMovies.length > 0 ? (
                 filteredMovies.map((movie: Movie) => (
                   <div key={movie.id} className="col-lg-2 col-md-3 col-sm-4 col-6">
                     <div className="post-item">
@@ -277,11 +292,12 @@ export default function Movies() {
                     </div>
                   </div>
                 ))
-              ) : (
+              ) : !isLoading && !error && (
                 <div className="col-12 text-center py-5">
-                  <div className="alert alert-info">
-                    <h4>لا توجد أفلام متاحة حالياً</h4>
-                    <p>يرجى المحاولة لاحقاً أو تعديل الفلاتر</p>
+                  <div className="empty-state">
+                    <i className="icon-video-camera display-1 text-muted mb-3"></i>
+                    <h3 className="text-muted">لا توجد أفلام متاحة حالياً</h3>
+                    <p className="text-muted">يرجى تعديل الفلاتر أو المحاولة لاحقاً</p>
                   </div>
                 </div>
               )}
