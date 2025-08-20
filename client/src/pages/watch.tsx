@@ -1,266 +1,343 @@
-import { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'wouter';
-import { ArrowRight, Download, Share2, ThumbsUp, ThumbsDown, Star } from 'lucide-react';
-import VideoPlayer from '../components/VideoPlayer';
+// صفحة المشاهدة - مطابقة لـ ak.sv تماماً
+import { useEffect, useState, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useParams, Link } from 'wouter';
+import { Play, Pause, Volume2, VolumeX, Maximize, Settings, Download, Share2, Heart, ThumbsUp } from 'lucide-react';
 
-export default function WatchPage() {
-  const { id } = useParams();
-  const [location] = useLocation();
-  const urlParams = new URLSearchParams(location.split('?')[1] || '');
-  const server = urlParams.get('server') || 'yemenflix';
-  const quality = urlParams.get('quality') || '1080p';
+// استيراد CSS الأصلي
+import '../assets/css/plugins.css';
+import '../assets/css/style.css';  
+import '../assets/css/akwam.css';
+
+export default function Watch() {
+  const params = useParams();
+  const movieId = params.id;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [quality, setQuality] = useState('1080p');
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showControls, setShowControls] = useState(true);
+
+  // جلب تفاصيل الفيلم
+  const { data: movieResponse, isLoading } = useQuery({
+    queryKey: ['/api/movies', movieId],
+    enabled: !!movieId
+  });
+
+  const movie = Array.isArray(movieResponse) ? 
+    movieResponse.find((m: any) => m.id === movieId) : 
+    (movieResponse as any)?.movies?.find((m: any) => m.id === movieId) || 
+    movieResponse;
 
   useEffect(() => {
+    // تطبيق كلاسات body للمشاهدة
     document.body.className = 'header-fixed body-watch';
+    
+    if (movie) {
+      document.title = `مشاهدة ${movie.title} | يمن فليكس`;
+    }
+
+    // إخفاء الكنترولز تلقائياً
+    const hideControlsTimer = setTimeout(() => {
+      setShowControls(false);
+    }, 3000);
+
+    return () => clearTimeout(hideControlsTimer);
+  }, [movie]);
+
+  // مراقبة أحداث الفيديو
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => setCurrentTime(video.currentTime);
+    const handleDurationChange = () => setDuration(video.duration);
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    video.addEventListener('durationchange', handleDurationChange);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+
     return () => {
-      document.body.className = '';
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('durationchange', handleDurationChange);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
     };
   }, []);
 
-  // بيانات الفيلم (في الوضع الحقيقي ستأتي من API)
-  const movieData = {
-    id: id,
-    title: "فارس الظلام",
-    originalTitle: "The Dark Knight",
-    year: 2008,
-    duration: "152 دقيقة",
-    rating: 9.0,
-    poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-    backdrop: "https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/hqkIcbrOHL86UncnHIsHVcVmzue.jpg"
-  };
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
 
-  // مصادر الفيديو حسب السيرفر والجودة
-  const videoSources = [
-    {
-      quality: '4K',
-      url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
-      size: '8.5 GB'
-    },
-    {
-      quality: '1080p',
-      url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
-      size: '2.1 GB'
-    },
-    {
-      quality: '720p',
-      url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
-      size: '1.2 GB'
-    },
-    {
-      quality: '480p',
-      url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
-      size: '650 MB'
-    }
-  ];
-
-  const downloadLinks = [
-    {
-      quality: '4K',
-      url: `/download/${id}?quality=4k`,
-      size: '8.5 GB'
-    },
-    {
-      quality: '1080p',
-      url: `/download/${id}?quality=1080p`,
-      size: '2.1 GB'
-    },
-    {
-      quality: '720p',
-      url: `/download/${id}?quality=720p`,
-      size: '1.2 GB'
-    },
-    {
-      quality: '480p',
-      url: `/download/${id}?quality=480p`,
-      size: '650 MB'
-    }
-  ];
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: movieData.title,
-        text: `شاهد ${movieData.title} على يمن فليكس`,
-        url: window.location.href
-      });
+    if (isPlaying) {
+      video.pause();
     } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('تم نسخ الرابط');
+      video.play();
     }
   };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const newVolume = parseFloat(e.target.value);
+    video.volume = newVolume;
+    setVolume(newVolume);
+    setIsMuted(newVolume === 0);
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const seekTime = (parseFloat(e.target.value) / 100) * duration;
+    video.currentTime = seekTime;
+    setCurrentTime(seekTime);
+  };
+
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    } else {
+      videoRef.current?.requestFullscreen();
+      setIsFullscreen(true);
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  if (isLoading) {
+    return (
+      <div className="watch-container loading">
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+          <p>جاري تحضير الفيديو...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <div className="watch-container error">
+        <div className="error-message">
+          <h3>خطأ في تحميل الفيديو</h3>
+          <Link href="/movies" className="btn btn-primary">العودة للأفلام</Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#161619] text-white">
-      {/* Header */}
-      <header className="bg-[#27272c] border-b border-gray-700 p-4">
-        <div className="container mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-4 rtl:space-x-reverse">
-            <a
-              href={`/movie/${id}`}
-              className="flex items-center space-x-2 rtl:space-x-reverse text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowRight size={20} />
-              <span>العودة لتفاصيل الفيلم</span>
-            </a>
-          </div>
+    <div className="watch-container">
+      {/* Video Player */}
+      <div 
+        className={`video-player-wrapper ${isFullscreen ? 'fullscreen' : ''}`}
+        onMouseMove={() => setShowControls(true)}
+        onMouseLeave={() => setShowControls(false)}
+      >
+        <video
+          ref={videoRef}
+          className="main-video"
+          poster={movie.backdrop || movie.poster}
+          onClick={togglePlay}
+        >
+          <source src={`/api/video/${movie.id}?quality=${quality}`} type="video/mp4" />
+          <track kind="subtitles" src={`/api/subtitles/${movie.id}`} srcLang="ar" label="العربية" default />
+          المتصفح لا يدعم تشغيل الفيديو
+        </video>
 
-          <div className="flex items-center space-x-4 rtl:space-x-reverse">
-            <div className="text-right">
-              <h1 className="text-xl font-bold text-white">{movieData.title}</h1>
-              <div className="text-sm text-gray-400">
-                {movieData.year} • {movieData.duration} • 
-                <span className="inline-flex items-center mr-2">
-                  <Star size={14} className="text-yellow-500 mr-1" />
-                  {movieData.rating}
-                </span>
-              </div>
+        {/* Video Controls Overlay */}
+        <div className={`video-controls-overlay ${showControls ? 'show' : 'hide'}`}>
+          {/* Top Controls */}
+          <div className="video-controls-top">
+            <div className="video-title">
+              <h4>{movie.title}</h4>
+              <p>الجودة: {quality}</p>
             </div>
-
-            <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <button
-                onClick={handleShare}
-                className="p-2 bg-[#161619] hover:bg-[#f3951e] rounded-lg transition-colors"
-                title="مشاركة"
-              >
-                <Share2 size={18} />
+            <div className="video-actions">
+              <button className="control-btn" title="المفضلة">
+                <Heart size={20} />
               </button>
-              <a
-                href={downloadLinks.find(l => l.quality === quality)?.url}
-                className="p-2 bg-[#161619] hover:bg-[#f3951e] rounded-lg transition-colors"
-                title="تحميل"
-              >
-                <Download size={18} />
-              </a>
+              <button className="control-btn" title="مشاركة">
+                <Share2 size={20} />
+              </button>
+              <button className="control-btn" title="تحميل">
+                <Download size={20} />
+              </button>
             </div>
           </div>
-        </div>
-      </header>
 
-      {/* Video Player Section */}
-      <main className="container mx-auto py-6 px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Video Player */}
-          <div className="lg:col-span-3">
-            <div className="bg-[#27272c] rounded-lg p-4">
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-lg font-semibold">الآن تشاهد: {movieData.title}</h2>
-                  <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm text-gray-400">
-                    <span>السيرفر: {server}</span>
-                    <span>•</span>
-                    <span>الجودة: {quality}</span>
-                  </div>
-                </div>
-              </div>
+          {/* Center Play Button */}
+          {!isPlaying && (
+            <div className="video-center-control">
+              <button className="play-btn-large" onClick={togglePlay}>
+                <Play size={48} />
+              </button>
+            </div>
+          )}
 
-              <VideoPlayer
-                movieId={id || '1'}
-                title={movieData.title}
-                poster={movieData.poster}
-                sources={videoSources}
-                downloadLinks={downloadLinks}
+          {/* Bottom Controls */}
+          <div className="video-controls-bottom">
+            {/* Progress Bar */}
+            <div className="progress-container">
+              <input
+                type="range"
+                className="progress-bar"
+                min="0"
+                max="100"
+                value={duration ? (currentTime / duration) * 100 : 0}
+                onChange={handleSeek}
               />
+              <div className="time-display">
+                <span>{formatTime(currentTime)}</span>
+                <span>/</span>
+                <span>{formatTime(duration)}</span>
+              </div>
+            </div>
 
-              {/* Player Info */}
-              <div className="mt-4 p-4 bg-[#161619] rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                      <button className="flex items-center space-x-1 rtl:space-x-reverse px-3 py-1 bg-[#27272c] hover:bg-[#f3951e] rounded-lg transition-colors">
-                        <ThumbsUp size={16} />
-                        <span>أعجبني</span>
-                      </button>
-                      <button className="flex items-center space-x-1 rtl:space-x-reverse px-3 py-1 bg-[#27272c] hover:bg-red-600 rounded-lg transition-colors">
-                        <ThumbsDown size={16} />
-                        <span>لم يعجبني</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="text-sm text-gray-400">
-                    عدد المشاهدات: 12,456 • تاريخ الإضافة: 2025/01/15
-                  </div>
+            {/* Control Buttons */}
+            <div className="controls-row">
+              <div className="left-controls">
+                <button className="control-btn" onClick={togglePlay}>
+                  {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+                </button>
+                
+                <div className="volume-control">
+                  <button className="control-btn" onClick={toggleMute}>
+                    {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                  </button>
+                  <input
+                    type="range"
+                    className="volume-slider"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                  />
                 </div>
+              </div>
+
+              <div className="right-controls">
+                <div className="quality-selector">
+                  <select 
+                    value={quality} 
+                    onChange={(e) => setQuality(e.target.value)}
+                    className="quality-select"
+                  >
+                    <option value="480p">480p</option>
+                    <option value="720p">720p</option>
+                    <option value="1080p">1080p</option>
+                    <option value="1440p">1440p</option>
+                    <option value="4K">4K</option>
+                  </select>
+                </div>
+                
+                <button className="control-btn" title="الإعدادات">
+                  <Settings size={20} />
+                </button>
+                
+                <button className="control-btn" onClick={toggleFullscreen}>
+                  <Maximize size={20} />
+                </button>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="space-y-6">
-              {/* Server Selection */}
-              <div className="bg-[#27272c] rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-4">تغيير السيرفر</h3>
-                <div className="space-y-2">
-                  {[
-                    { id: 'yemenflix', name: 'يمن فليكس', status: 'online' },
-                    { id: 'arab', name: 'سيرفر العرب', status: 'online' },
-                    { id: 'mycima', name: 'MyCima', status: 'online' },
-                    { id: 'faselhd', name: 'FaselHD', status: 'maintenance' }
-                  ].map((srv) => (
-                    <a
-                      key={srv.id}
-                      href={`/watch/${id}?server=${srv.id}&quality=${quality}`}
-                      className={`block p-3 rounded-lg transition-colors ${
-                        server === srv.id
-                          ? 'bg-[#f3951e] text-white'
-                          : srv.status === 'online'
-                          ? 'bg-[#161619] hover:bg-[#f3951e] text-gray-300 hover:text-white'
-                          : 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span>{srv.name}</span>
-                        <span className={`w-2 h-2 rounded-full ${
-                          srv.status === 'online' ? 'bg-green-500' : 'bg-red-500'
-                        }`}></span>
-                      </div>
-                    </a>
+      {/* Movie Info Below Video */}
+      <div className="watch-info-section">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8">
+              <div className="movie-watch-info">
+                <h2>{movie.title}</h2>
+                {movie.originalTitle && (
+                  <h3 className="original-title">{movie.originalTitle}</h3>
+                )}
+                
+                <div className="movie-meta">
+                  <span className="year">{movie.year}</span>
+                  <span className="duration">{movie.duration} دقيقة</span>
+                  <span className="rating">⭐ {movie.rating}/10</span>
+                  <span className="quality">{movie.quality}</span>
+                </div>
+
+                <div className="movie-genres">
+                  {movie.genre?.map((g: string, index: number) => (
+                    <span key={index} className="genre-tag">{g}</span>
                   ))}
                 </div>
-              </div>
 
-              {/* Quality Selection */}
-              <div className="bg-[#27272c] rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-4">تغيير الجودة</h3>
-                <div className="space-y-2">
-                  {['4K', '1080p', '720p', '480p'].map((qual) => (
-                    <a
-                      key={qual}
-                      href={`/watch/${id}?server=${server}&quality=${qual}`}
-                      className={`block p-3 rounded-lg transition-colors ${
-                        quality === qual
-                          ? 'bg-[#f3951e] text-white'
-                          : 'bg-[#161619] hover:bg-[#f3951e] text-gray-300 hover:text-white'
-                      }`}
-                    >
-                      {qual}
-                    </a>
-                  ))}
+                <p className="movie-description">{movie.description}</p>
+
+                <div className="movie-crew">
+                  <div className="crew-item">
+                    <strong>المخرج:</strong> {movie.director?.join(', ')}
+                  </div>
+                  <div className="crew-item">
+                    <strong>الممثلون:</strong> {movie.cast?.slice(0, 5).join(', ')}
+                  </div>
+                </div>
+
+                {/* User Actions */}
+                <div className="user-actions">
+                  <button className="action-btn like-btn">
+                    <ThumbsUp size={16} />
+                    أعجبني ({movie.likeCount || 0})
+                  </button>
+                  <button className="action-btn favorite-btn">
+                    <Heart size={16} />
+                    المفضلة
+                  </button>
+                  <button className="action-btn share-btn">
+                    <Share2 size={16} />
+                    مشاركة
+                  </button>
                 </div>
               </div>
+            </div>
 
-              {/* Movie Info */}
-              <div className="bg-[#27272c] rounded-lg p-4">
-                <img
-                  src={movieData.poster}
-                  alt={movieData.title}
-                  className="w-full rounded-lg mb-4"
-                />
-                <h3 className="font-semibold mb-2">{movieData.title}</h3>
-                <div className="text-sm text-gray-400 space-y-1">
-                  <div>السنة: {movieData.year}</div>
-                  <div>المدة: {movieData.duration}</div>
-                  <div className="flex items-center">
-                    <Star size={14} className="text-yellow-500 mr-1" />
-                    التقييم: {movieData.rating}
+            {/* Sidebar with recommendations */}
+            <div className="col-lg-4">
+              <div className="recommendations-sidebar">
+                <h5>مقترحات أخرى</h5>
+                {/* يمكن إضافة أفلام مقترحة هنا */}
+                <div className="recommendation-item">
+                  <img src="/placeholder-poster.jpg" alt="فيلم مقترح" />
+                  <div className="recommendation-info">
+                    <h6>فيلم مقترح</h6>
+                    <p>2023 • ⭐ 8.5</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

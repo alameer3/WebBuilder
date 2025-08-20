@@ -149,6 +149,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get single movie/series/show by ID
+  app.get("/api/movies/:id", async (req, res) => {
+    try {
+      const movie = await storage.getMovieById(req.params.id);
+      if (!movie) {
+        return res.status(404).json({ error: "المحتوى غير موجود" });
+      }
+      
+      // Update view count
+      await storage.updateMovieViews(req.params.id);
+      res.json(movie);
+    } catch (error) {
+      console.error("Get movie by ID error:", error);
+      res.status(500).json({ error: "خطأ في جلب تفاصيل المحتوى" });
+    }
+  });
+
   app.get("/api/series/:id", async (req, res) => {
     try {
       const series = await storage.getMovieById(req.params.id);
