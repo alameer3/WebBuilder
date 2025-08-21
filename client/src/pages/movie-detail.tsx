@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'wouter';
-import { Heart, Download, Play, Star, ThumbsUp, ThumbsDown, Share2, Eye } from 'lucide-react';
+import { Heart, Download, Play, Star, ThumbsUp, ThumbsDown, Share2, Eye, User } from 'lucide-react';
 
 // استيراد CSS الأصلي
 import '../assets/css/plugins.css';
@@ -338,16 +338,67 @@ export default function MovieDetail() {
                   <div className="row">
                     <div className="col-md-6">
                       <h6>المخرج:</h6>
-                      <p>{movie.director?.join(', ') || 'غير محدد'}</p>
+                      <p>{movie.director && movie.director.length > 0 
+                          ? movie.director.map((dir: any) => 
+                              typeof dir === 'string' ? dir : dir.name
+                            ).join(', ')
+                          : 'غير محدد'
+                        }</p>
                     </div>
                     <div className="col-md-6">
                       <h6>الكاتب:</h6>
-                      <p>{movie.writer?.join(', ') || 'غير محدد'}</p>
+                      <p>{movie.writer && movie.writer.length > 0 
+                          ? movie.writer.map((writer: any) => 
+                              typeof writer === 'string' ? writer : writer.name
+                            ).join(', ')
+                          : 'غير محدد'
+                        }</p>
                     </div>
                   </div>
                   <div className="cast-section">
                     <h6>الممثلون:</h6>
-                    <p>{movie.cast?.join(', ') || 'غير محدد'}</p>
+                    <div className="cast-grid row">
+                      {movie.cast && movie.cast.length > 0 ? (
+                        movie.cast.slice(0, 6).map((actor: any, index: number) => {
+                          // Handle both old string format and new object format
+                          const actorName = typeof actor === 'string' ? actor.split(' (')[0] : actor.name;
+                          const characterName = typeof actor === 'object' ? actor.character : 
+                                               (typeof actor === 'string' && actor.includes('(') ? 
+                                                actor.match(/\(([^)]+)\)/)?.[1] : '');
+                          const profilePath = typeof actor === 'object' ? actor.profile_path : null;
+                          
+                          return (
+                            <div key={index} className="col-md-4 col-6 mb-3">
+                              <div className="cast-member d-flex align-items-center">
+                                <div className="cast-avatar ml-3">
+                                  {profilePath ? (
+                                    <img 
+                                      src={profilePath} 
+                                      alt={actorName}
+                                      className="rounded-circle"
+                                      style={{width: '50px', height: '50px', objectFit: 'cover'}}
+                                    />
+                                  ) : (
+                                    <div className="default-avatar bg-secondary rounded-circle d-flex align-items-center justify-content-center" 
+                                         style={{width: '50px', height: '50px'}}>
+                                      <User size={24} className="text-white" />
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="cast-info">
+                                  <div className="actor-name font-weight-bold" style={{fontSize: '14px'}}>{actorName}</div>
+                                  {characterName && (
+                                    <div className="character-name text-muted" style={{fontSize: '12px'}}>({characterName})</div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p>لا توجد معلومات عن فريق العمل</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 

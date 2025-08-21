@@ -177,11 +177,32 @@ class TMDBService {
   convertTMDBMovieToDBFormat(tmdbMovie: TMDBMovieDetails): any {
     const directors = tmdbMovie.credits?.crew
       ?.filter(person => person.job === 'Director')
-      ?.map(person => person.name) || [];
+      ?.map(person => ({
+        name: person.name,
+        profile_path: person.profile_path ? this.getImageUrl(person.profile_path, 'w185') : null
+      })) || [];
+
+    const writers = tmdbMovie.credits?.crew
+      ?.filter(person => person.job === 'Writer' || person.job === 'Screenplay')
+      ?.map(person => ({
+        name: person.name,
+        profile_path: person.profile_path ? this.getImageUrl(person.profile_path, 'w185') : null
+      })) || [];
+
+    const producers = tmdbMovie.credits?.crew
+      ?.filter(person => person.job === 'Producer')
+      ?.map(person => ({
+        name: person.name,
+        profile_path: person.profile_path ? this.getImageUrl(person.profile_path, 'w185') : null
+      })) || [];
     
     const cast = tmdbMovie.credits?.cast
       ?.slice(0, 10)
-      ?.map(person => person.name) || [];
+      ?.map(person => ({
+        name: person.name,
+        character: person.character,
+        profile_path: person.profile_path ? this.getImageUrl(person.profile_path, 'w185') : null
+      })) || [];
 
     const genres = tmdbMovie.genres?.map(genre => genre.name) || [];
     
@@ -209,6 +230,8 @@ class TMDBService {
       country: tmdbMovie.production_countries?.[0]?.name || 'غير محدد',
       director: directors,
       cast: cast,
+      writer: writers,
+      producer: producers,
       isNew: new Date(tmdbMovie.release_date) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       isFeatured: tmdbMovie.vote_average > 8.0,
       isRecommended: tmdbMovie.popularity > 50
