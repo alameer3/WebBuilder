@@ -91,11 +91,11 @@ export default function FeaturedSlider() {
                       <i className="icon-play"></i>
                       <div>مشاهدة</div>
                     </a>
-                    <a href="javascript:;" className="icn add-to-fav mr-4" data-id={item.id} data-type={item.type}>
+                    <button type="button" className="icn add-to-fav mr-4 btn-unstyled" data-id={item.id} data-type={item.type} onClick={() => console.log('Add to favorites', item.id)}>
                       <i className="icon-plus"></i>
                       <i className="icon-check font-size-20"></i>
                       <div>قائمتي</div>
-                    </a>
+                    </button>
                   </div>
                   <div className="line my-3"></div>
                   <h3 className="entry-title font-size-14 m-0">

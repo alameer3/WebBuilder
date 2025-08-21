@@ -17,6 +17,7 @@ import "@/assets/css/plugins.css";
 import "@/assets/css/style.css"; 
 import "@/assets/css/akwam-original.css";
 import "@/assets/css/yemen-flix.css";
+import "@/assets/css/button-fixes.css";
 
 // Pages  
 import Home from "@/pages/home";
@@ -31,6 +32,7 @@ import Login from "@/pages/login";
 import Contact from "@/pages/contact";
 import MovieDetail from "@/pages/movie-detail";
 import SeriesDetail from "@/pages/series-detail";
+import WatchPage from "@/pages/watch";
 import Favorites from "@/pages/favorites";
 import Notifications from "@/pages/notifications";
 import NotFound from "@/pages/not-found";
@@ -38,6 +40,7 @@ import PersonDetail from "@/pages/person-detail";
 import EpisodeDetail from "@/pages/episode-detail";
 import DMCA from "@/pages/dmca";
 import AdPolicy from "@/pages/ad-policy";
+import AdminRouter from "@/admin/index";
 import Ones from "@/pages/ones";
 import FavoriteMovies from "@/pages/favorite-movies";
 
@@ -88,37 +91,43 @@ function Router() {
           </>
         )}
 
-        <main>
-          <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/home" component={Home} />
-            <Route path="/main" component={Home} />
-            <Route path="/search" component={Search} />
-            <Route path="/movies" component={Movies} />
-            <Route path="/series" component={Series} />
-            <Route path="/recent" component={Recent} />
-            <Route path="/shows" component={Shows} />
-            <Route path="/mix" component={Mix} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/login" component={Login} />
-            <Route path="/logout" component={Login} />
-            <Route path="/contactus" component={Contact} />
-            <Route path="/movie/:id" component={MovieDetail} />
-            <Route path="/series/:id" component={SeriesDetail} />
-            <Route path="/person/:id" component={PersonDetail} />
-            <Route path="/series/:seriesId/episode/:episodeId" component={EpisodeDetail} />
-            <Route path="/dmca" component={DMCA} />
-            <Route path="/ad-policy" component={AdPolicy} />
-            <Route path="/ones" component={Ones} />
-            <Route path="/favorite-movies" component={FavoriteMovies} />
-            <Route path="/favorites" component={Favorites} />
-            <Route path="/notifications" component={Notifications} />
-            <Route component={NotFound} />
-          </Switch>
-        </main>
+        {/* Admin routes - separate layout */}
+        {location.startsWith('/admin') && !isHomePage ? (
+          <AdminRouter />
+        ) : (
+          <main>
+            <Switch>
+              <Route path="/" component={Home} />
+              <Route path="/home" component={Home} />
+              <Route path="/main" component={Home} />
+              <Route path="/search" component={Search} />
+              <Route path="/movies" component={Movies} />
+              <Route path="/series" component={Series} />
+              <Route path="/recent" component={Recent} />
+              <Route path="/shows" component={Shows} />
+              <Route path="/mix" component={Mix} />
+              <Route path="/profile" component={Profile} />
+              <Route path="/login" component={Login} />
+              <Route path="/logout" component={Login} />
+              <Route path="/contactus" component={Contact} />
+              <Route path="/movie/:id" component={MovieDetail} />
+              <Route path="/watch/:id" component={WatchPage} />
+              <Route path="/series/:id" component={SeriesDetail} />
+              <Route path="/person/:id" component={PersonDetail} />
+              <Route path="/series/:seriesId/episode/:episodeId" component={EpisodeDetail} />
+              <Route path="/dmca" component={DMCA} />
+              <Route path="/ad-policy" component={AdPolicy} />
+              <Route path="/ones" component={Ones} />
+              <Route path="/favorite-movies" component={FavoriteMovies} />
+              <Route path="/favorites" component={Favorites} />
+              <Route path="/notifications" component={Notifications} />
+              <Route component={NotFound} />
+            </Switch>
+          </main>
+        )}
         
-        {/* Footer - only show on non-home pages */}
-        {!isHomePage && <Footer />}
+        {/* Footer - only show on non-home pages and non-admin pages */}
+        {!isHomePage && !location.startsWith('/admin') && <Footer />}
       </div>
     </>
   );

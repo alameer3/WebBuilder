@@ -26,48 +26,10 @@ export default function Shows() {
     year: '0'
   });
 
-  const showsData: Show[] = [
-    {
-      id: "113",
-      title: "اشرطة الاحساء",
-      poster: "https://img.downet.net/thumb/270x400/uploads/show1.jpg",
-      year: "2024",
-      rating: 7.8,
-      episodes: 20,
-      channel: "MBC",
-      genre: ["توك شو"],
-      quality: "HD",
-      type: "talk-show"
-    },
-    {
-      id: "127",
-      title: "AEW Dynamite",
-      poster: "https://img.downet.net/thumb/270x400/uploads/aew.jpg", 
-      year: "2020",
-      rating: 8.5,
-      episodes: 150,
-      channel: "TNT",
-      genre: ["مصارعة", "رياضة"],
-      quality: "HD",
-      type: "sport"
-    },
-    {
-      id: "142",
-      title: "مسرح الغرب",
-      poster: "https://img.downet.net/thumb/270x400/uploads/theater.jpg",
-      year: "2023",
-      rating: 7.2,
-      episodes: 12,
-      channel: "العربية",
-      genre: ["مسرحية"],
-      quality: "HD",
-      type: "reality"
-    }
-  ];
-
-  const { data: shows = showsData, isLoading } = useQuery({
+  // جلب البرامج من API
+  const { data: shows = [], isLoading, error } = useQuery({
     queryKey: ['/api/shows'],
-    queryFn: () => fetch('/api/shows').then(res => res.json()).catch(() => showsData)
+    select: (data: any) => data || []
   });
 
   useEffect(() => {
@@ -213,13 +175,32 @@ export default function Shows() {
           </div>
 
           <div className="container">
-            {isLoading ? (
+            {isLoading && (
               <div className="text-center py-5">
-                <div className="spinner-border text-warning" role="status">
-                  <span className="sr-only">Loading...</span>
+                <div className="spinner-border text-orange" role="status">
+                  <span className="sr-only">جاري التحميل...</span>
+                </div>
+                <p className="mt-3 text-muted">جاري تحميل البرامج...</p>
+              </div>
+            )}
+            
+            {error && (
+              <div className="alert alert-danger text-center">
+                خطأ في تحميل البرامج. يرجى المحاولة مرة أخرى.
+              </div>
+            )}
+            
+            {!isLoading && !error && shows.length === 0 && (
+              <div className="text-center py-5">
+                <div className="empty-state">
+                  <i className="icon-tv display-1 text-muted mb-3"></i>
+                  <h3 className="text-muted">لا توجد برامج متاحة حالياً</h3>
+                  <p className="text-muted">سيتم إضافة المحتوى قريباً</p>
                 </div>
               </div>
-            ) : (
+            )}
+            
+            {!isLoading && !error && shows.length > 0 && (
               <div className="widget widget-style-1 mb-4" data-grid="6">
                 <div className="widget-body">
                   <div className="row">

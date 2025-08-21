@@ -151,14 +151,14 @@ export default function EpisodeDetail() {
               </h2>
             </div>
             <div className="col-auto menu-toggle-container">
-              <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
+              <button type="button" className="menu-toggle d-flex align-items-center text-white btn-unstyled" onClick={() => document.body.classList.toggle('main-menu-active')}>
                 <span className="icn">
                   <span></span>
                   <span></span>
                   <span></span>
                 </span>
                 <div className="text font-size-18 mr-3">الأقسام</div>
-              </a>
+              </button>
             </div>
             <div className="ml-auto"></div>
             <div className="col-auto recently-container">

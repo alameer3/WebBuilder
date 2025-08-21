@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'wouter';
 import logoWhite from '../assets/images/logo-white.svg';
-import siteNewBg from '../assets/images/site-new.webp';
+import TMDBDataFetcher from '../components/TMDBDataFetcher';
+import EnhancedMovieCard from '../components/EnhancedMovieCard';
 
-// تحميل ملفات CSS الأصلية
+// تحميل ملفات CSS الأصلية من AKWAM
 import '../assets/css/plugins.css';
 import '../assets/css/style.css';
 import '../assets/css/akwam.css';
@@ -16,23 +19,39 @@ declare global {
 }
 
 export default function Home() {
-  useEffect(() => {
-    // تطبيق كلاسات body الأصلية
-    document.body.className = 'header-fixed body-home';
-    
-    // إضافة الخلفية الصحيحة للصفحة الرئيسية
-    const homeStyle = document.createElement('style');
-    homeStyle.textContent = `
-      body { 
-        background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(/src/assets/images/home-bg.webp) !important;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-      }
-    `;
-    document.head.appendChild(homeStyle);
+  // جلب الأفلام من قاعدة البيانات
+  const { data: moviesData, isLoading: moviesLoading, refetch: refetchMovies } = useQuery({
+    queryKey: ['/api/movies'],
+    select: (data: any) => data?.movies || []
+  });
 
-    // إضافة BreadcrumbList JSON-LD Schema
+  // جلب الأفلام الشائعة من TMDB
+  const { data: tmdbMovies, isLoading: tmdbLoading } = useQuery({
+    queryKey: ['/api/tmdb/popular-movies'],
+    enabled: false // نشط هذا فقط عند الحاجة
+  });
+
+  useEffect(() => {
+    // تطبيق كلاسات body الأصلية مطابقة لـ AKWAM الأصلي
+    document.body.className = 'header-fixed body-home pace-done';
+    
+    // إنشاء Pace Loader مطابق للموقع الأصلي
+    const paceDiv = document.createElement('div');
+    paceDiv.className = 'pace pace-inactive';
+    paceDiv.innerHTML = `
+      <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+        <div class="pace-progress-inner"></div>
+      </div>
+      <div class="pace-activity"></div>
+    `;
+    document.body.insertBefore(paceDiv, document.body.firstChild);
+    
+    // إضافة overlay للموقع
+    const overlay = document.createElement('span');
+    overlay.className = 'site-overlay';
+    document.body.appendChild(overlay);
+
+    // إضافة BreadcrumbList JSON-LD Schema مطابقة للموقع الأصلي
     const breadcrumbSchema = {
       "@context": "http://schema.org",
       "@type": "BreadcrumbList",
@@ -53,13 +72,13 @@ export default function Home() {
     scriptTag.textContent = JSON.stringify(breadcrumbSchema);
     document.head.appendChild(scriptTag);
     
-    // تحميل jQuery أولاً
+    // تحميل jQuery أولاً من CDN
     const jqueryScript = document.createElement('script');
-    jqueryScript.src = '/src/assets/js/jquery-3.2.1.min.js';
+    jqueryScript.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
     jqueryScript.onload = () => {
-      // تحميل Typed.js
+      // تحميل Typed.js من CDN
       const typedScript = document.createElement('script');
-      typedScript.src = '/src/assets/js/typed.min.js';
+      typedScript.src = 'https://cdn.jsdelivr.net/npm/typed.js@2.0.12';
       typedScript.onload = () => {
         setTimeout(() => {
           if (window.Typed && window.$) {
@@ -85,12 +104,16 @@ export default function Home() {
               }
             };
 
-            // تفعيل Typed.js الأصلي
-            if ($('.widget-2').length) {
-              new window.Typed('.widget-2 .form label[for="widget2SearchInput"] span', {
-                stringsElement: ".widget-2 .form .label-text",
-                typeSpeed: 30
-              });
+            // تفعيل Typed.js - تحقق من الكائن أولاً
+            if (window.Typed && $('.widget-2').length) {
+              try {
+                new window.Typed('.widget-2 .form label[for="widget2SearchInput"] span', {
+                  stringsElement: ".widget-2 .form .label-text",
+                  typeSpeed: 30
+                });
+              } catch (e) {
+                console.log('Typed.js initialization skipped');
+              }
             }
 
             $(document).ready(() => {
@@ -134,9 +157,13 @@ export default function Home() {
           }
         }, 1000);
       };
-      document.head.appendChild(typedScript);
+      if (typedScript.src) {
+        document.head.appendChild(typedScript);
+      }
     };
-    document.head.appendChild(jqueryScript);
+    if (jqueryScript.src) {
+      document.head.appendChild(jqueryScript);
+    }
 
     return () => {
       document.body.className = '';
@@ -262,7 +289,6 @@ export default function Home() {
               <div 
                 className="home-site-btn" 
                 style={{ 
-                  backgroundImage: `url(${siteNewBg})`,
                   transition: 'background-position 5s'
                 }}
               >
@@ -339,7 +365,7 @@ export default function Home() {
                 <h2 className="header-title font-size-18 font-weight-bold mb-0">
                   <span className="header-link text-white">أضيف حديثا</span>
                 </h2>
-                <img src="/style/assets/images/icn-w-header.png" className="header-img" alt="icn-w-header" />
+                <img src="/client/src/assets/images/icn-w-header.png" className="header-img" alt="icn-w-header" />
               </header>
               <div className="widget-body">
                 <div className="row">
@@ -353,7 +379,7 @@ export default function Home() {
                         </div>
                         <a href={`/movie/${item}`}>
                           <div className="entry-image">
-                            <div className="image" style={{ backgroundImage: 'url("https://img.downet.net/thumb/178x260/uploads/default.jpg")' }}></div>
+                            <div className="image" style={{ backgroundImage: 'url("/client/src/assets/images/default.jpg")' }}></div>
                             <div className="entry-overlay">
                               <div className="overlay-content">
                                 <div className="entry-title">فيلم {item}</div>
@@ -369,6 +395,81 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="main-footer py-5">
+          <nav className="social d-flex justify-content-center">
+            <a href="/" target="" className="home mx-2"><i className="icon-home"></i></a>
+            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="#" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <a href="#" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="/contact" target="" className="email mx-2"><i className="icon-email"></i></a>
+          </nav>
+
+          <nav className="links d-flex justify-content-center mt-3">
+            <a href="/" target="" className="mx-2">يمن فليكس</a>
+            <a href="/old" target="_blank" className="mx-2">الموقع القديم</a>
+            <a href="/dmca" target="" className="mx-2">DMCA</a>
+            <a href="/ad-policy" target="" className="mx-2">AD-P</a>
+            <a href="#" target="_blank" className="mx-2">يمن فليكس نيوز</a>
+            <a href="#" target="_blank" className="mx-2">شبكة يمن فليكس</a>
+          </nav>
+
+          <p className="copyright mb-0 font-size-12 text-center mt-3">
+            جميع الحقوق محفوظة لـ شبكة يمن فليكس © 2025
+          </p>
+        </footer>
+
+        {/* TMDB Data Management */}
+        <div className="container mt-5">
+          <TMDBDataFetcher />
+
+          {/* Movies Grid */}
+          {moviesData && moviesData.length > 0 && (
+            <div className="mt-5">
+              <h3 className="text-[#f3951e] text-xl font-bold mb-4">الأفلام المتوفرة ({moviesData.length})</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {moviesData.slice(0, 12).map((movie: any) => (
+                  <EnhancedMovieCard 
+                    key={movie.id} 
+                    movie={movie} 
+                    size="medium"
+                    showDetails={true}
+                  />
+                ))}
+              </div>
+              
+              {moviesData.length > 12 && (
+                <div className="text-center mt-4">
+                  <a href="/movies" className="btn btn-orange">
+                    عرض جميع الأفلام ({moviesData.length})
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Loading State */}
+          {moviesLoading && (
+            <div className="text-center mt-5">
+              <div className="text-white">جاري تحميل الأفلام...</div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!moviesLoading && (!moviesData || moviesData.length === 0) && (
+            <div className="text-center mt-5 bg-[#27272c] rounded-lg p-6">
+              <div className="text-gray-400 mb-4">
+                لا توجد أفلام في قاعدة البيانات حالياً
+              </div>
+              <div className="text-sm text-gray-500">
+                استخدم أزرار التعبئة أعلاه لإضافة أفلام من TMDB
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

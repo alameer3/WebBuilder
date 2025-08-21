@@ -1,193 +1,217 @@
-import { useRoute } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useParams, Link } from 'wouter';
+import { User, Calendar, MapPin } from 'lucide-react';
+import AkwamHeader from '../components/AkwamHeader';
+import MovieCard from '../components/MovieCard';
+
+// استيراد CSS الأصلي
+import '../assets/css/plugins.css';
+import '../assets/css/style.css';  
+import '../assets/css/akwam.css';
 
 interface Person {
-  id: number;
+  id: string;
   name: string;
-  arabicName: string;
-  bio: string;
-  birthDate: string;
-  nationality: string;
-  photo: string;
-  knownFor: string;
-  movies: Movie[];
-  series: Series[];
+  nameAr?: string;
+  biography?: string;
+  birthDate?: string;
+  nationality?: string;
+  photo?: string;
+  profession: string[];
+  isActive: boolean;
 }
 
 interface Movie {
-  id: number;
+  id: string;
   title: string;
-  year: string;
-  rating: number;
   poster: string;
-  role: string;
-}
-
-interface Series {
-  id: number;
-  title: string;
-  year: string;
+  year: number;
   rating: number;
-  poster: string;
-  role: string;
+  category: string;
 }
 
 export default function PersonDetail() {
-  const [, params] = useRoute("/person/:id");
-  const { id } = params || {};
+  const { id } = useParams();
 
-  const { data: person, isLoading } = useQuery<Person>({
-    queryKey: ['/api/persons', id],
+  const { data: person, isLoading, error } = useQuery({
+    queryKey: ['/api/person', id],
     enabled: !!id
-  });
+  }) as { data: Person | undefined, isLoading: boolean, error: any };
+
+  const { data: personMovies = [] } = useQuery({
+    queryKey: ['/api/person', id, 'movies'],
+    enabled: !!id
+  }) as { data: Movie[] };
+
+  useEffect(() => {
+    document.body.className = 'header-fixed body-main';
+    
+    if (person) {
+      document.title = `${person.name} - يمن فليكس`;
+    }
+  }, [person]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#161619] text-white">
-        <div className="container mx-auto px-4 py-8">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-700 rounded w-1/3 mb-6"></div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="w-full h-96 bg-gray-700 rounded"></div>
-              <div className="lg:col-span-2 space-y-4">
-                <div className="h-6 bg-gray-700 rounded w-1/2"></div>
-                <div className="h-4 bg-gray-700 rounded w-full"></div>
-                <div className="h-4 bg-gray-700 rounded w-3/4"></div>
-              </div>
-            </div>
+      <div className="site-container">
+        <AkwamHeader />
+        <div className="main-header-top"></div>
+        <div className="main-header-height"></div>
+        
+        <div className="container text-center py-5">
+          <div className="spinner-border text-warning" role="status">
+            <span className="sr-only">جاري التحميل...</span>
           </div>
         </div>
       </div>
     );
   }
 
-  if (!person) {
+  if (error || !person) {
     return (
-      <div className="min-h-screen bg-[#161619] text-white">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">الشخص غير موجود</h1>
-            <p className="text-gray-400">عذراً، لم نتمكن من العثور على هذا الشخص.</p>
-          </div>
+      <div className="site-container">
+        <AkwamHeader />
+        <div className="main-header-top"></div>
+        <div className="main-header-height"></div>
+        
+        <div className="container text-center py-5">
+          <h3>لم يتم العثور على هذا الشخص</h3>
+          <Link href="/movies" className="btn btn-primary mt-3">العودة للأفلام</Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#161619] text-white">
-      <div className="container mx-auto px-4 py-8">
-        {/* رأس الصفحة */}
-        <div className="mb-8">
-          <nav className="text-sm text-gray-400 mb-4">
-            <a href="/" className="hover:text-[#f3951e]">الرئيسية</a>
-            <span className="mx-2">›</span>
-            <span>الممثلون</span>
-            <span className="mx-2">›</span>
-            <span>{person.arabicName}</span>
+    <div className="site-container">
+      <AkwamHeader />
+      <div className="main-header-top"></div>
+      <div className="main-header-height"></div>
+
+      {/* Breadcrumb Navigation */}
+      <div className="breadcrumb-container">
+        <div className="container">
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <Link href="/">يمن فليكس</Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link href="/people">أشخاص</Link>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                {person.name}
+              </li>
+            </ol>
           </nav>
         </div>
+      </div>
 
-        {/* معلومات الشخص */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          {/* الصورة */}
-          <div className="text-center lg:text-right">
-            <img 
-              src={person.photo} 
-              alt={person.arabicName}
-              className="w-full max-w-md mx-auto lg:mx-0 rounded-lg shadow-lg"
-            />
-          </div>
-
-          {/* التفاصيل */}
-          <div className="lg:col-span-2">
-            <h1 className="text-4xl font-bold text-[#f3951e] mb-2">{person.arabicName}</h1>
-            <h2 className="text-2xl text-gray-300 mb-6">{person.name}</h2>
-
-            <div className="bg-[#27272c] rounded-lg p-6 mb-6">
-              <h3 className="text-xl font-semibold mb-4">معلومات شخصية</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <span className="text-gray-400">تاريخ الميلاد:</span>
-                  <span className="mr-2 text-white">{person.birthDate}</span>
-                </div>
-                <div>
-                  <span className="text-gray-400">الجنسية:</span>
-                  <span className="mr-2 text-white">{person.nationality}</span>
-                </div>
-                <div className="md:col-span-2">
-                  <span className="text-gray-400">معروف بـ:</span>
-                  <span className="mr-2 text-white">{person.knownFor}</span>
-                </div>
+      {/* Person Details */}
+      <div className="person-details-section py-5">
+        <div className="container">
+          <div className="row">
+            {/* Person Photo */}
+            <div className="col-md-4">
+              <div className="person-photo text-center">
+                {person.photo ? (
+                  <img 
+                    src={person.photo} 
+                    alt={person.name}
+                    className="img-fluid rounded shadow"
+                    style={{maxWidth: '300px'}}
+                  />
+                ) : (
+                  <div className="default-photo bg-secondary rounded d-flex align-items-center justify-content-center mx-auto" 
+                       style={{width: '300px', height: '400px'}}>
+                    <User size={120} className="text-white" />
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="bg-[#27272c] rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">السيرة الذاتية</h3>
-              <p className="text-gray-300 leading-relaxed">{person.bio}</p>
-            </div>
-          </div>
-        </div>
+            {/* Person Info */}
+            <div className="col-md-8">
+              <div className="person-info">
+                <h1 className="person-name">{person.name}</h1>
+                {person.nameAr && person.nameAr !== person.name && (
+                  <h2 className="person-name-ar text-muted">{person.nameAr}</h2>
+                )}
 
-        {/* الأعمال */}
-        <div className="space-y-8">
-          {/* الأفلام */}
-          <div>
-            <h2 className="text-2xl font-bold mb-6">الأفلام ({person.movies?.length || 0})</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {person.movies?.map((movie) => (
-                <div key={movie.id} className="group cursor-pointer">
-                  <div className="relative overflow-hidden rounded-lg mb-2">
-                    <img 
-                      src={movie.poster} 
-                      alt={movie.title}
-                      className="w-full aspect-[2/3] object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="bg-[#f3951e] text-white px-3 py-1 rounded-full text-sm">
-                          {movie.rating}/10
-                        </span>
+                {/* Person Meta Info */}
+                <div className="person-meta-info mb-4">
+                  <div className="row">
+                    <div className="col-md-6">
+                      {person.birthDate && (
+                        <div className="meta-item mb-2">
+                          <Calendar size={16} className="ml-2" />
+                          <strong>تاريخ الميلاد:</strong> {person.birthDate}
+                        </div>
+                      )}
+                      {person.nationality && (
+                        <div className="meta-item mb-2">
+                          <MapPin size={16} className="ml-2" />
+                          <strong>الجنسية:</strong> {person.nationality}
+                        </div>
+                      )}
+                    </div>
+                    <div className="col-md-6">
+                      <div className="meta-item mb-2">
+                        <strong>المهنة:</strong>
+                        <div className="profession-tags">
+                          {person.profession?.map((prof: string, index: number) => (
+                            <span key={index} className="badge badge-primary mr-2 mb-2">{prof}</span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <h4 className="font-medium text-sm mb-1 line-clamp-2">{movie.title}</h4>
-                  <p className="text-xs text-gray-400">{movie.year}</p>
-                  <p className="text-xs text-[#f3951e]">{movie.role}</p>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* المسلسلات */}
-          <div>
-            <h2 className="text-2xl font-bold mb-6">المسلسلات ({person.series?.length || 0})</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {person.series?.map((series) => (
-                <div key={series.id} className="group cursor-pointer">
-                  <div className="relative overflow-hidden rounded-lg mb-2">
-                    <img 
-                      src={series.poster} 
-                      alt={series.title}
-                      className="w-full aspect-[2/3] object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="bg-[#f3951e] text-white px-3 py-1 rounded-full text-sm">
-                          {series.rating}/10
-                        </span>
-                      </div>
-                    </div>
+                {/* Biography */}
+                {person.biography && (
+                  <div className="person-biography mb-4">
+                    <h5>السيرة الذاتية:</h5>
+                    <p>{person.biography}</p>
                   </div>
-                  <h4 className="font-medium text-sm mb-1 line-clamp-2">{series.title}</h4>
-                  <p className="text-xs text-gray-400">{series.year}</p>
-                  <p className="text-xs text-[#f3951e]">{series.role}</p>
-                </div>
-              ))}
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Person Movies */}
+      {personMovies && personMovies.length > 0 && (
+        <div className="person-movies-section py-5 bg-light">
+          <div className="container">
+            <h4 className="mb-4">الأعمال</h4>
+            <div className="row">
+              {personMovies.map((movie: Movie) => (
+                <div key={movie.id} className="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+                  <div className="movie-card">
+                    <Link href={`/movie/${movie.id}`}>
+                      <img 
+                        src={movie.poster} 
+                        alt={movie.title}
+                        className="img-fluid rounded shadow-sm"
+                      />
+                      <div className="movie-card-info mt-2">
+                        <h6 className="movie-card-title">{movie.title}</h6>
+                        <div className="movie-card-meta">
+                          <span className="year">{movie.year}</span>
+                          <span className="rating">⭐ {movie.rating}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

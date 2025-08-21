@@ -35,7 +35,7 @@ export const movies = pgTable("movies", {
   section: text("section"), // مدبلج, مترجم, عربي, أجنبي, خليجي
   country: text("country"),
   director: text("director").array(),
-  cast: text("cast").array(),
+  cast: text("cast").array(), // JSON stringified array of objects with name, character, profile_path
   writer: text("writer").array(),
   producer: text("producer").array(),
   isNew: boolean("is_new").default(false),

@@ -35,8 +35,8 @@ export default function MainMenu() {
           <a href="#" target="_blank" className="facebook mx-2">
             <i className="icon-facebook"></i>
           </a>
-          <a href="#" target="_blank" className="facebook mx-2">
-            <i className="icon-facebook"></i>
+          <a href="#" target="_blank" className="twitter mx-2">
+            <i className="icon-twitter"></i>
           </a>
           <a href="#" target="_blank" className="app-store mx-2">
             <i className="icon-app-store"></i>

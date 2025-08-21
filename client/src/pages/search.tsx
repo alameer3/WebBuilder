@@ -33,56 +33,16 @@ export default function Search() {
     setSearchQuery(query);
   }, [location]);
 
-  // بيانات تجريبية لنتائج البحث
-  const searchResults: SearchResult[] = [
-    {
-      id: "search1",
-      title: "فيلم الأزرق 3",
-      poster: "https://img.downet.net/thumb/270x400/uploads/search1.jpg",
-      year: "2024",
-      rating: 8.2,
-      type: "movie",
-      genre: ["اكشن", "مغامرات"],
-      quality: "HD",
-      description: "فيلم اكشن مثير..."
-    },
-    {
-      id: "search2",
-      title: "مسلسل بنات الأم",
-      poster: "https://img.downet.net/thumb/270x400/uploads/search2.jpg",
-      year: "2024",
-      rating: 8.7,
-      type: "series",
-      genre: ["دراما", "عائلي"],
-      quality: "HD",
-      episodes: 30,
-      seasons: 1,
-      description: "مسلسل درامي عائلي..."
-    },
-    {
-      id: "search3",
-      title: "برنامج اشرطة الاحساء",
-      poster: "https://img.downet.net/thumb/270x400/uploads/search3.jpg",
-      year: "2024",
-      rating: 7.8,
-      type: "show",
-      genre: ["توك شو"],
-      quality: "HD",
-      episodes: 20,
-      description: "برنامج حواري..."
-    }
-  ];
+  // حذف البيانات التجريبية واستخدام API الحقيقي فقط
 
   const { data: results = [], isLoading } = useQuery({
     queryKey: ['/api/search', searchQuery],
-    queryFn: () => {
+    queryFn: async () => {
       if (!searchQuery) return [];
-      // محاكاة البحث في البيانات التجريبية
-      return searchResults.filter(item => 
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.genre?.some(g => g.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
+      // البحث في قاعدة البيانات الفعلية
+      const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+      const data = await response.json();
+      return data.results || [];
     },
     enabled: !!searchQuery
   });
@@ -206,25 +166,25 @@ export default function Search() {
                       className={`filter-tab btn ${filter === 'movie' ? 'active' : ''}`}
                       onClick={() => setFilter('movie')}
                     >
-                      أفلام ({results.filter(r => r.type === 'movie').length})
+                      أفلام ({results.filter((r: any) => r.type === 'movie').length})
                     </button>
                     <button 
                       className={`filter-tab btn ${filter === 'series' ? 'active' : ''}`}
                       onClick={() => setFilter('series')}
                     >
-                      مسلسلات ({results.filter(r => r.type === 'series').length})
+                      مسلسلات ({results.filter((r: any) => r.type === 'series').length})
                     </button>
                     <button 
                       className={`filter-tab btn ${filter === 'show' ? 'active' : ''}`}
                       onClick={() => setFilter('show')}
                     >
-                      برامج ({results.filter(r => r.type === 'show').length})
+                      برامج ({results.filter((r: any) => r.type === 'show').length})
                     </button>
                     <button 
                       className={`filter-tab btn ${filter === 'person' ? 'active' : ''}`}
                       onClick={() => setFilter('person')}
                     >
-                      أشخاص ({results.filter(r => r.type === 'person').length})
+                      أشخاص ({results.filter((r: any) => r.type === 'person').length})
                     </button>
                   </div>
                 </div>
@@ -240,7 +200,7 @@ export default function Search() {
                     <div className="widget widget-style-1 mb-4" data-grid="6">
                       <div className="widget-body">
                         <div className="row" data-testid="search-results">
-                          {filteredResults.map((item) => (
+                          {filteredResults.map((item: any) => (
                             <div key={item.id} className="col-6 col-lg-2 col-md-3 col-xl-2 mb-12">
                               <div className="entry-box entry-box-1">
                                 <div className="labels d-flex">

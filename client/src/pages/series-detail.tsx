@@ -360,32 +360,32 @@ export default function SeriesDetail() {
                   <span className="font-size-18 font-weight-medium">شارك</span>
                   <i className="icon-share font-size-20 mr-auto"></i>
                   <div className="menu d-flex align-items-center share">
-                    <a href="javascript:;" className="facebook ml-2"><i className="icon-facebook"></i></a>
-                    <a href="javascript:;" className="twitter ml-2"><i className="icon-twitter"></i></a>
-                    <a href="javascript:;" className="messenger ml-2"><i className="icon-messenger"></i></a>
-                    <a href="javascript:;" className="whatsapp ml-2"><i className="icon-whatsapp"></i></a>
+                    <button type="button" className="facebook ml-2 btn-unstyled" onClick={() => window.open(`https://facebook.com/sharer/sharer.php?u=${window.location.href}`, '_blank')}><i className="icon-facebook"></i></button>
+                    <button type="button" className="twitter ml-2 btn-unstyled" onClick={() => window.open(`https://twitter.com/intent/tweet?url=${window.location.href}`, '_blank')}><i className="icon-twitter"></i></button>
+                    <button type="button" className="messenger ml-2 btn-unstyled" onClick={() => window.open(`https://www.messenger.com/`, '_blank')}><i className="icon-messenger"></i></button>
+                    <button type="button" className="whatsapp ml-2 btn-unstyled" onClick={() => window.open(`https://wa.me/?text=${window.location.href}`, '_blank')}><i className="icon-whatsapp"></i></button>
                   </div>
                 </div>
 
                 {/* زر قائمتي */}
-                <a href="javascript:;" className="btn btn-favorite btn-pill d-flex align-items-center text-white mt-2 add-to-fav">
+                <button type="button" className="btn btn-favorite btn-pill d-flex align-items-center text-white mt-2 add-to-fav btn-unstyled" onClick={() => console.log('Add to favorites')}>
                   <span className="font-size-18 font-weight-medium">قائمتي</span>
                   <i className="icon-plus icon1 font-size-20 mr-auto"></i>
                   <i className="icon-check icon2 font-size-20 mr-auto"></i>
-                </a>
+                </button>
 
                 {/* نظام التقييم */}
                 <div className="mt-auto pt-3">
                   <div className="movie-rating d-flex justify-content-center align-items-center">
                     <span className="text font-size-16 text-white d-none">ما رأيك في هذا الموضوع ؟</span>
-                    <a href="javascript:;" className="like mx-1">
+                    <button type="button" className="like mx-1 btn-unstyled" onClick={() => console.log('Like')}>
                       <i className="icon-like"></i>
                       <span className="number">0</span>
-                    </a>
-                    <a href="javascript:;" className="unlike mx-1">
+                    </button>
+                    <button type="button" className="unlike mx-1 btn-unstyled" onClick={() => console.log('Dislike')}>
                       <i className="icon-like1"></i>
                       <span className="number">0</span>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
