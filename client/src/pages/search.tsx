@@ -36,13 +36,13 @@ export default function Search() {
   // حذف البيانات التجريبية واستخدام API الحقيقي فقط
 
   const { data: results = [], isLoading } = useQuery({
-    queryKey: ['/api/movies', searchQuery],
+    queryKey: ['/api/search', searchQuery],
     queryFn: async () => {
       if (!searchQuery) return [];
       // البحث في قاعدة البيانات الفعلية
-      const response = await fetch(`/api/movies?q=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
       const data = await response.json();
-      return data.movies || [];
+      return data.results || [];
     },
     enabled: !!searchQuery
   });
