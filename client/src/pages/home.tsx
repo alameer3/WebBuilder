@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'wouter';
 import logoWhite from '../assets/images/logo-white.svg';
-import siteNewBg from '../assets/images/site-new.webp';
 import TMDBDataFetcher from '../components/TMDBDataFetcher';
 import EnhancedMovieCard from '../components/EnhancedMovieCard';
 
-// تحميل ملفات CSS الأصلية
+// تحميل ملفات CSS الأصلية من AKWAM
 import '../assets/css/plugins.css';
 import '../assets/css/style.css';
 import '../assets/css/akwam.css';
@@ -32,20 +32,24 @@ export default function Home() {
   });
 
   useEffect(() => {
-    // تطبيق كلاسات body الأصلية مطابقة للموقع الأصلي
-    document.body.className = 'header-fixed body-home';
+    // تطبيق كلاسات body الأصلية مطابقة لـ AKWAM الأصلي
+    document.body.className = 'header-fixed body-home pace-done';
     
-    // إضافة الخلفية الصحيحة للصفحة الرئيسية مطابقة للموقع الأصلي
-    const homeStyle = document.createElement('style');
-    homeStyle.textContent = `
-      body { 
-        background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(/client/src/assets/images/home-bg.webp) !important;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-      }
+    // إنشاء Pace Loader مطابق للموقع الأصلي
+    const paceDiv = document.createElement('div');
+    paceDiv.className = 'pace pace-inactive';
+    paceDiv.innerHTML = `
+      <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+        <div class="pace-progress-inner"></div>
+      </div>
+      <div class="pace-activity"></div>
     `;
-    document.head.appendChild(homeStyle);
+    document.body.insertBefore(paceDiv, document.body.firstChild);
+    
+    // إضافة overlay للموقع
+    const overlay = document.createElement('span');
+    overlay.className = 'site-overlay';
+    document.body.appendChild(overlay);
 
     // إضافة BreadcrumbList JSON-LD Schema مطابقة للموقع الأصلي
     const breadcrumbSchema = {
@@ -285,7 +289,6 @@ export default function Home() {
               <div 
                 className="home-site-btn" 
                 style={{ 
-                  backgroundImage: `url(${siteNewBg})`,
                   transition: 'background-position 5s'
                 }}
               >

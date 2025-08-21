@@ -41,6 +41,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* تحميل ملفات CSS الأصلية من AKWAM */
+@import url('./assets/css/plugins.css');
+@import url('./assets/css/style.css');
+@import url('./assets/css/akwam.css');
+
 :root {
   direction: rtl;
   font-family: 'akoam', 'Noto Sans Arabic', 'Inter', Arial, Helvetica, sans-serif;
