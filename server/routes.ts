@@ -380,6 +380,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Search endpoint
+  app.get("/api/search", async (req, res) => {
+    try {
+      const { q: searchQuery } = req.query;
+      
+      if (!searchQuery) {
+        return res.json({ results: [], total: 0 });
+      }
+
+      const searchResults = await storage.searchMoviesAdvanced({
+        search: searchQuery as string,
+        limit: 20,
+        offset: 0
+      });
+
+      res.json({
+        results: searchResults.movies,
+        total: searchResults.total
+      });
+    } catch (error) {
+      console.error("Search error:", error);
+      res.status(500).json({ message: "خطأ في البحث" });
+    }
+  });
+
   // Contact endpoints
   app.post("/api/contact", async (req, res) => {
     try {
